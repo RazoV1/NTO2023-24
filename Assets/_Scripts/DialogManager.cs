@@ -39,7 +39,6 @@ public class DialogManager : MonoBehaviour
 
         //Парсим json файл dialogA(jsonFile) в массив phrasesList 
         phrasesList = new List<string>();
-        linkJson = Application.persistentDataPath + "Assets/dialogA.json";
         jsonObj = JsonUtility.FromJson<JsonObjects>(jsonFile.text);
         phrasesList = jsonObj.phrases;
         
@@ -53,7 +52,7 @@ public class DialogManager : MonoBehaviour
         if (textRunning) SpeakerAnimator.SetTrigger("speak");
         else SpeakerAnimator.SetTrigger("idle");
     }
-    
+
     //При помощи этой функции запускаем корутину с выводом текста
     public void LoadText()
     {
