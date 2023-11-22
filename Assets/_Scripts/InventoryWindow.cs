@@ -10,6 +10,7 @@ public class InventoryWindow : MonoBehaviour
 {
     [SerializeField] private Inventory targetInventory;
     [SerializeField] private RectTransform itemsPanel;
+    [SerializeField] private RectTransform countPanel;
     [SerializeField] private TextMeshProUGUI countTextAsset;
     public List<GameObject> itemsToRedraw = new List<GameObject>();
 
@@ -37,10 +38,11 @@ public class InventoryWindow : MonoBehaviour
             icon.transform.localScale = Vector3.one;
             icon.AddComponent<Image>().sprite = item.Icon;
             var textCount = Instantiate(countTextAsset);
-            textCount.transform.parent = icon.transform;
+            textCount.transform.parent = countPanel.transform;
             textCount.transform.localScale = Vector3.one;
             textCount.text = targetInventory.inventoryItemsCount[i].ToString();
             itemsToRedraw.Add(icon);
+            itemsToRedraw.Add(textCount.gameObject);
         }
     }
 }

@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
-        canvasManager = canvasManager.GetComponent<CanvasManager>();
-        inventoryWindow = inventoryWindow.GetComponent<InventoryWindow>();
+        //canvasManager = canvasManager.GetComponent<CanvasManager>();
+        //inventoryWindow = inventoryWindow.GetComponent<InventoryWindow>();
     }
 
     private void Update()
