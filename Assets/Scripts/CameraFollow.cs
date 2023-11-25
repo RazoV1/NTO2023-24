@@ -6,12 +6,12 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
     public float speed;
-    public Vector2 offset;
+    public Vector3 offset;
 
     void Follow()
     {
         Vector3 newPos = target.position;
-        newPos.z = -10;
+        newPos.z = offset.z;
         newPos.x = target.position.x + offset.x;
         newPos.y = target.position.y + offset.y; 
         

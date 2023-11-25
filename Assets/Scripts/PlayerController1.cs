@@ -6,17 +6,23 @@ public class PlayerController1 : MonoBehaviour
 {
     private Rigidbody rb;
     public float Maxspeed;
+    public float climbSpeed;
     public float currentSpeed;
     public float accelerationForce;
     public float jumpForce;
     private Vector3 movement;
     private bool is_in_air = false;
-
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private bool is_climbing = false;
+    private bool is_animating = false;
 
     void Jump()
     {
+        
         if (!is_in_air)
         {
+            animator.SetBool("IsFalling", true);
             is_in_air = true;
             //movement.y = jumpForce;
             rb.AddForce(new Vector3(0,jumpForce,0),ForceMode.Impulse);
@@ -28,13 +34,14 @@ public class PlayerController1 : MonoBehaviour
         if (!is_in_air)
         {
             movement = Vector3.Lerp(rb.velocity,Vector3.zero,Time.deltaTime * accelerationForce);
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) && !is_climbing)
             {
+
                 currentSpeed = Mathf.Lerp(rb.velocity.x, Maxspeed, accelerationForce * Time.deltaTime);
                 movement.x = currentSpeed;
                 
             }
-            else if (Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.A) && !is_climbing)
             {
                 currentSpeed = Mathf.Lerp(rb.velocity.x, -Maxspeed, accelerationForce * Time.deltaTime);
                 movement.x = currentSpeed;
@@ -42,37 +49,94 @@ public class PlayerController1 : MonoBehaviour
             }
             if (Input.GetKey(KeyCode.W))
             {
-                currentSpeed = Mathf.Lerp(rb.velocity.z, Maxspeed, accelerationForce * Time.deltaTime);
-                movement.z = currentSpeed;
-                
+                if (!is_climbing)
+                {
+                    currentSpeed = Mathf.Lerp(rb.velocity.z, Maxspeed, accelerationForce * Time.deltaTime);
+                    movement.z = currentSpeed;
+                }
+                else
+                {
+                    is_animating = true;
+                    transform.position = new Vector3(transform.position.x,transform.position.y + climbSpeed * Time.deltaTime,transform.position.z);
+                }
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                currentSpeed = Mathf.Lerp(rb.velocity.z, -Maxspeed, accelerationForce * Time.deltaTime);
-                movement.z = currentSpeed;
+                if (!is_climbing)
+                {
+                    currentSpeed = Mathf.Lerp(rb.velocity.z, -Maxspeed, accelerationForce * Time.deltaTime);
+                    movement.z = currentSpeed;
+                }
+                else
+                {
+                    is_climbing = false;
+                }
+            }
+            else
+            {
+                is_animating = false;
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                is_climbing = false;
                 Jump();
             }
+            if (movement.normalized.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else if (movement.normalized.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            animator.SetFloat("X",movement.normalized.x);
+            animator.SetFloat("Y", movement.normalized.z);
+            animator.SetBool("animating", is_animating);
             rb.velocity = movement;
         }
         
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
+        if (collision.gameObject.tag == "ladder")
+        {
+            animator.SetBool("IsClimbing",true);
+            is_climbing = true;
+            rb.useGravity = false;
+        }
         if (is_in_air)
         {
-            is_in_air = false;
-            movement.y = 0;
+            if (collision.gameObject.tag == "floor" || collision.gameObject.tag == "ladder")
+            {
+                is_in_air = false;
+                animator.SetBool("IsFalling", false);
+                movement.y = 0;
+            }
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        is_in_air = true;
+        animator.SetBool("IsFalling", true);
+        if (collision.gameObject.tag == "ladder")
+        {
+            animator.SetBool("IsClimbing", false);
+            is_climbing = false;
+            rb.useGravity = true;
+            if (!is_in_air)
+            {
+                Jump();
+            }
         }
     }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
     private void Update()
     {

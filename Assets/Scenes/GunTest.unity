@@ -20631,7 +20631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1338635893}
   speed: 5
-  offset: {x: 0, y: 6}
+  offset: {x: 0, y: 6, z: -10}
 --- !u!1 &1338635888
 GameObject:
   m_ObjectHideFlags: 0
@@ -21773,7 +21773,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 31.85
+  m_fontSize: 16.8
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
