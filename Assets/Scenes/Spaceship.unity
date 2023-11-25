@@ -23170,6 +23170,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5548526836346537829, guid: d31fa770d7a1c384a991f15a344dcb31, type: 3}
+      propertyPath: m_Range
+      value: 1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 5548526836346537829, guid: d31fa770d7a1c384a991f15a344dcb31, type: 3}
+      propertyPath: m_Intensity
+      value: 0.33
+      objectReference: {fileID: 0}
     - target: {fileID: 5548526836391522770, guid: d31fa770d7a1c384a991f15a344dcb31, type: 3}
       propertyPath: m_Color.b
       value: 0.6431373
@@ -23202,6 +23210,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 86333bbda3cd05b49bc7c9ad177bead5, type: 2}
+    - target: {fileID: 5548526836870236143, guid: d31fa770d7a1c384a991f15a344dcb31, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5548526837039265572, guid: d31fa770d7a1c384a991f15a344dcb31, type: 3}
       propertyPath: m_Name
       value: Drone
@@ -23296,7 +23308,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 668833468}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: a1f82d00e82b4494cb947f5754e9ce0b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -23855,7 +23867,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh35956
+  m_Name: pb_Mesh40064
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -24275,7 +24287,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh36028
+  m_Name: pb_Mesh40138
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -24439,7 +24451,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh35970
+  m_Name: pb_Mesh40080
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
