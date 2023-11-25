@@ -29,7 +29,7 @@ public class DroneController : MonoBehaviour
         
         Vector3 newPos = target.position;
         newPos.z = 1.5f;
-        newPos.x = target.position.x + offset.x * xScale;
+        newPos.x = target.position.x + offset.x;
         newPos.y = target.position.y + offset.y;
 
         crest.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles,new Vector3(0, 0, horizontalAxis * -30f), 100 * Time.deltaTime));
@@ -45,12 +45,14 @@ public class DroneController : MonoBehaviour
     void LookOnCursor(){ //заставляет свет следить за курсором мышки
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = body.position.z;
-        mousePos.y += body.position.y; //расстояние между камерой и объектом
-
+        mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
+        //print(mousePos);
+        
         print(mousePos);
         
         body.LookAt(mousePos);
 
+        
         
 
     }
