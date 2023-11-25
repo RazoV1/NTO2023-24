@@ -17,6 +17,9 @@ public class PlayerController1 : MonoBehaviour
     private bool is_climbing = false;
     private bool is_animating = false;
 
+    [SerializeField] private AudioSource[] stepsAudioSources;
+    private float lastStepTime;
+
     void Jump()
     {
         
@@ -35,6 +38,17 @@ public class PlayerController1 : MonoBehaviour
         //print(Input.GetAxis("Horizontal"));
         //rb.velocity = new Vector3(Input.GetAxis("Horizontal") * Maxspeed, rb.velocity.y,
         //    Input.GetAxis("Vertical") * Maxspeed);
+
+        lastStepTime -= Time.deltaTime;
+        if (!is_in_air && animator.GetFloat("X") >= 0.3f || animator.GetFloat("X") <= -0.3f
+                                           || animator.GetFloat("Y") >= 0.3f || animator.GetFloat("Y") <= -0.3f)
+        {
+            if (lastStepTime <= 0)
+            {
+                stepsAudioSources[Random.Range(0, 3)].Play();
+                lastStepTime = 0.4f;
+            }
+        }
         if (!is_in_air)
         {
             movement = Vector3.Lerp(rb.velocity,Vector3.zero,Time.deltaTime * accelerationForce);
