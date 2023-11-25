@@ -28,7 +28,7 @@ public class DroneController : MonoBehaviour
         if (horizontalAxis > 0) xScale = 1;
         
         Vector3 newPos = target.position;
-        newPos.z = target.transform.position.z;
+        newPos.z = 1.5f;
         newPos.x = target.position.x + offset.x * xScale;
         newPos.y = target.position.y + offset.y;
 
@@ -42,10 +42,10 @@ public class DroneController : MonoBehaviour
         LookOnCursor();
     }
     
-    void LookOnCursor(){ 		//заставляет персонажа следить за курсором мышки
+    void LookOnCursor(){ //заставляет свет следить за курсором мышки
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = body.position.z;
-        mousePos.y += body.position.y;//расстояние между камерой и объектом
+        mousePos.y += body.position.y; //расстояние между камерой и объектом
 
         print(mousePos);
         
