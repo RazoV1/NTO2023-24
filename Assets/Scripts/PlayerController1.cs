@@ -31,6 +31,10 @@ public class PlayerController1 : MonoBehaviour
     }
     private void RegisterInput()
     {
+
+        //print(Input.GetAxis("Horizontal"));
+        //rb.velocity = new Vector3(Input.GetAxis("Horizontal") * Maxspeed, rb.velocity.y,
+        //    Input.GetAxis("Vertical") * Maxspeed);
         if (!is_in_air)
         {
             movement = Vector3.Lerp(rb.velocity,Vector3.zero,Time.deltaTime * accelerationForce);
