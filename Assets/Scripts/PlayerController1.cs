@@ -52,14 +52,14 @@ public class PlayerController1 : MonoBehaviour
         if (!is_in_air)
         {
             movement = Vector3.Lerp(rb.velocity,Vector3.zero,Time.deltaTime * accelerationForce);
-            if (Input.GetKey(KeyCode.D) && !is_climbing)
+            if (Input.GetKey(KeyCode.D))
             {
 
                 currentSpeed = Mathf.Lerp(rb.velocity.x, Maxspeed, accelerationForce * Time.deltaTime);
                 movement.x = currentSpeed;
                 
             }
-            else if (Input.GetKey(KeyCode.A) && !is_climbing)
+            else if (Input.GetKey(KeyCode.A))
             {
                 currentSpeed = Mathf.Lerp(rb.velocity.x, -Maxspeed, accelerationForce * Time.deltaTime);
                 movement.x = currentSpeed;
@@ -107,8 +107,8 @@ public class PlayerController1 : MonoBehaviour
             {
                 spriteRenderer.flipX = false;
             }
-            animator.SetFloat("X",movement.normalized.x);
-            animator.SetFloat("Y", movement.normalized.z);
+            animator.SetFloat("X",Input.GetAxis("Horizontal"));
+            animator.SetFloat("Y", Input.GetAxis("Vertical"));
             animator.SetBool("animating", is_animating);
             rb.velocity = movement;
         }
