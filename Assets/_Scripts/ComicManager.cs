@@ -35,7 +35,7 @@ public class ComicManager : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 CloseComic();
             }

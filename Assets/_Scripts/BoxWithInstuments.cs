@@ -1,21 +1,21 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
-public class Commutator : MonoBehaviour
+public class BoxWithInstuments : MonoBehaviour
 {
-
-    [SerializeField] private GameObject UiDialog;
+    [SerializeField] private Item item;
     [SerializeField] private GameObject AdviceText;
     private bool canUse;
     private bool used = false;
+
+    private Inventory inventory;
     
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !used)
         {
+            inventory = other.GetComponent<Inventory>();
             AdviceText.SetActive(true);
             canUse = true;
         }
@@ -38,7 +38,7 @@ public class Commutator : MonoBehaviour
             {
                 used = true;
                 canUse = false;
-                UiDialog.SetActive(true);
+                inventory.AddItem(item, 1);
                 AdviceText.SetActive(false);
             }
             

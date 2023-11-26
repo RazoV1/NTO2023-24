@@ -16,9 +16,12 @@ public class DialogManager : MonoBehaviour
     public GameObject Holo;
     public TextMeshProUGUI DialogText;
     private DialogManager instance = null;
+    
 
     public string linkJson;
 
+    [SerializeField] private GameObject closeButton;
+    
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private JsonObjects jsonObj;
 
@@ -79,5 +82,6 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(pauseBetweenPhrases);
             DialogText.text = "";
         }
+        closeButton.SetActive(true);
     }
 }

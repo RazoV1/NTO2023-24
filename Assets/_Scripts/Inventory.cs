@@ -31,4 +31,17 @@ public class Inventory : MonoBehaviour
         inventoryItemsCount.Add(count);
         inventoryWindow.Redraw();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            inventoryWindow.gameObject.SetActive(true);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            inventoryWindow.gameObject.SetActive(false);
+        }
+    }
 }
