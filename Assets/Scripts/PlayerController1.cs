@@ -16,6 +16,7 @@ public class PlayerController1 : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool is_climbing = false;
     private bool is_animating = false;
+    private Vector2 lastDir;
 
     [SerializeField] private AudioSource[] stepsAudioSources;
     private float lastStepTime;
@@ -109,6 +110,15 @@ public class PlayerController1 : MonoBehaviour
             }
             animator.SetFloat("X",Input.GetAxis("Horizontal"));
             animator.SetFloat("Y", Input.GetAxis("Vertical"));
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            {
+                lastDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            }
+            else
+            {
+                animator.SetFloat("X", lastDir.x * 0.001f);
+                animator.SetFloat("Y", lastDir.y * 0.001f);
+            }
             animator.SetBool("animating", is_animating);
             rb.velocity = movement;
         }
