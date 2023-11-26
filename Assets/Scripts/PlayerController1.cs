@@ -130,14 +130,16 @@ public class PlayerController1 : MonoBehaviour
     {
         if (collision.gameObject.tag == "ladder")
         {
+            rb.useGravity = false;
             animator.SetBool("IsClimbing",true);
             is_climbing = true;
-            rb.useGravity = false;
+            
         }
         if (is_in_air)
         {
             if (collision.gameObject.tag == "floor" || collision.gameObject.tag == "ladder")
             {
+                rb.useGravity = false;
                 is_in_air = false;
                 animator.SetBool("IsFalling", false);
                 movement.y = 0;
@@ -148,6 +150,7 @@ public class PlayerController1 : MonoBehaviour
     {
         is_in_air = true;
         animator.SetBool("IsFalling", true);
+        rb.useGravity = true;
         if (collision.gameObject.tag == "ladder")
         {
             animator.SetBool("IsClimbing", false);
