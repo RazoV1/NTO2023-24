@@ -31,6 +31,19 @@ public class Inventory : MonoBehaviour
         inventoryItemsCount.Add(count);
         inventoryWindow.Redraw();
     }
+    
+    public void DeleteItem(Item item, int count)
+    {
+        for (int i = 0; i < inventoryItems.Count; i++)
+        {
+            if (inventoryItems[i].Name == item.Name)
+            {
+                inventoryItemsCount[i] -= count;
+                return;
+            }
+        }
+        inventoryWindow.Redraw();
+    }
 
     private void Update()
     {

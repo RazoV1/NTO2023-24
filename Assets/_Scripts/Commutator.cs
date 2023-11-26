@@ -9,9 +9,22 @@ public class Commutator : MonoBehaviour
 
     [SerializeField] private GameObject UiDialog;
     [SerializeField] private GameObject AdviceText;
+    
     private bool canUse;
     private bool used = false;
+
+    private TaskbarManager taskbarManager;
+
+    [Header("optional")] 
+    [SerializeField] private GameObject door;
+    [SerializeField] private GameObject emergencyLightning;
+    [SerializeField] private GameObject normalLightning;
     
+    private void Start()
+    {
+        taskbarManager = Camera.main.GetComponent<TaskbarManager>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !used)
@@ -40,6 +53,13 @@ public class Commutator : MonoBehaviour
                 canUse = false;
                 UiDialog.SetActive(true);
                 AdviceText.SetActive(false);
+                taskbarManager.NextTask();
+                if (gameObject.name == "Коммутатор 2")
+                {
+                    emergencyLightning.SetActive(false);
+                    normalLightning.SetActive(true);
+                    door.SetActive(false);
+                }
             }
             
         }
