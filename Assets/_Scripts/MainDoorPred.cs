@@ -10,6 +10,9 @@ public class MainDoorPred : MonoBehaviour
     private bool used = false;
     [SerializeField] private GameObject lastComm;
     [SerializeField] private GameObject newComm;
+    [SerializeField] private GameObject spriteNew;
+    [SerializeField] private GameObject spriteOld;
+
 
     private Inventory inventory;
 
@@ -47,6 +50,8 @@ public class MainDoorPred : MonoBehaviour
             {
                 used = true;
                 canUse = false;
+                spriteNew.SetActive(true);
+                spriteOld.SetActive(false);
                 inventory.DeleteItem(item, 1);
                 AdviceText.SetActive(false);
                 taskbarManager.NextTask();
