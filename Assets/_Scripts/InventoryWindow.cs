@@ -21,13 +21,13 @@ public class InventoryWindow : MonoBehaviour
 
     public void Redraw()
     {
+
         foreach (var redrawItem in itemsToRedraw)
         {
             Destroy(redrawItem);
         }
 
         itemsToRedraw.Clear();
-        
         
         for (var i = 0; i < targetInventory.inventoryItems.Count; i++)
         {
@@ -43,6 +43,7 @@ public class InventoryWindow : MonoBehaviour
             textCount.text = targetInventory.inventoryItemsCount[i].ToString();
             itemsToRedraw.Add(icon);
             itemsToRedraw.Add(textCount.gameObject);
+            
         }
     }
 }

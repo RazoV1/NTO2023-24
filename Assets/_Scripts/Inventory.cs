@@ -51,6 +51,7 @@ public class Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
+            inventoryWindow.Redraw();
             inventoryWindow.gameObject.SetActive(true);
         }
         
@@ -67,6 +68,20 @@ public class Inventory : MonoBehaviour
             if (inventoryItems[i].Name == item.Name)
             {
                 if (inventoryItemsCount[i] >= 1)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public bool tryToDel(Item item, int count)
+    {
+        for (int i = 0; i < inventoryItems.Count; i++)
+        {
+            if (inventoryItems[i].Name == item.Name)
+            {
+                if (inventoryItemsCount[i] >= count)
                 {
                     return true;
                 }
