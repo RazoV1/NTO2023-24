@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController1 : MonoBehaviour
@@ -146,6 +147,7 @@ public class PlayerController1 : MonoBehaviour
             }
         }
     }
+
     private void OnCollisionExit(Collision collision)
     {
         is_in_air = true;

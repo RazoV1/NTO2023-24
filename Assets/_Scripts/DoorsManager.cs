@@ -28,4 +28,5 @@ public class DoorsManager : MonoBehaviour
             }
         }
     }
+    
 }

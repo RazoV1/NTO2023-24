@@ -17,7 +17,8 @@ public class Inventory : MonoBehaviour
          inventoryWindow = inventoryWindow.GetComponent<InventoryWindow>();
      }
      
-    public void AddItem(Item item, int count)
+     // ReSharper disable Unity.PerformanceAnalysis
+     public void AddItem(Item item, int count)
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
@@ -32,6 +33,7 @@ public class Inventory : MonoBehaviour
         inventoryWindow.Redraw();
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     public void DeleteItem(Item item, int count)
     {
         for (int i = 0; i < inventoryItems.Count; i++)
@@ -56,5 +58,20 @@ public class Inventory : MonoBehaviour
         {
             inventoryWindow.gameObject.SetActive(false);
         }
+    }
+
+    public bool hasItem(Item item)
+    {
+        for (int i = 0; i < inventoryItems.Count; i++)
+        {
+            if (inventoryItems[i].Name == item.Name)
+            {
+                if (inventoryItemsCount[i] >= 1)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
