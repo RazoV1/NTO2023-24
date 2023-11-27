@@ -83,6 +83,7 @@ public class Inventory : MonoBehaviour
             {
                 if (inventoryItemsCount[i] >= count)
                 {
+                    inventoryItemsCount[i] -= count;
                     return true;
                 }
             }

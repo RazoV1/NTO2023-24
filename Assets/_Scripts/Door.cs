@@ -73,5 +73,6 @@ public class Door : MonoBehaviour
     {
         isPoweredUp = false;
         if(hasFuse) _inventory.AddItem(fuse, 1);
+        hasFuse = false;
     }
 }

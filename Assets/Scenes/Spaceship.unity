@@ -59983,7 +59983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isOpen: 0
   isPoweredUp: 1
-  hasFuse: 0
+  hasFuse: 1
   currentState: 0
   fuse: {fileID: 11400000, guid: ff6e8efcb35613243846a2fc6438b2d4, type: 2}
   _inventory: {fileID: 1338635895}
