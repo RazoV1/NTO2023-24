@@ -8,19 +8,27 @@ using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
 
     public Animator SpeakerAnimator;
     public GameObject Holo;
-    public TextMeshProUGUI DialogText;
+    public TextMeshProUGUI AiText;
+    public TextMeshProUGUI BearText;
     private DialogManager instance = null;
     
 
     public string linkJson;
 
     [SerializeField] private GameObject closeButton;
+    
+    [SerializeField] private Image emotionSpriteRenderer;
+    [SerializeField] private Sprite surprisedSprite;
+    [SerializeField] private Sprite disconnectedSprite;
+    [SerializeField] private Sprite happySprite;
+    [SerializeField] private Sprite thoughtfulSprite;
     
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private JsonObjects jsonObj;
@@ -45,7 +53,7 @@ public class DialogManager : MonoBehaviour
         phrasesList = new List<string>();
         jsonObj = JsonUtility.FromJson<JsonObjects>(jsonFile.text);
         phrasesList = jsonObj.phrases;
-        
+
         //Инициализируем компоненты
         SpeakerAnimator = SpeakerAnimator.GetComponent<Animator>();
     }
@@ -67,20 +75,79 @@ public class DialogManager : MonoBehaviour
         }
     }
     
+    
+    private bool readedSpeaker;
+    private bool readedEmotion;
+
+    private string currentSpeaker;
     public IEnumerator RunText(float pauseBetweenPhrases)
     {
         foreach (var text in phrasesList)
         {
             foreach (var letter in text)
             {
-                textRunning = true;
-                DialogText.text += letter;
-                yield return new WaitForSeconds(0.05f);
+                
+                if (!readedSpeaker)
+                {
+                    if (letter.ToString() == "a")
+                    {
+                        currentSpeaker = "a";
+                        readedSpeaker = true;
+                    }
+
+                    else
+                    {
+                        currentSpeaker = "b";
+                        readedSpeaker = true;
+                        
+                    }
+                    continue;
+                }
+
+                if (currentSpeaker == "a")
+                {
+                    textRunning = true;
+                    AiText.text += letter;
+                    yield return new WaitForSeconds(0.05f);
+                }
+                
+                else
+                {
+                    if (!readedEmotion)
+                    {
+                        if (letter.ToString() == "h")
+                        {
+                            emotionSpriteRenderer.sprite = happySprite;
+                        }
+                        else if (letter.ToString() == "t")
+                        {
+                            emotionSpriteRenderer.sprite = thoughtfulSprite;
+                        }
+                        else if (letter.ToString() == "d")
+                        {
+                            emotionSpriteRenderer.sprite = disconnectedSprite;
+                        }
+                        else if (letter.ToString() == "s")
+                        {
+                            emotionSpriteRenderer.sprite = surprisedSprite;
+                        }
+
+                        readedEmotion = true;
+                        continue;
+                    }
+                    
+                    textRunning = false;
+                    BearText.text += letter;
+                    yield return new WaitForSeconds(0.05f);
+                }
             }
 
             textRunning = false;
             yield return new WaitForSeconds(pauseBetweenPhrases);
-            DialogText.text = "";
+            readedEmotion = false;
+            readedSpeaker = false;
+            AiText.text = "";
+            BearText.text = "";
         }
         closeButton.SetActive(true);
     }

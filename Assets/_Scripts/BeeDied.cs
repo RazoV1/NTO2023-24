@@ -1,26 +1,18 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
-public class Commutator : MonoBehaviour
+public class BeeDied : MonoBehaviour
 {
-
-    [SerializeField] private GameObject UiDialog;
+    [SerializeField] private Item item;
     [SerializeField] private GameObject AdviceText;
-    
     private bool canUse;
     private bool used = false;
-    
+
+    private Inventory inventory;
 
     private TaskbarManager taskbarManager;
 
-    [Header("optional")] 
-    [SerializeField] private GameObject door;
-    [SerializeField] private GameObject emergencyLightning;
-    [SerializeField] private GameObject normalLightning;
-    
     private void Start()
     {
         taskbarManager = Camera.main.GetComponent<TaskbarManager>();
@@ -28,8 +20,9 @@ public class Commutator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !used)
+        if (other.CompareTag("Player") && !used && taskbarManager.currentTask >= 0)
         {
+            inventory = other.GetComponent<Inventory>();
             AdviceText.SetActive(true);
             canUse = true;
         }
@@ -52,15 +45,8 @@ public class Commutator : MonoBehaviour
             {
                 used = true;
                 canUse = false;
-                UiDialog.SetActive(true);
+                inventory.AddItem(item, 1);
                 AdviceText.SetActive(false);
-                taskbarManager.NextTask();
-                if (door != null)
-                {
-                    emergencyLightning.SetActive(false);
-                    normalLightning.SetActive(true);
-                    door.GetComponent<Door>().BackdoorOpenDoor();
-                }
             }
             
         }
