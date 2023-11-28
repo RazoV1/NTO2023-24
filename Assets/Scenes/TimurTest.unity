@@ -1316,6 +1316,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 300432898}
+    - target: {fileID: 2862662797889165034, guid: 16a35687e3aaca847aa0f1f3e9197580, type: 3}
+      propertyPath: m_VersionIndex
+      value: 7183
+      objectReference: {fileID: 0}
     - target: {fileID: 2862662798605962276, guid: 16a35687e3aaca847aa0f1f3e9197580, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1328,6 +1332,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2002446574}
+    - target: {fileID: 2862662798605962296, guid: 16a35687e3aaca847aa0f1f3e9197580, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6809
+      objectReference: {fileID: 0}
     - target: {fileID: 6436660019593105003, guid: 16a35687e3aaca847aa0f1f3e9197580, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2103,7 +2111,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-72778
+  m_Name: pb_Mesh-102698
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2281,6 +2289,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1370009970}
+    - target: {fileID: 1572511893773341604, guid: 5e8fae3f422c4324eb3611259c6306e5, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2775
+      objectReference: {fileID: 0}
     - target: {fileID: 2892827986322120070, guid: 5e8fae3f422c4324eb3611259c6306e5, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2337,6 +2349,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1868307}
+    - target: {fileID: 5946595877382259952, guid: 5e8fae3f422c4324eb3611259c6306e5, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6240
+      objectReference: {fileID: 0}
     - target: {fileID: 5946595877382260492, guid: 5e8fae3f422c4324eb3611259c6306e5, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2349,6 +2365,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1836406107}
+    - target: {fileID: 5946595878682655744, guid: 5e8fae3f422c4324eb3611259c6306e5, type: 3}
+      propertyPath: m_VersionIndex
+      value: 5563
+      objectReference: {fileID: 0}
     - target: {fileID: 5946595878682655772, guid: 5e8fae3f422c4324eb3611259c6306e5, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -42449,9 +42469,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeakerAnimator: {fileID: 465141471}
   Holo: {fileID: 675078463}
-  DialogText: {fileID: 1033573463}
+  AiText: {fileID: 0}
+  BearText: {fileID: 0}
   linkJson: '-'
   closeButton: {fileID: 702259980}
+  emotionSpriteRenderer: {fileID: 0}
+  surprisedSprite: {fileID: 0}
+  disconnectedSprite: {fileID: 0}
+  happySprite: {fileID: 0}
+  thoughtfulSprite: {fileID: 0}
   jsonFile: {fileID: 4900000, guid: d3d738e6bd5162f4b8aab4688e49011b, type: 3}
   jsonObj:
     phrases:
@@ -42658,9 +42684,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeakerAnimator: {fileID: 838756430}
   Holo: {fileID: 2032848297}
-  DialogText: {fileID: 1231007343}
+  AiText: {fileID: 0}
+  BearText: {fileID: 0}
   linkJson: '-'
   closeButton: {fileID: 861040359}
+  emotionSpriteRenderer: {fileID: 0}
+  surprisedSprite: {fileID: 0}
+  disconnectedSprite: {fileID: 0}
+  happySprite: {fileID: 0}
+  thoughtfulSprite: {fileID: 0}
   jsonFile: {fileID: 4900000, guid: 46fb7fbe6fef5d34f9dd347821babdca, type: 3}
   jsonObj:
     phrases:
@@ -45897,7 +45929,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-72792
+  m_Name: pb_Mesh-102712
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -60723,9 +60755,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeakerAnimator: {fileID: 1697850839}
   Holo: {fileID: 947389616}
-  DialogText: {fileID: 271653550}
+  AiText: {fileID: 0}
+  BearText: {fileID: 0}
   linkJson: '-'
   closeButton: {fileID: 2068113744}
+  emotionSpriteRenderer: {fileID: 0}
+  surprisedSprite: {fileID: 0}
+  disconnectedSprite: {fileID: 0}
+  happySprite: {fileID: 0}
+  thoughtfulSprite: {fileID: 0}
   jsonFile: {fileID: 4900000, guid: 46fb7fbe6fef5d34f9dd347821babdca, type: 3}
   jsonObj:
     phrases:
@@ -70217,7 +70255,7 @@ PrefabInstance:
       objectReference: {fileID: 1129908912}
     - target: {fileID: 2386468714849727421, guid: d663ef49913462042830a8a04e7fbb3a, type: 3}
       propertyPath: m_VersionIndex
-      value: 5022
+      value: 5025
       objectReference: {fileID: 0}
     - target: {fileID: 2386468714931757176, guid: d663ef49913462042830a8a04e7fbb3a, type: 3}
       propertyPath: m_Mesh
@@ -70225,7 +70263,7 @@ PrefabInstance:
       objectReference: {fileID: 206708162}
     - target: {fileID: 2386468714931757176, guid: d663ef49913462042830a8a04e7fbb3a, type: 3}
       propertyPath: m_VersionIndex
-      value: 5757
+      value: 5760
       objectReference: {fileID: 0}
     - target: {fileID: 2386468714931757180, guid: d663ef49913462042830a8a04e7fbb3a, type: 3}
       propertyPath: m_Mesh
@@ -73318,9 +73356,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeakerAnimator: {fileID: 4049249384829256291}
   Holo: {fileID: 4049249384554280485}
-  DialogText: {fileID: 4049249385878936385}
+  AiText: {fileID: 0}
+  BearText: {fileID: 0}
   linkJson: '-'
   closeButton: {fileID: 187001172}
+  emotionSpriteRenderer: {fileID: 0}
+  surprisedSprite: {fileID: 0}
+  disconnectedSprite: {fileID: 0}
+  happySprite: {fileID: 0}
+  thoughtfulSprite: {fileID: 0}
   jsonFile: {fileID: 4900000, guid: d3d738e6bd5162f4b8aab4688e49011b, type: 3}
   jsonObj:
     phrases:
