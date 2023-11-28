@@ -17,11 +17,18 @@ public class Door : MonoBehaviour
     private float currentCycleTime;
     public int currentState;
 
-    [SerializeField] private Item fuse;
-    
     //0 - красная
     //1 - зеленая
     //2 - синяя
+    //3 - белая
+
+    [SerializeField] private Item fuse;
+    [SerializeField] private Item key_red;
+    [SerializeField] private Item key_green;
+    [SerializeField] private Item key_blue;
+    [SerializeField] private Item key_white;
+
+    
     private Animator animator;
 
     [SerializeField] private Inventory _inventory;
@@ -47,15 +54,20 @@ public class Door : MonoBehaviour
     {
         if (isCycled)
         {
+            currentCycleTime -= Time.deltaTime;
             if (currentCycleTime <= 0 && isOpen)
             {
+                currentCycleTime = cycleTime;
                 isOpen = false;
                 animator.SetTrigger("close");
+                currentCycleTime = cycleTime;
             }
             else if(currentCycleTime <= 0 && !isOpen)
             {
+                currentCycleTime = cycleTime;
                 isOpen = true;
                 animator.SetTrigger("open");
+                currentCycleTime = cycleTime;
             }
         }
     }
@@ -116,11 +128,55 @@ public class Door : MonoBehaviour
         if (time > 0)
         {
             isCycled = true;
+            //2 секунды занимает анимация двери
+            cycleTime = time+ 2f;
+            currentCycleTime = time;
         }
         else
         {
             isCycled = false;
         }
+    }
+    
+    public void ChangeColor(int color)
+    {
+        switch (color)
+        {
+            case 0:
+                if (_inventory.tryToDel(key_red, 1))
+                {
+                    colorSprite.color = Color.red;
+                    currentState = 0;
+                }
+                return;
+            
+            case 1:
+                if (_inventory.tryToDel(key_green, 1))
+                {
+                    colorSprite.color = Color.green;
+                    currentState = 1;
+                }
+                return;
+            
+            case 2:
+                if (_inventory.tryToDel(key_blue, 1))
+                {
+                    colorSprite.color = Color.blue;
+                    currentState = 2;
+                }
+                return;
+            
+            case 3:
+                if (_inventory.tryToDel(key_blue, 1))
+                {
+                    colorSprite.color = Color.white;
+                    currentState = 3;
+                }
+                return;
+            
+        }
+
+
     }
     
     
