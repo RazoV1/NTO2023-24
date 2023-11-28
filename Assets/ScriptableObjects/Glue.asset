@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 514897b8da43dcb49a82fa788c73b98d, type: 3}
-  m_Name: Fuse
+  m_Name: Glue
   m_EditorClassIdentifier: 
-  Name: Fuse
-  Icon: {fileID: 21300000, guid: 0a6c85be2b3055349beccad676918bf3, type: 3}
-  comp1: {fileID: 11400000, guid: 2fb6457263d4a09418e93770af9c1d01, type: 2}
-  comp2: {fileID: 11400000, guid: c74f103f57aba60419b979b16ac3b236, type: 2}
+  Name: Item
+  Icon: {fileID: 0}
+  comp1: {fileID: 0}
+  comp2: {fileID: 0}

@@ -14,8 +14,8 @@ public class Inventory : MonoBehaviour
      
      private void Start()
      {
-         inventoryItemsCount = new List<int>();
-         inventoryItems = new List<Item>();
+         //inventoryItemsCount = new List<int>();
+         //inventoryItems = new List<Item>();
          inventoryWindow = inventoryWindow.GetComponent<InventoryWindow>();
      }
      
