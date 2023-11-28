@@ -77,6 +77,8 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
+    
+    //Проверяет предмет на наличие, и если он есть в нужном кол-ве удаляет
     public bool tryToDel(Item item, int count)
     {
         for (int i = 0; i < inventoryItems.Count; i++)

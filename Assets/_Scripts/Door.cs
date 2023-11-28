@@ -94,6 +94,12 @@ public class Door : MonoBehaviour
         isOpen = true;
         animator.SetTrigger("open");
     }
+    
+    public void BackdoorOpenDoor()
+    {
+        isOpen = true;
+        animator.SetTrigger("open");
+    }
 
     public void CloseDoor()
     {
@@ -131,10 +137,12 @@ public class Door : MonoBehaviour
             //2 секунды занимает анимация двери
             cycleTime = time+ 2f;
             currentCycleTime = time;
+            timedSprite.color = Color.yellow;
         }
         else
         {
             isCycled = false;
+            timedSprite.color = Color.black;
         }
     }
     
