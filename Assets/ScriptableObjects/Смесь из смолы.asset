@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 514897b8da43dcb49a82fa788c73b98d, type: 3}
-  m_Name: Fuse
+  m_Name: "\u0421\u043C\u0435\u0441\u044C \u0438\u0437 \u0441\u043C\u043E\u043B\u044B"
   m_EditorClassIdentifier: 
-  Name: Fuse
-  Icon: {fileID: 21300000, guid: 6d938f49e451efa4a9b3019b344ffe1f, type: 3}
-  comp1: {fileID: 11400000, guid: 819ff172df1b9fa4695b544aea949467, type: 2}
-  comp2: {fileID: 11400000, guid: 150cfb371c737654cb6d4b92da1ec409, type: 2}
+  Name: "\u0421\u043C\u043E\u043B\u0430"
+  Icon: {fileID: 21300000, guid: a17e192b1fd3ae6419160972819eee4b, type: 3}
+  comp1: {fileID: 0}
+  comp2: {fileID: 0}

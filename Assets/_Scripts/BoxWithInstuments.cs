@@ -9,6 +9,7 @@ public class BoxWithInstuments : MonoBehaviour
     [SerializeField] private GameObject AdviceText;
     private bool canUse;
     private bool used = false;
+    public bool isLore;
 
     private Inventory inventory;
 
@@ -21,16 +22,28 @@ public class BoxWithInstuments : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !used && taskbarManager.currentTask >= 1)
+        if (other.CompareTag("Player") && !used)
         {
-            inventory = other.GetComponent<Inventory>();
-            AdviceText.SetActive(true);
-            canUse = true;
+            if (isLore)
+            {
+                if (taskbarManager.currentTask >= 1)
+                {
+                    inventory = other.GetComponent<Inventory>();
+                    AdviceText.SetActive(true);
+                    canUse = true;
+                }
+
+            }
+            else
+            {
+                inventory = other.GetComponent<Inventory>();
+                AdviceText.SetActive(true);
+                canUse = true;
+            }
         }
     }
-
     private void OnTriggerExit(Collider other)
-    {
+    { 
         if (other.CompareTag("Player") && !used)
         {
             AdviceText.SetActive(false);
@@ -48,7 +61,10 @@ public class BoxWithInstuments : MonoBehaviour
                 canUse = false;
                 inventory.AddItem(item, 1);
                 AdviceText.SetActive(false);
-                taskbarManager.NextTask();
+                if (isLore)
+                {
+                    taskbarManager.NextTask();
+                }
             }
             
         }

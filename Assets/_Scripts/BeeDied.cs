@@ -6,6 +6,7 @@ public class BeeDied : MonoBehaviour
 {
     [SerializeField] private Item item;
     [SerializeField] private GameObject AdviceText;
+    [SerializeField] private bool isLore;
     private bool canUse;
     private bool used = false;
 
@@ -46,6 +47,7 @@ public class BeeDied : MonoBehaviour
                 used = true;
                 canUse = false;
                 inventory.AddItem(item, 1);
+
                 AdviceText.SetActive(false);
             }
             

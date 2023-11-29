@@ -48,6 +48,10 @@ public class Door : MonoBehaviour
         
         animator = GetComponent<Animator>();
         _inventory = _inventory.GetComponent<Inventory>();
+        if (isOpen)
+        {
+            animator.SetTrigger("open");
+        }
     }
 
     private void Update()

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 514897b8da43dcb49a82fa788c73b98d, type: 3}
-  m_Name: Scrap
+  m_Name: "\u0421\u043B\u043E\u043C\u0430\u043D\u043D\u044B\u0439 \u043F\u0440\u0435\u0434\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u0435\u043B\u044C"
   m_EditorClassIdentifier: 
-  Name: Scrap
-  Icon: {fileID: 0}
+  Name: "\u0421\u043B\u043E\u043C\u0430\u043D\u043D\u044B\u0439 \u043F\u0440\u0435\u0434\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u0435\u043B\u044C"
+  Icon: {fileID: 21300000, guid: f8b207e0554b11643b75b5b6ee99ab5e, type: 3}
   comp1: {fileID: 0}
   comp2: {fileID: 0}
