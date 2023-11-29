@@ -8,7 +8,10 @@ public class DoorController : MonoBehaviour
     [SerializeField] private GameObject AdviceText;
     [SerializeField] private Door door;
     [SerializeField] private GameObject UI_door;
+    [SerializeField] private GameObject UI_broken;
     private bool canUse;
+
+    public bool isBroken;
 
     private Inventory inventory;
     
@@ -44,9 +47,14 @@ public class DoorController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                canUse = true;
-                AdviceText.SetActive(true);
-                UI_door.SetActive(true);
+                if (isBroken)
+                {
+                    UI_broken.SetActive(true);
+                }
+                else
+                {
+                    UI_door.SetActive(true);
+                }
             }
         }
     }
