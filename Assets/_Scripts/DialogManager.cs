@@ -29,9 +29,12 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Sprite disconnectedSprite;
     [SerializeField] private Sprite happySprite;
     [SerializeField] private Sprite thoughtfulSprite;
+    [SerializeField] private Sprite normalSprite;
     
     [SerializeField] private TextAsset jsonFile;
     [SerializeField] private JsonObjects jsonObj;
+    
+
 
     private List<string> phrasesList;
     private int currentPhrase = 0;
@@ -131,7 +134,10 @@ public class DialogManager : MonoBehaviour
                         {
                             emotionSpriteRenderer.sprite = surprisedSprite;
                         }
-
+                        else if (letter.ToString() == "n")
+                        {
+                            emotionSpriteRenderer.sprite = normalSprite;
+                        }
                         readedEmotion = true;
                         continue;
                     }

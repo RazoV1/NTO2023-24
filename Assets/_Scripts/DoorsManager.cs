@@ -14,6 +14,13 @@ public class DoorsManager : MonoBehaviour
     [SerializeField] private GameObject AdviceText;
     [SerializeField] private GameObject UI_manager;
     private Inventory inventory;
+    
+    [SerializeField] private SpriteRenderer doorControllerSpriteRenderer;
+    [SerializeField] private SpriteRenderer fuseSpriteRenderer;
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite inactiveSprite;
+
+    private bool canUse;
 
 
     public bool hasFuse;
@@ -26,6 +33,9 @@ public class DoorsManager : MonoBehaviour
     
     private void Start()
     {
+        canUse = false;
+        fuseSpriteRenderer = fuseSpriteRenderer.GetComponent<SpriteRenderer>();
+        doorControllerSpriteRenderer = doorControllerSpriteRenderer.GetComponent<SpriteRenderer>();
         doors = new List<Door>();
         inventory = GetComponent<Inventory>();
         GameObject[] massDoors = GameObject.FindGameObjectsWithTag("Door");
@@ -39,6 +49,7 @@ public class DoorsManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            canUse = true;
             inventory = other.GetComponent<Inventory>();
             AdviceText.SetActive(true);
         }
@@ -48,6 +59,7 @@ public class DoorsManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            canUse = false;
             AdviceText.SetActive(false);
             UI_manager.SetActive(false);
         }
@@ -55,7 +67,7 @@ public class DoorsManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && canUse)
         {
             UI_manager.SetActive(true);
         }
@@ -96,6 +108,7 @@ public class DoorsManager : MonoBehaviour
         if (time == 0) isCycled = false;
         currentCycleTime = time;
         cycleTime = time;
+        isCycled = true;
     }
     
     public void PowerUpFuse()
@@ -103,12 +116,14 @@ public class DoorsManager : MonoBehaviour
         if (inventory.tryToDel(fuse, 1) && !hasFuse)
         {
             hasFuse = true;
+            fuseSpriteRenderer.color = Color.white;
         }
     }
     
     public void PowerOffFuse()
     {
         hasFuse = false;
+        fuseSpriteRenderer.color = Color.black;
         inventory.AddItem(fuse, 1);
     }
     
