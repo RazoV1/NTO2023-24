@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class DoorsManager : MonoBehaviour
 {
-    private List<Door> doors;
-    [SerializeField] private List<DoorController> doorControllers;
+    [SerializeField] private List<Door> doors;
 
     [SerializeField] private Item timer;
     [SerializeField] private Item fuse;
@@ -36,13 +35,7 @@ public class DoorsManager : MonoBehaviour
         canUse = false;
         fuseSpriteRenderer = fuseSpriteRenderer.GetComponent<SpriteRenderer>();
         doorControllerSpriteRenderer = doorControllerSpriteRenderer.GetComponent<SpriteRenderer>();
-        doors = new List<Door>();
         inventory = GetComponent<Inventory>();
-        GameObject[] massDoors = GameObject.FindGameObjectsWithTag("Door");
-        foreach (var massDoor in massDoors)
-        {
-            doors.Add(massDoor.GetComponent<Door>());
-        }
     }
     
     private void OnTriggerEnter(Collider other)
@@ -85,9 +78,9 @@ public class DoorsManager : MonoBehaviour
     
     public void ChangeAllShieldsPower()
     {
-        foreach (var controller in doorControllers)
+        foreach (var door in doors)
         {
-            controller.isBroken = !controller.isBroken;
+            door.TryToPowerUp();
         }
     }
 
@@ -117,6 +110,7 @@ public class DoorsManager : MonoBehaviour
         {
             hasFuse = true;
             fuseSpriteRenderer.color = Color.white;
+            doorControllerSpriteRenderer.sprite = activeSprite;
         }
     }
     
@@ -125,6 +119,7 @@ public class DoorsManager : MonoBehaviour
         hasFuse = false;
         fuseSpriteRenderer.color = Color.black;
         inventory.AddItem(fuse, 1);
+        doorControllerSpriteRenderer.sprite = inactiveSprite;
     }
     
     public void PowerUpTimer()

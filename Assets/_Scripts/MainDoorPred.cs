@@ -16,16 +16,16 @@ public class MainDoorPred : MonoBehaviour
 
     private Inventory inventory;
 
-    private TaskbarManager taskbarManager;
+    //private TaskbarManager taskbarManager;
 
     private void Start()
     {
-        taskbarManager = Camera.main.GetComponent<TaskbarManager>();
+        //taskbarManager = Camera.main.GetComponent<TaskbarManager>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !used && taskbarManager.currentTask >= 2)
+        if (other.CompareTag("Player") && !used) //&& taskbarManager.currentTask >= 2
         {
             inventory = other.GetComponent<Inventory>();
             AdviceText.SetActive(true);
@@ -54,7 +54,7 @@ public class MainDoorPred : MonoBehaviour
                 spriteOld.SetActive(false);
                 inventory.DeleteItem(item, 1);
                 AdviceText.SetActive(false);
-                taskbarManager.NextTask();
+                //taskbarManager.NextTask();
                 lastComm.SetActive(false);
                 newComm.SetActive(true);
             }

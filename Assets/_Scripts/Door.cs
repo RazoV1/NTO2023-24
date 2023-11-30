@@ -34,20 +34,25 @@ public class Door : MonoBehaviour
     [SerializeField] private Inventory _inventory;
 
     [SerializeField] private SpriteRenderer fuseSprite;
+    [SerializeField] private Sprite fuseNotPowered;
+    [SerializeField] private Sprite fusePowered;
     [SerializeField] private SpriteRenderer isPoweredUpSprite;
     [SerializeField] private SpriteRenderer colorSprite;
     [SerializeField] private SpriteRenderer timedSprite;
+    [SerializeField] private DoorController doorController;
+    
 
     private void Start()
     {
-
+        doorController = doorController.GetComponent<DoorController>();
         fuseSprite = fuseSprite.GetComponent<SpriteRenderer>();
         isPoweredUpSprite = isPoweredUpSprite.GetComponent<SpriteRenderer>();
         colorSprite = colorSprite.GetComponent<SpriteRenderer>();
         timedSprite = timedSprite.GetComponent<SpriteRenderer>();
-        
         animator = GetComponent<Animator>();
         _inventory = _inventory.GetComponent<Inventory>();
+        
+        
         if (isOpen)
         {
             animator.SetTrigger("open");
@@ -56,6 +61,7 @@ public class Door : MonoBehaviour
 
     private void Update()
     {
+        if(doorController.isBroken) return;
         if (isCycled)
         {
             currentCycleTime -= Time.deltaTime;
@@ -95,6 +101,7 @@ public class Door : MonoBehaviour
     {
         if (isOpen) return;
         if (!isPoweredUp) return;
+        if(doorController.isBroken) return;
         isOpen = true;
         animator.SetTrigger("open");
     }
@@ -109,6 +116,7 @@ public class Door : MonoBehaviour
     {
         if (!isOpen) return;
         if (!isPoweredUp) return;
+        if(doorController.isBroken) return;
         isOpen = false;
         animator.SetTrigger("close");
     }
@@ -118,15 +126,16 @@ public class Door : MonoBehaviour
         if (_inventory.tryToDel(fuse, 1) && !hasFuse)
         {
             hasFuse = true;
-            isPoweredUp = true;
             fuseSprite.color = Color.white;
+            fuseSprite.sprite = fuseNotPowered;
+            if(!isPoweredUp) return;
+            fuseSprite.sprite = fusePowered;
             isPoweredUpSprite.color = Color.yellow;
         }
     }
     
     public void PowerOffDoor()
     {
-        isPoweredUp = false;
         if(hasFuse) _inventory.AddItem(fuse, 1);
         hasFuse = false;
         fuseSprite.color = Color.black;
@@ -187,8 +196,15 @@ public class Door : MonoBehaviour
                 return;
             
         }
+    }
 
-
+    public void TryToPowerUp()
+    {
+        if (doorController.isBroken) return;
+        if (!hasFuse) return;
+        isPoweredUp = true;
+        fuseSprite.sprite = fusePowered;
+        isPoweredUpSprite.color = Color.yellow;
     }
     
     

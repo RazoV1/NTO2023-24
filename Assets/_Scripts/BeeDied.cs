@@ -21,7 +21,7 @@ public class BeeDied : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !used && taskbarManager.currentTask >= 0)
+        if (other.CompareTag("Player") && !used && taskbarManager.currentTask >= 3)
         {
             inventory = other.GetComponent<Inventory>();
             AdviceText.SetActive(true);
