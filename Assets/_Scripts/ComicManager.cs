@@ -22,7 +22,7 @@ public class ComicManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) currentTimeToChange = 0;
         
         Time.timeScale = 0;
-        print(Time.deltaTime);
+        //print(Time.deltaTime);
         if (currentSlide < images.Length - 1)
         {
             currentTimeToChange -= Time.deltaTime;
