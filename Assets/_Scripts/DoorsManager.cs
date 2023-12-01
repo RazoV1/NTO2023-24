@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DoorsManager : MonoBehaviour
+public class DoorsManager : PoweredBox
 {
-    [SerializeField] private List<Door> doors;
+    [SerializeField] private List<DoorController> doorControllers;
 
     [SerializeField] private Item timer;
     [SerializeField] private Item fuse;
@@ -20,9 +20,7 @@ public class DoorsManager : MonoBehaviour
     [SerializeField] private Sprite inactiveSprite;
 
     private bool canUse;
-
-
-    public bool hasFuse;
+    
     public bool hasTimer;
     
     public bool isCycled;
@@ -38,7 +36,7 @@ public class DoorsManager : MonoBehaviour
         inventory = GetComponent<Inventory>();
     }
     
-    private void OnTriggerEnter(Collider other)
+    override protected void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -78,20 +76,10 @@ public class DoorsManager : MonoBehaviour
     
     public void ChangeAllShieldsPower()
     {
-        foreach (var door in doors)
+        foreach (var doorController in doorControllers)
         {
-            door.TryToPowerUp();
-        }
-    }
-
-    public void ChangeAllDoorColors(int color)
-    {
-        foreach (var door in doors)
-        {
-            if (color == door.currentState && door.isPoweredUp)
-            {
-                door.ChangeState();
-            }
+            if(!doorController.isPowered) doorController.PowerOn();
+            if(doorController.isPowered) doorController.PowerDown();
         }
     }
 
