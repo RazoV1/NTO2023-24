@@ -8,6 +8,8 @@ public class Box : MonoBehaviour
 {
     [Header("Box")] [SerializeField] 
     protected bool isClosed;
+    [SerializeField] protected bool hasObjectsToActive;
+    [SerializeField] protected bool hasObjectsToInactive;
     public Inventory inventory;
     [Header("If isClosed")]
     [SerializeField] protected GameObject closedAdviceText;
@@ -77,6 +79,9 @@ public class Box : MonoBehaviour
             closedAdviceText.SetActive(false);
             openedPanelSprite.SetActive(true);
             closedPanelSprite.SetActive(false);
+            if(isLore) Camera.main.GetComponent<TaskbarManager>().NextTask();
+            if(hasObjectsToActive) GetComponent<ObjectsToActiveInactive>().ActiveObjects();
+            
         }
     }
 }

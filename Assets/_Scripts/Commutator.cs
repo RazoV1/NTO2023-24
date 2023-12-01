@@ -12,6 +12,9 @@ public class Commutator : MonoBehaviour
     
     private bool canUse;
     private bool used = false;
+
+    [SerializeField] private bool isLore;
+    [SerializeField] private int loreTask;
     
 
     private TaskbarManager taskbarManager;
@@ -30,8 +33,19 @@ public class Commutator : MonoBehaviour
     {
         if (other.CompareTag("Player") && !used)
         {
-            AdviceText.SetActive(true);
-            canUse = true;
+            if (isLore)
+            {
+                if (loreTask <= Camera.main.GetComponent<TaskbarManager>().currentTask)
+                {
+                    AdviceText.SetActive(true);
+                    canUse = true;
+                }
+            }
+            else
+            {
+                AdviceText.SetActive(true);
+                canUse = true;
+            }
         }
     }
 

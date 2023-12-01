@@ -12,6 +12,9 @@ public class PoweredBox : Box
     [SerializeField] public SpriteRenderer fuseSpriteRenderer;
     [SerializeField] public Sprite fuseActiveSprite;
     [SerializeField] public Sprite fuseInactiveSprite;
+
+    [SerializeField]
+    protected bool isLoreFuse;
     
 
 
@@ -35,19 +38,29 @@ public class PoweredBox : Box
     
     public void TryToFusePowerUp()
     {
+        if (hasFuse) return;
         hasFuse = inventory.tryToDel(fuse, 1);
         if (!hasFuse) return;
-        isPowered = true;
-        fuseSpriteRenderer.sprite = fuseActiveSprite;
-        powerLedSpriteRenderer.color = Color.yellow;
+        if(isLoreFuse) Camera.main.GetComponent<TaskbarManager>().NextTask();
+        if (isPowered)
+        {
+            fuseSpriteRenderer.sprite = fuseActiveSprite;
+            fuseSpriteRenderer.color = Color.white;
+            powerLedSpriteRenderer.color = Color.yellow;
+        }
+        else
+        {
+            fuseSpriteRenderer.sprite = fuseInactiveSprite;
+            fuseSpriteRenderer.color = Color.white;
+        }
     }
     
-    public void FusePowerOff()
+    public void TryToFusePowerDown()
     {
         if (!hasFuse) return;
-        isPowered = false;
         hasFuse = false;
-        fuseSpriteRenderer.sprite = fuseInactiveSprite;
+        fuseSpriteRenderer.color = Color.black;
         powerLedSpriteRenderer.color = Color.black;
+        
     }
 }
