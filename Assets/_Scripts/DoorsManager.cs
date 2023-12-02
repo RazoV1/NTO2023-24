@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DoorsManager : PoweredBox
 {
-    [SerializeField] private List<DoorController> doorControllers;
+    [SerializeField] private List<PoweredBox> doorControllers;
 
     [SerializeField] private Item timer;
     [SerializeField] private Item fuse;

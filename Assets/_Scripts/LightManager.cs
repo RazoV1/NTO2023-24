@@ -187,17 +187,17 @@ public class LightManager : PoweredBox
                 case 0:
                     room.OffLights();
                     currentLightState = lightState.off;
-                    return;
+                    continue;
                         
                 case 1:
                     room.EmergencyLightsOn();
                     currentLightState = lightState.emergency;
-                    return;
+                    continue;
                 
                 case 2:
                     room.NormalLightsOn();
                     currentLightState = lightState.normal;
-                    return;
+                    continue;
             }
         }
     }

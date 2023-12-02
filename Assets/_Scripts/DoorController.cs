@@ -21,6 +21,7 @@ public class DoorController : PoweredBox
     {
         colorSprite = colorSprite.GetComponent<SpriteRenderer>();
         door = door.GetComponent<Door>();
+        inventory = GameObject.Find("Player").GetComponent<Inventory>();
     }
     
     override protected void OnTriggerEnter(Collider other)
