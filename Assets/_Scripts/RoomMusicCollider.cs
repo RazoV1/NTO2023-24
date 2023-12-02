@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RoomMusicCollider : MonoBehaviour
@@ -10,6 +11,8 @@ public class RoomMusicCollider : MonoBehaviour
     [SerializeField] private AudioClip emergencyMusic;
     [SerializeField] private AudioClip offMusic;
     private AudioSource soundtrack;
+
+    public List<Light> lights;
 
     public enum roomState
     {
@@ -56,4 +59,35 @@ public class RoomMusicCollider : MonoBehaviour
             
         }
     }
+
+    public void OffLights()
+    {
+        foreach (var light in lights)
+        {
+            light.intensity = 0;
+            light.GetComponent<LightningSin>().isEmergency = false;
+        }
+    }
+
+    public void EmergencyLightsOn()
+    {
+        foreach (var light in lights)
+        {
+            light.intensity = 1;
+            light.color = Color.red;
+            light.GetComponent<LightningSin>().isEmergency = true;
+        }
+    }
+    
+    public void NormalLightsOn()
+    {
+        foreach (var light in lights)
+        {
+            light.intensity = 3;
+            light.color = Color.white;
+            light.GetComponent<LightningSin>().isEmergency = false;
+        }
+    }
+    
+    
 }

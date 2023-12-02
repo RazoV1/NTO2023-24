@@ -31,7 +31,6 @@ public class VinniPooh : MonoBehaviour
     private void Update()
     {
         transform.LookAt(transform.position + new Vector3(0, 0, 1));
-        
         if (Vector3.Distance(transform.position, playerTransform.position) <= 0.5f)
         {
             //Attack

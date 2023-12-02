@@ -11,6 +11,8 @@ public class LightningSin : MonoBehaviour
 
     [SerializeField] private float SpeedSin;
 
+    public bool isEmergency;
+
     private void Start()
     {
         light = GetComponent<Light>();
@@ -18,6 +20,6 @@ public class LightningSin : MonoBehaviour
 
     private void FixedUpdate()
     {
-        light.intensity = ((Mathf.Sin(Time.time * SpeedSin) + BaseLightIntesity) / 2f);
+        if(isEmergency) light.intensity = ((Mathf.Sin(Time.time * SpeedSin) + BaseLightIntesity) / 2f);
     }
 }
