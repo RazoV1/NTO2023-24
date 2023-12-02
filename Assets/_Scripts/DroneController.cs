@@ -28,7 +28,7 @@ public class DroneController : MonoBehaviour
         if (horizontalAxis > 0) xScale = 1;
         
         Vector3 newPos = target.position;
-        newPos.z = 1.5f;
+        newPos.z = target.position.z;
         newPos.x = target.position.x + offset.x;
         newPos.y = target.position.y + offset.y;
 
