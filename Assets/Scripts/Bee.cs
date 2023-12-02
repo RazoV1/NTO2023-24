@@ -79,7 +79,7 @@ public class Bee : MonoBehaviour
 
     private void TryShooting()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= shootMinRange && canShoot)
+        if (Vector3.Distance(transform.position, player.transform.position) >= shootMinRange && canShoot)
         {
             Shoot();
             animator.SetTrigger("shoot");
@@ -124,29 +124,28 @@ public class Bee : MonoBehaviour
         else
         {
             UpdateOrientation(player.transform.position);
-            if (canShoot && Stingers >0 && Vector3.Distance(transform.position, player.transform.position) > stabMinRange)
+            if (Stingers > 0 && Vector3.Distance(transform.position, player.transform.position) > stabMinRange)
             {
-                if (Vector3.Distance(transform.position, player.transform.position) > shootMinRange)
+                if (!canShoot)
                 {
                     transform.position = Vector3.Lerp(transform.position, player.transform.position, Time.deltaTime);
                 }
-                else
+                else 
                 {
                     TryShooting();
                 }
             }
-            else if (canStab)
+            else
             {
                 if (Vector3.Distance(transform.position, player.transform.position) > stabMinRange)
                 {
                     transform.position = Vector3.Lerp(transform.position, player.transform.position, Time.deltaTime);
                 }
-                else
+                else if(canStab)
                 {
                     TryStab();
                 }
             }
-            
         }
     }
 

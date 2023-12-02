@@ -27,6 +27,6 @@ public class Stinger : MonoBehaviour
         {
             Debug.Log("Shot!!");
         }
-        //GameObject.Destroy(gameObject);
+        GameObject.Destroy(gameObject);
     }
 }
