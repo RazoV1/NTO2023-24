@@ -29,7 +29,7 @@ public class TaskbarManager : MonoBehaviour
     {
         currentTask++;
         TaskText.text = tasksList[currentTask];
-        
+        print(currentTask);
     }
 }
 

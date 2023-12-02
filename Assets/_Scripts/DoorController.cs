@@ -2,53 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+public class DoorController : PoweredBox
 {
-    [SerializeField] private Item item;
+    [Header("Door Controller")]
     [SerializeField] private GameObject AdviceText;
+    [SerializeField] public SpriteRenderer colorSprite;
     [SerializeField] private Door door;
     [SerializeField] private GameObject UI_door;
-    [SerializeField] private GameObject closedUI;
-    private bool canUse;
+    private float cycleTime;
+    private float currentCycleTime;
+    public int currentState;
 
-    [SerializeField] private GameObject closedSprite;
-    [SerializeField] private GameObject openedSprite;
-
+    public Item key_uni;
+    
     public bool isBroken;
-    public bool isClosed;
-
-    
-    [Header("If closed")]
-    private bool canOpen = false;
-    private bool oppened = false;
-    [SerializeField] private GameObject lastComm;
-    [SerializeField] private GameObject newComm;
-    [SerializeField] private int taskToOpen;
-    
-    [SerializeField] private Inventory inventory;
-    
-    private TaskbarManager taskbarManager;
-    
 
     private void Start()
     {
-        door = GetComponent<Door>();
-        if (isClosed)
-        {
-            closedSprite.SetActive(true);
-            openedSprite.SetActive(false);
-            inventory = inventory.GetComponent<Inventory>();
-            taskbarManager = Camera.main.GetComponent<TaskbarManager>();
-        }
+        colorSprite = colorSprite.GetComponent<SpriteRenderer>();
+        door = door.GetComponent<Door>();
     }
-
-    private void OnTriggerEnter(Collider other)
+    
+    override protected void OnTriggerEnter(Collider other)
     {
         if (isClosed && other.CompareTag("Player"))
         {
+            if (isLore)
+            {
+                if (Camera.main.GetComponent<TaskbarManager>().currentTask < loreTask)
+                {
+                    return;
+                }
+            }
             inventory = other.GetComponent<Inventory>();
             AdviceText.SetActive(true);
-            canOpen = true;
+            canUse = true;
         }
         
         else if (other.CompareTag("Player"))
@@ -60,13 +48,12 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    override protected void OnTriggerExit(Collider other)
     {
         
         if (isClosed && other.CompareTag("Player"))
         {
             AdviceText.SetActive(false);
-            canOpen = false;
         }
         
         if (other.CompareTag("Player"))
@@ -77,34 +64,22 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    private void Update()
+    override protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (canOpen && isClosed)
+            if (isClosed && canUse)
             {
-                closedUI.SetActive(true);
+                print(1);
+                UnlockBox();
             }
-            else if (canUse && !isClosed)
+            
+            if (canUse && !isClosed)
             {
+                print(2);
                 UI_door.SetActive(true);
             }
         }
     }
-
-    public void UnlockDoor()
-    {
-        if (inventory.tryToDel(item, 1))
-        {
-            oppened = true;
-            canOpen = false;
-            taskbarManager.NextTask();
-            AdviceText.SetActive(false);
-            closedSprite.SetActive(false);
-            openedSprite.SetActive(true);
-            lastComm.SetActive(false);
-            newComm.SetActive(true);
-            isClosed = false;
-        }
-    }
+    
 }
