@@ -79,7 +79,7 @@ public class DoorsManager : PoweredBox
         foreach (var doorController in doorControllers)
         {
             if(!doorController.isPowered) doorController.PowerOn();
-            if(doorController.isPowered) doorController.PowerDown();
+            else if(doorController.isPowered) doorController.PowerDown();
         }
     }
 
@@ -97,6 +97,7 @@ public class DoorsManager : PoweredBox
         if (inventory.tryToDel(fuse, 1) && !hasFuse)
         {
             hasFuse = true;
+            isPowered = true;
             fuseSpriteRenderer.color = Color.white;
             doorControllerSpriteRenderer.sprite = activeSprite;
         }
