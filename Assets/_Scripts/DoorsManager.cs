@@ -113,7 +113,8 @@ public class DoorsManager : PoweredBox
     
     public void PowerUpTimer()
     {
-        if (inventory.tryToDel(timer, 1) && !hasTimer)
+        if(hasTimer) return;
+        if (inventory.tryToDel(timer, 1))
         {
             hasTimer = true;
         }
@@ -121,6 +122,7 @@ public class DoorsManager : PoweredBox
     
     public void PowerOffTimer()
     {
+        if(!hasTimer) return;
         hasTimer = false;
         inventory.AddItem(timer, 1);
     }
