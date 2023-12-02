@@ -2537,7 +2537,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26412
+  m_Name: pb_Mesh32472
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2882,6 +2882,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UiDialog: {fileID: 237769098}
   AdviceText: {fileID: 1021656962}
+  isLore: 0
+  loreTask: 0
   door: {fileID: 1302734690}
   emergencyLightning: {fileID: 1584986849}
   normalLightning: {fileID: 2113037229}
@@ -42979,6 +42981,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UiDialog: {fileID: 1545016458}
   AdviceText: {fileID: 194097598}
+  isLore: 0
+  loreTask: 0
   door: {fileID: 0}
   emergencyLightning: {fileID: 0}
   normalLightning: {fileID: 0}
@@ -58647,7 +58651,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f94357284280a341861888ae007c615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doors: []
+  isClosed: 0
+  hasObjectsToActive: 0
+  hasObjectsToInactive: 0
+  inventory: {fileID: 0}
+  closedAdviceText: {fileID: 0}
+  key: {fileID: 0}
+  closed_UI: {fileID: 0}
+  closedPanelSprite: {fileID: 0}
+  openedPanelSprite: {fileID: 0}
+  isLore: 0
+  loreTask: 0
+  fuse: {fileID: 0}
+  isPowered: 0
+  hasFuse: 0
+  powerLedSpriteRenderer: {fileID: 0}
+  fuseSpriteRenderer: {fileID: 0}
+  fuseActiveSprite: {fileID: 0}
+  fuseInactiveSprite: {fileID: 0}
+  isLoreFuse: 0
+  doorControllers: []
   timer: {fileID: 0}
   fuse: {fileID: 0}
   AdviceText: {fileID: 0}
@@ -58656,7 +58679,6 @@ MonoBehaviour:
   fuseSpriteRenderer: {fileID: 0}
   activeSprite: {fileID: 0}
   inactiveSprite: {fileID: 0}
-  hasFuse: 0
   hasTimer: 0
   isCycled: 0
 --- !u!43 &1607570122

@@ -7,6 +7,9 @@ public class LightningSin : MonoBehaviour
 {
 
     private Light light;
+    [SerializeField] private float BaseLightIntesity;
+
+    [SerializeField] private float SpeedSin;
 
     private void Start()
     {
@@ -15,6 +18,6 @@ public class LightningSin : MonoBehaviour
 
     private void FixedUpdate()
     {
-        light.intensity = ((Mathf.Sin(Time.time * 1.5f) + 1f) / 2f);
+        light.intensity = ((Mathf.Sin(Time.time * SpeedSin) + BaseLightIntesity) / 2f);
     }
 }
