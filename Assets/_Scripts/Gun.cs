@@ -14,9 +14,16 @@ public class Gun : MonoBehaviour
     [SerializeField] private Vector3 forward;
     [SerializeField] private Rigidbody playerRigidbody;
     [SerializeField] private Transform body;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform parent;
+    [SerializeField] private float deltaBulletSpeed; 
+    [SerializeField] private float baseBulletSpeed; 
+    [SerializeField] private int bulletsCount;
 
     public state currentState;
 
+    private bool closedYet;
+    
     private Animator gunAnimator;
 
     private void Start()
@@ -25,7 +32,7 @@ public class Gun : MonoBehaviour
         playerRigidbody = playerRigidbody.GetComponent<Rigidbody>();
     }
 
-    private bool isOpen;
+    [SerializeField] private bool isClosed;
 
     public enum state
     {
@@ -36,6 +43,10 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            StartCoroutine(Shot());
+        }
         PositionChange();
         LookOnCursor();
         if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -54,15 +65,30 @@ public class Gun : MonoBehaviour
         currentShot.GetComponent<Rigidbody>().AddForce
             (Vector3.right * xScale * 10f, ForceMode.Impulse);
     }
-    void LookOnCursor(){ //заставляет свет следить за курсором мышки
+    
+    public IEnumerator Shot()
+    {
+        if(currentState == state.bubble){
+            for (int i = 1; i <= bulletsCount; i++)
+            {
+                GameObject currentBullet = Instantiate(bulletPrefab);
+                currentBullet.transform.position = shotSpawnPosition.position;
+                
+                currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Cos(body.rotation.x) * transform.localScale.x,
+                        Mathf.Abs(Mathf.Sin(body.rotation.x)), 0)
+                    .normalized * baseBulletSpeed;
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+    }
+    
+    void LookOnCursor(){
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = body.position.z;
         mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
-        //print(mousePos);
-        
-        print(mousePos);
 
         body.LookAt(mousePos);
+        //body.localRotation = Quaternion.Euler(Mathf.Clamp(body.localRotation.x, -45, 30), 90, 0);
     }
     
     private void PositionChange()
@@ -71,9 +97,23 @@ public class Gun : MonoBehaviour
         {
             transform.localPosition = left;
             transform.localScale = new Vector3(1, 1, 1);
-            if (isOpen)
+            if (isClosed && !closedYet)
+            {
+                gunAnimator.SetTrigger("close");
+                closedYet = true;
+            }
+            else if (!isClosed && closedYet)
+            {
+                gunAnimator.SetTrigger("open");
+                closedYet = true;
+            }
+            else if (!isClosed)
             {
                 gunAnimator.SetTrigger("opened");
+                if (isClosed && !closedYet)
+                {
+                    closedYet = true;
+                }
             }
             else
             {
@@ -85,7 +125,17 @@ public class Gun : MonoBehaviour
         {
             transform.localPosition = left;
             transform.localScale = new Vector3(-1, 1, 1);
-            if (isOpen)
+            if (isClosed && !closedYet)
+            {
+                gunAnimator.SetTrigger("close");
+                closedYet = true;
+            }
+            else if (!isClosed && closedYet)
+            {
+                gunAnimator.SetTrigger("open");
+                closedYet = true;
+            }
+            if (!isClosed)
             {
                 gunAnimator.SetTrigger("opened");
             }
@@ -100,7 +150,17 @@ public class Gun : MonoBehaviour
         {
             transform.localPosition = forward;
             transform.localScale = new Vector3(1, 1, 1);
-            if (isOpen)
+            if (isClosed && !closedYet)
+            {
+                gunAnimator.SetTrigger("frontClose");
+                closedYet = true;
+            }
+            else if (!isClosed && closedYet)
+            {
+                gunAnimator.SetTrigger("frontOpen");
+                closedYet = true;
+            }
+            if (!isClosed)
             {
                 gunAnimator.SetTrigger("frontOpened");
             }
@@ -110,11 +170,21 @@ public class Gun : MonoBehaviour
             }
 
         }
-        else if (playerRigidbody.velocity.z < -0.1f)
+        if (playerRigidbody.velocity.z < -0.1f)
         {
             transform.localPosition = behind;
             transform.localScale = new Vector3(1, 1, 1);
-            if (isOpen)
+            if (isClosed && !closedYet)
+            {
+                gunAnimator.SetTrigger("behindClose");
+                closedYet = true;
+            }
+            else if (!isClosed && closedYet)
+            {
+                gunAnimator.SetTrigger("behindOpen");
+                closedYet = true;
+            }
+            if (!isClosed)
             {
                 gunAnimator.SetTrigger("behindOpened");
             }
