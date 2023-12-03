@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TextByTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI[] textOutput;
+    [SerializeField] private string text;
+    public Inventory inventory;
+    [SerializeField] private bool is_used;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
         
     }

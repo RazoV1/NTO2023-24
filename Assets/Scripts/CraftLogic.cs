@@ -61,6 +61,10 @@ public class CraftLogic : MonoBehaviour
             menu.SetActive(is_opened);
         }
     }
+    private void Start()
+    {
+        inventory = GameObject.Find("Player").GetComponent<Inventory>();
+    }
     private void Update()
     {
         if (can_use && Input.GetKeyDown(KeyCode.E))
