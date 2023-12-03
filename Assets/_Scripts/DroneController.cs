@@ -48,7 +48,7 @@ public class DroneController : MonoBehaviour
         mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
         //print(mousePos);
         
-        print(mousePos);
+        //print(mousePos);
 
         body.LookAt(mousePos);
     }
