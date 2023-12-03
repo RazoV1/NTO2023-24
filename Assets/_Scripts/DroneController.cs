@@ -49,11 +49,7 @@ public class DroneController : MonoBehaviour
         //print(mousePos);
         
         print(mousePos);
-        
+
         body.LookAt(mousePos);
-
-        
-        
-
     }
 }
