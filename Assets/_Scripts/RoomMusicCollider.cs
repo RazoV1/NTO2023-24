@@ -10,8 +10,13 @@ public class RoomMusicCollider : MonoBehaviour
     [SerializeField] private AudioClip normalMusic;
     [SerializeField] private AudioClip emergencyMusic;
     [SerializeField] private AudioClip offMusic;
+    [SerializeField] private Animator[] fanAnimators;
     private AudioSource soundtrack;
+    
 
+    public float oxygen;
+    
+    
     public List<Light> lights;
 
     public enum roomState
@@ -93,6 +98,39 @@ public class RoomMusicCollider : MonoBehaviour
             light.GetComponent<LightningSin>().isEmergency = false;
         }
     }
-    
-    
+
+
+    public void OxygenChange(float howMany)
+    {
+        StopAllCoroutines();
+        StartCoroutine(OxygenCoroutine(howMany));
+    }
+
+    private IEnumerator OxygenCoroutine(float howMany)
+    {
+        while (true)
+        {
+            if (howMany == 0)
+            {
+                foreach (var animator in fanAnimators)
+                {
+                    animator.SetTrigger("off");
+                }
+
+                yield return new WaitForSeconds(1);
+
+            }
+            else
+            {
+                oxygen += howMany;
+                oxygen = Mathf.Clamp(oxygen, 0f, 100f);
+                foreach (var animator in fanAnimators)
+                {
+                    animator.SetTrigger("on");
+                }
+
+                yield return new WaitForSeconds(1);
+            }
+        }
+    }
 }
