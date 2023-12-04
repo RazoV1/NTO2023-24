@@ -42,15 +42,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
-  - name: Player
-    uniqueID: 1225343763
+  - name: WallBehind
+    uniqueID: 875672071
     locked: 0
   - name: Gun
     uniqueID: 2737349997
     locked: 0
-  - name: WallBehind
-    uniqueID: 875672071
+  - name: Player
+    uniqueID: 1225343763
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
