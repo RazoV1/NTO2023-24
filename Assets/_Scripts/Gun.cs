@@ -92,9 +92,17 @@ public class Gun : MonoBehaviour
     
     void LookOnCursor(){
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
         mousePos.z = body.position.z;
         mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
-
+        if (transform.localScale.x < 0)
+        {
+            if (mousePos.x > transform.position.x) return;
+        }
+        else if (transform.localScale.x > 0)
+        {
+            if (mousePos.x < transform.position.x) return;
+        }
         body.LookAt(mousePos);
         float x = 0;
 
