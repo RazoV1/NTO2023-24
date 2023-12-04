@@ -6,7 +6,7 @@ public class Codebox : MonoBehaviour
 {
     public CodablePlatformSystem system;
     public PlayerController1 player;
-    private bool canUse = false;
+    [SerializeField] private bool canUse = false;
 
 
     private void Start()
@@ -44,10 +44,6 @@ public class Codebox : MonoBehaviour
                 system.UI.SetActive(false);
             }
         }
-        else
-        {
-            player.is_coding = false;
-            system.UI.SetActive(false);
-        }
+        
     }
 }
