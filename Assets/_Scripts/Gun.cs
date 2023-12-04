@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,10 +20,12 @@ public class Gun : MonoBehaviour
     [SerializeField] private float deltaBulletSpeed; 
     [SerializeField] private float baseBulletSpeed; 
     [SerializeField] private int bulletsCount;
+    private const float minSectorAngle = -0.369f;
+    private const float maxSectorAngle = 0.177f;
 
     public state currentState;
 
-    private bool closedYet;
+    public bool closedYet;
     
     private Animator gunAnimator;
 
@@ -43,6 +46,11 @@ public class Gun : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if(isClosed) OpenGun();
+            else CloseGun();
+        }
         if (Input.GetKeyDown(KeyCode.C))
         {
             StartCoroutine(Shot());
@@ -84,12 +92,31 @@ public class Gun : MonoBehaviour
     
     void LookOnCursor(){
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
         mousePos.z = body.position.z;
         mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
-
+        if (transform.localScale.x < 0)
+        {
+            if (mousePos.x > transform.position.x) return;
+        }
+        else if (transform.localScale.x > 0)
+        {
+            if (mousePos.x < transform.position.x) return;
+        }
         body.LookAt(mousePos);
-        //body.localRotation = Quaternion.Euler(Mathf.Clamp(body.localRotation.x, -45, 30), 90, 0);
-    }
+        float x = 0;
+
+        if (body.rotation.x <= maxSectorAngle && body.rotation.x >= minSectorAngle) // 0.177 0.369
+        {
+            x = parent.localScale.x * body.localEulerAngles.x;
+        }
+        else
+        {
+            x = 0;
+        }
+
+        body.rotation = Quaternion.Euler(x, 90, 0);
+     }
     
     private void PositionChange()
     {
@@ -105,7 +132,7 @@ public class Gun : MonoBehaviour
             else if (!isClosed && closedYet)
             {
                 gunAnimator.SetTrigger("open");
-                closedYet = true;
+                closedYet = false;
             }
             else if (!isClosed)
             {
@@ -133,7 +160,7 @@ public class Gun : MonoBehaviour
             else if (!isClosed && closedYet)
             {
                 gunAnimator.SetTrigger("open");
-                closedYet = true;
+                closedYet = false;
             }
             if (!isClosed)
             {
@@ -158,7 +185,7 @@ public class Gun : MonoBehaviour
             else if (!isClosed && closedYet)
             {
                 gunAnimator.SetTrigger("frontOpen");
-                closedYet = true;
+                closedYet = false;
             }
             if (!isClosed)
             {
@@ -182,7 +209,7 @@ public class Gun : MonoBehaviour
             else if (!isClosed && closedYet)
             {
                 gunAnimator.SetTrigger("behindOpen");
-                closedYet = true;
+                closedYet = false;
             }
             if (!isClosed)
             {
@@ -193,6 +220,16 @@ public class Gun : MonoBehaviour
                 gunAnimator.SetTrigger("behindClosed");
             }
         }
+    }
+
+    private void CloseGun()
+    {
+        isClosed = true;
+    }
+
+    public void OpenGun()
+    {
+        isClosed = false;
     }
     
 }
