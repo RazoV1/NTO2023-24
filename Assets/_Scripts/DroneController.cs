@@ -35,13 +35,18 @@ public class DroneController : MonoBehaviour
         crest.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles,new Vector3(0, 0, horizontalAxis * -30f), 100 * Time.deltaTime));
         
         transform.position = Vector3.Lerp(transform.position, newPos, speed * Time.deltaTime);
-    }
+    }   
     private void FixedUpdate()
     {
         Follow();
-        LookOnCursor();
+        //LookOnCursor();
+        
     }
-    
+    private void Update()
+    {
+        LookOnCursor3D();
+    }
+
     void LookOnCursor(){ //заставляет свет следить за курсором мышки
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = body.position.z;
@@ -51,5 +56,16 @@ public class DroneController : MonoBehaviour
         print(mousePos);
 
         body.LookAt(mousePos);
+    }
+    private void LookOnCursor3D() //свет смотрит на точку в пространстве за курсором.
+    {
+        Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Debug.Log(mousePos);
+        RaycastHit hit;
+        //Debug.DrawRay(mousePos,Color.red,5);
+        if (Physics.Raycast(mousePos, out hit))
+        {
+            body.LookAt(hit.point);
+        }
     }
 }

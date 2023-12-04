@@ -19,6 +19,7 @@ public class PlayerController1 : MonoBehaviour
     private bool is_animating = false;
     private Vector2 lastDir;
 
+    public bool is_coding;
     [SerializeField] private AudioSource[] stepsAudioSources;
     private float lastStepTime;
 
@@ -173,6 +174,9 @@ public class PlayerController1 : MonoBehaviour
     }
     private void Update()
     {
-        RegisterInput();
+        if (!is_coding)
+        {
+            RegisterInput();
+        }
     }
 }
