@@ -55,6 +55,7 @@ public class DoorController : PoweredBox
         if (isClosed && other.CompareTag("Player"))
         {
             AdviceText.SetActive(false);
+           
         }
         
         if (other.CompareTag("Player"))
