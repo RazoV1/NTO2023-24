@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -39,6 +40,7 @@ public class DialogManager : MonoBehaviour
     private List<string> phrasesList;
     private int currentPhrase = 0;
     private bool textRunning;
+    public float speedText = 0.05f;
 
     //Эта переменная нужна для того, чтобы мы могли менять автоматическое определение 
     //анимации (в функции Update), на ручное в таймлайне
@@ -63,9 +65,13 @@ public class DialogManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Mouse0)) speedText = 0.0000001f;
+        
         //Автоматическое определение нужной анимации говорящего
         if (textRunning) SpeakerAnimator.SetTrigger("speak");
         else SpeakerAnimator.SetTrigger("idle");
+
+
     }
 
     //При помощи этой функции запускаем корутину с выводом текста
@@ -83,10 +89,13 @@ public class DialogManager : MonoBehaviour
     private bool readedEmotion;
 
     private string currentSpeaker;
+
     public IEnumerator RunText(float pauseBetweenPhrases)
     {
         foreach (var text in phrasesList)
         {
+            speedText = 0.05f;
+            
             foreach (var letter in text)
             {
                 
@@ -111,7 +120,7 @@ public class DialogManager : MonoBehaviour
                 {
                     textRunning = true;
                     AiText.text += letter;
-                    yield return new WaitForSeconds(0.05f);
+                    yield return new WaitForSeconds(speedText);
                 }
                 
                 else
@@ -144,7 +153,7 @@ public class DialogManager : MonoBehaviour
                     
                     textRunning = false;
                     BearText.text += letter;
-                    yield return new WaitForSeconds(0.05f);
+                    yield return new WaitForSeconds(speedText);
                 }
             }
 
