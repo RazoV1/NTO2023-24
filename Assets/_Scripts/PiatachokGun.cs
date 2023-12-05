@@ -18,6 +18,7 @@ public class PiatachokGun : MonoBehaviour
     [SerializeField] private float baseBulletSpeed;
     [SerializeField] private BoxCollider collider;
     [SerializeField] private float cd;
+    [SerializeField] private float damagePerBullet;
 
     private PiatachokBehaviour parentBehaviour;
 
@@ -49,6 +50,7 @@ public class PiatachokGun : MonoBehaviour
         for(int i = 1; i <= bulletsCount; i++)
         {
             GameObject currentBullet = Instantiate(bulletPrefab);
+            currentBullet.GetComponent<PiatachokBullet>().damage = damagePerBullet;
             currentBullet.transform.position = bulletSpawnTransform.position;
             currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Abs(Mathf.Cos(pivot.rotation.z + UnityEngine.Random.Range(-deltaBulletsAngle, deltaBulletsAngle))) * parentBehaviour.xScale,
                 Mathf.Abs(Mathf.Abs(Mathf.Sin(pivot.rotation.z + UnityEngine.Random.Range(-deltaBulletsAngle, deltaBulletsAngle)))), 0).normalized * UnityEngine.Random.Range(baseBulletSpeed-deltaBulletSpeed, baseBulletSpeed+deltaBulletSpeed) ;

@@ -15,6 +15,7 @@ public class RoomMusicCollider : MonoBehaviour
     
 
     public float oxygen;
+    [SerializeField] private float oxygenMaxDamage;
     
     
     public List<Light> lights;
@@ -36,9 +37,31 @@ public class RoomMusicCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player"))
+        {
+            StartCoroutine(OxygenOnHealth(other));
+        }
         OnChange();
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        StopCoroutine(OxygenOnHealth(other));
+    }
+
+    private IEnumerator OxygenOnHealth(Collider other)
+    {
+        while (true)
+        {
+            if (oxygen <= other.GetComponent<CharacterHealth>().oxygenResistance) ;
+            {
+                print(((100-oxygen)/100)*oxygenMaxDamage);
+                other.GetComponent<CharacterHealth>().TakeDamage(((100-oxygen)/100)*oxygenMaxDamage);
+                yield return new WaitForSeconds(1f);
+            }
+        }
+    }
+    
     public void ChangeRoomState(roomState _roomState)
     {
         currentRoomState = _roomState;
