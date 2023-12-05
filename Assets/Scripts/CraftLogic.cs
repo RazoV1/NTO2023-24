@@ -11,6 +11,7 @@ public class CraftLogic : MonoBehaviour
     public GameObject menu;
     public bool is_opened;
     public bool can_use;
+    
 
     public void CraftMenu()
     {
