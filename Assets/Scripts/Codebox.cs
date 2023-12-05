@@ -26,6 +26,8 @@ public class Codebox : MonoBehaviour
         if (other.tag == "Player")
         {
             canUse = false;
+            player.is_coding = false;
+            system.UI.SetActive(false);
         }
     }
 
