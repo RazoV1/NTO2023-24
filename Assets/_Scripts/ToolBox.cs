@@ -22,12 +22,15 @@ public class ToolBox : Box
         }
         else if (canUse && !isClosed && !used)
         {
+            
             DropItem();
+
         }
     }
 
     private void DropItem()
     {
+        inventory.gameObject.GetComponent<PlayerController1>().StartCoroutine("LootAnim");
         inventory.AddItem(item, countItem);
         adviceText.SetActive(false);
         used = true;

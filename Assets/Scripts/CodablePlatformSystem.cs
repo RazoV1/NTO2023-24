@@ -19,21 +19,21 @@ public class PointList
 public class CodablePlatformSystem : MonoBehaviour
 {
     public TMP_InputField inputField;
-    private string[] commands;
-    [SerializeField] private Transform platform;
-    [SerializeField] private float platformSpeed;
-    [SerializeField] private float baseStep;
-    [SerializeField] private string numArray;
-    [SerializeField] private bool can_move = true;
-    [SerializeField] private TextMeshProUGUI inpText;
-    [SerializeField] private Color ErrorCollor;
-    [SerializeField] private Color NormalColor;
+    protected string[] commands;
+    [SerializeField] protected Transform platform;
+    [SerializeField] protected float platformSpeed;
+    [SerializeField] protected float baseStep;
+    [SerializeField] protected string numArray;
+    [SerializeField] protected bool can_move = true;
+    [SerializeField] protected TextMeshProUGUI inpText;
+    [SerializeField] protected Color ErrorCollor;
+    [SerializeField] protected Color NormalColor;
     public bool IsCoding= false;
     public PointList ListOfPointLists = new PointList();
     public GameObject UI;
-    private Vector3 targetedPosition;
-    private float delay;
-    private float execotionPercent = 0;
+    protected Vector3 targetedPosition;
+    protected float delay;
+    protected float execotionPercent = 0;
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class CodablePlatformSystem : MonoBehaviour
         can_move = true;
     }
 
-    private bool CanMove(Vector2 newPos)
+    protected bool CanMove(Vector2 newPos)
     {
         foreach (Point i in ListOfPointLists.list)
         {
@@ -66,7 +66,7 @@ public class CodablePlatformSystem : MonoBehaviour
         return false;
     }
 
-    private IEnumerator Execute()
+    public virtual IEnumerator Execute()
     {
         if (targetedPosition != null)
         {
@@ -102,10 +102,10 @@ public class CodablePlatformSystem : MonoBehaviour
                     }
                     else if (command == "up")
                     {
-                        
+
                         targetedPosition.y = platform.position.y + baseStep * int.Parse(arg);
                         can_move = CanMove(targetedPosition);
-                        
+
                         //Debug.Log(platform.position.y + baseStep * int.Parse(arg));
                     }
                     else if (command == "down")
@@ -139,7 +139,7 @@ public class CodablePlatformSystem : MonoBehaviour
                         StartCoroutine(Error("Error! Cant move here and ur stupid"));
                         yield return null;
                         StopCoroutine(Execute());
-                        
+
                     }
                     execotionPercent++;
                 }
@@ -150,7 +150,7 @@ public class CodablePlatformSystem : MonoBehaviour
                     StartCoroutine(Error("Error! Invalid argument"));
                     StopCoroutine(Execute());
                     yield return null;
-                    
+
                 }
             }
             else
@@ -174,7 +174,7 @@ public class CodablePlatformSystem : MonoBehaviour
                 targetedPosition = platform.position;
             }
             platform.position = targetedPosition;
-            
+
             yield return null;
         }
 
@@ -184,10 +184,9 @@ public class CodablePlatformSystem : MonoBehaviour
         }
         execotionPercent = 0;
         commands = new string[0];
-        
     }
 
-    private IEnumerator Error(string error)
+    protected IEnumerator Error(string error)
     {
         inpText.color = ErrorCollor;
         inputField.text = error;

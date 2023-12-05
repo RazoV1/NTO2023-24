@@ -107,11 +107,11 @@ public class LightManager : PoweredBox
                     {
                         case lightState.emergency:
                             room.EmergencyLightsOn();
-                            return;
+                            break;
                         
                         case lightState.normal:
                             room.NormalLightsOn();
-                            return;
+                            break;
                     }
                 }
                 currentCycleTime = cycleTime;
@@ -180,24 +180,26 @@ public class LightManager : PoweredBox
         if(!hasFuse) return;
         if(!isPowered) return;
         if (isBroken) return;
-        foreach (var room in rooms)
+        foreach (RoomMusicCollider room in rooms)
         {
+            print(room.gameObject.name);
             switch (state)
             {
+                
                 case 0:
+                    room.currentRoomState = RoomMusicCollider.roomState.off;
                     room.OffLights();
-                    currentLightState = lightState.off;
-                    continue;
+                    break;
                         
                 case 1:
+                    room.currentRoomState = RoomMusicCollider.roomState.emergency;
                     room.EmergencyLightsOn();
-                    currentLightState = lightState.emergency;
-                    continue;
+                    break;
                 
                 case 2:
+                    room.currentRoomState = RoomMusicCollider.roomState.normal;
                     room.NormalLightsOn();
-                    currentLightState = lightState.normal;
-                    continue;
+                    break;
             }
         }
     }

@@ -13,15 +13,27 @@ public class PlayerController1 : MonoBehaviour
     public float jumpForce;
     private Vector3 movement;
     private bool is_in_air = false;
-    private Animator animator;
+    public Animator animator;
     private SpriteRenderer spriteRenderer;
     private bool is_climbing = false;
     private bool is_animating = false;
     private Vector2 lastDir;
+    
 
     public bool is_coding;
     [SerializeField] private AudioSource[] stepsAudioSources;
+    [SerializeField] private AudioSource defaultSource;
+    [SerializeField] private AudioClip loot;
     private float lastStepTime;
+
+    public IEnumerator LootAnim()
+    {
+        animator.applyRootMotion = true;
+        animator.SetTrigger("loot");
+        defaultSource.PlayOneShot(loot);
+        yield return new WaitForSeconds(0.6f);
+        animator.applyRootMotion = false;
+    }
 
     void Jump()
     {

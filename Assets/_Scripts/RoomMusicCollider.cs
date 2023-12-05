@@ -31,7 +31,18 @@ public class RoomMusicCollider : MonoBehaviour
 
     private void Start()
     {
-        OnChange();
+        switch (currentRoomState)
+        {
+            case roomState.off:
+                OffLights();
+                break;
+            case roomState.emergency:
+                EmergencyLightsOn();
+                break;
+            case roomState.normal:
+                NormalLightsOn();
+                break;
+        }
         soundtrack = Camera.main.GetComponent<AudioSource>();
     }
 
@@ -72,20 +83,20 @@ public class RoomMusicCollider : MonoBehaviour
         switch (currentRoomState)
         {
             case roomState.off:
-                OffLights();
+                //OffLights();
                 if(soundtrack.clip == offMusic) return;
                 soundtrack.clip = offMusic;
                 
                 return;
             
             case roomState.normal:
-                NormalLightsOn();
+                //NormalLightsOn();
                 if(soundtrack.clip == normalMusic) return;
                 soundtrack.clip = normalMusic;
                 return;
             
             case roomState.emergency:
-                EmergencyLightsOn();
+                //EmergencyLightsOn();
                 if(soundtrack.clip == emergencyMusic) return;
                 soundtrack.clip = emergencyMusic;
                 return;
