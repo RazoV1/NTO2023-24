@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,7 +16,9 @@ public class RoomMusicCollider : MonoBehaviour
     [SerializeField] private Animator[] fanAnimators;
     [SerializeField] private AudioSource[] soundtracks;
 
-    
+    [SerializeField] private TextMeshProUGUI roomNameText;
+
+
     public AudioSource audio_1;
     public AudioSource audio_2;
     private AudioSource _currentMainAudio;
@@ -65,8 +69,20 @@ public class RoomMusicCollider : MonoBehaviour
         {
             StartCoroutine(OxygenOnHealth(other));
             OnChange();
+            roomNameText.text = roomName + " : " + oxygen.ToString() + "%";
+            
         }
     }
+    
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            roomNameText.text = roomName + ": " + oxygen.ToString() + "%";
+        }
+    }
+    
+    
 
     private void OnTriggerExit(Collider other)
     {

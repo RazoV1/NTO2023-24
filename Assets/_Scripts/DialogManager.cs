@@ -65,8 +65,7 @@ public class DialogManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) speedText = 0.0000001f;
-        
+
         //Автоматическое определение нужной анимации говорящего
         if (textRunning) SpeakerAnimator.SetTrigger("speak");
         else SpeakerAnimator.SetTrigger("idle");
@@ -94,7 +93,7 @@ public class DialogManager : MonoBehaviour
     {
         foreach (var text in phrasesList)
         {
-            speedText = 0.05f;
+            speedText = 0.0001f;
             
             foreach (var letter in text)
             {
