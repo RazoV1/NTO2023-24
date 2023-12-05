@@ -9,6 +9,7 @@ public class CharacterHealth : Health
     [SerializeField] private Image healthBar;
     [SerializeField] private float maxStamina;
     private float currentStamina;
+    public float oxygenResistance;
     [SerializeField] private Image staminaBar;
     [SerializeField] private float timeToRecoverStamina;
     private float currentTimeToRecoverStamina;
