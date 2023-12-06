@@ -14,6 +14,11 @@ public class DroneController : MonoBehaviour
 
     [SerializeField] private Transform crest;
     [SerializeField] private Transform body;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private int bulletsCount;
+    [SerializeField] private Transform shotSpawnPosition;
+    [SerializeField] private float baseBulletSpeed;
+
     
     private Vector3 mousePosition;
     public float moveSpeed = 2f;
@@ -35,7 +40,20 @@ public class DroneController : MonoBehaviour
         crest.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles,new Vector3(0, 0, horizontalAxis * -30f), 100 * Time.deltaTime));
         
         transform.position = Vector3.Lerp(transform.position, newPos, speed * Time.deltaTime);
-    }   
+    }
+
+    public IEnumerator Shot()
+    {
+        for (int i = 1; i <= bulletsCount; i++)
+        {
+            GameObject currentBullet = Instantiate(bulletPrefab);
+            currentBullet.transform.position = shotSpawnPosition.position;
+
+            //currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Cos(body.rotation.x) * transform.localScale.x,Mathf.Sin(body.rotation.x), 0).normalized * baseBulletSpeed;
+            currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(body.transform.forward.x, body.transform.forward.y, 0).normalized * baseBulletSpeed; 
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     private void FixedUpdate()
     {
         Follow();
@@ -45,6 +63,10 @@ public class DroneController : MonoBehaviour
     private void Update()
     {
         LookOnCursor3D();
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            StartCoroutine(Shot());
+        }
     }
 
     void LookOnCursor(){ //заставляет свет следить за курсором мышки

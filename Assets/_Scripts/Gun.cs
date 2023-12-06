@@ -20,8 +20,13 @@ public class Gun : MonoBehaviour
     [SerializeField] private float deltaBulletSpeed; 
     [SerializeField] private float baseBulletSpeed; 
     [SerializeField] private int bulletsCount;
+    [SerializeField] private Transform UsableGun;
     private const float minSectorAngle = -0.369f;
     private const float maxSectorAngle = 0.177f;
+
+    public SpriteRenderer sprite;
+
+    private Vector2 lastDir;
 
     public state currentState;
 
@@ -32,6 +37,7 @@ public class Gun : MonoBehaviour
     private void Start()
     {
         gunAnimator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
         playerRigidbody = playerRigidbody.GetComponent<Rigidbody>();
     }
 
@@ -50,6 +56,8 @@ public class Gun : MonoBehaviour
         {
             if(isClosed) OpenGun();
             else CloseGun();
+
+            
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -91,9 +99,9 @@ public class Gun : MonoBehaviour
     }
     
     void LookOnCursor(){
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
-        mousePos.z = body.position.z;
+       // mousePos.z = body.position.z;
         mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
         if (transform.localScale.x < 0)
         {
@@ -120,116 +128,50 @@ public class Gun : MonoBehaviour
     
     private void PositionChange()
     {
-        if (playerRigidbody.velocity.x > 0.1f)
+        float HorInp = Input.GetAxis("Horizontal");
+        float VertInp = Input.GetAxis("Vertical");
+        if (!isClosed)
         {
-            transform.localPosition = left;
-            transform.localScale = new Vector3(1, 1, 1);
-            if (isClosed && !closedYet)
+            if (HorInp < 0)
             {
-                gunAnimator.SetTrigger("close");
-                closedYet = true;
+                parent.transform.localScale = new Vector3(-1, 1, 1);
+                UsableGun.gameObject.SetActive(true);
             }
-            else if (!isClosed && closedYet)
+            else if (HorInp > 0)
             {
-                gunAnimator.SetTrigger("open");
-                closedYet = false;
+                parent.transform.localScale = new Vector3(1, 1, 1);
+                UsableGun.gameObject.SetActive(true);
             }
-            else if (!isClosed)
+            else if (VertInp != 0 && Math.Abs(HorInp) !=1f)
             {
-                gunAnimator.SetTrigger("opened");
-                if (isClosed && !closedYet)
-                {
-                    closedYet = true;
-                }
-            }
-            else
-            {
-                gunAnimator.SetTrigger("closed");
+                UsableGun.gameObject.SetActive(false);
             }
         }
-        
-        else if (playerRigidbody.velocity.x < -0.1f)
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            transform.localPosition = left;
-            transform.localScale = new Vector3(-1, 1, 1);
-            if (isClosed && !closedYet)
-            {
-                gunAnimator.SetTrigger("close");
-                closedYet = true;
-            }
-            else if (!isClosed && closedYet)
-            {
-                gunAnimator.SetTrigger("open");
-                closedYet = false;
-            }
-            if (!isClosed)
-            {
-                gunAnimator.SetTrigger("opened");
-            }
-            else
-            {
-                gunAnimator.SetTrigger("closed");
-            }
-
+            lastDir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            gunAnimator.SetFloat("X", lastDir.x);
+            gunAnimator.SetFloat("Y", lastDir.y);
         }
-        
-        else if (playerRigidbody.velocity.z > 0.1f)
+        else
         {
-            transform.localPosition = forward;
-            transform.localScale = new Vector3(1, 1, 1);
-            if (isClosed && !closedYet)
-            {
-                gunAnimator.SetTrigger("frontClose");
-                closedYet = true;
-            }
-            else if (!isClosed && closedYet)
-            {
-                gunAnimator.SetTrigger("frontOpen");
-                closedYet = false;
-            }
-            if (!isClosed)
-            {
-                gunAnimator.SetTrigger("frontOpened");
-            }
-            else
-            {
-                gunAnimator.SetTrigger("frontClosed");
-            }
-
-        }
-        if (playerRigidbody.velocity.z < -0.1f)
-        {
-            transform.localPosition = behind;
-            transform.localScale = new Vector3(1, 1, 1);
-            if (isClosed && !closedYet)
-            {
-                gunAnimator.SetTrigger("behindClose");
-                closedYet = true;
-            }
-            else if (!isClosed && closedYet)
-            {
-                gunAnimator.SetTrigger("behindOpen");
-                closedYet = false;
-            }
-            if (!isClosed)
-            {
-                gunAnimator.SetTrigger("behindOpened");
-            }
-            else
-            {
-                gunAnimator.SetTrigger("behindClosed");
-            }
+            gunAnimator.SetFloat("X", lastDir.x * 0.001f);
+            gunAnimator.SetFloat("Y", lastDir.y * 0.001f);
         }
     }
 
     private void CloseGun()
     {
         isClosed = true;
+        gunAnimator.SetBool("isClosed", isClosed);
+        UsableGun.gameObject.SetActive(false);
     }
 
     public void OpenGun()
     {
         isClosed = false;
+        gunAnimator.SetBool("isClosed", isClosed);
+        //UsableGun.gameObject.SetActive(true);
     }
     
 }
