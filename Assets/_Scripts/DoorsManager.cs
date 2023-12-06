@@ -9,17 +9,17 @@ public class DoorsManager : PoweredBox
     [SerializeField] private List<PoweredBox> doorControllers;
 
     [SerializeField] private Item timer;
-    [SerializeField] private Item fuse;
+    //[SerializeField] private Item fuse;
     [SerializeField] private GameObject AdviceText;
     [SerializeField] private GameObject UI_manager;
-    private Inventory inventory;
+    //private Inventory inventory;
     
     [SerializeField] private SpriteRenderer doorControllerSpriteRenderer;
-    [SerializeField] private SpriteRenderer fuseSpriteRenderer;
+    //[SerializeField] private SpriteRenderer fuseSpriteRenderer;
     [SerializeField] private Sprite activeSprite;
     [SerializeField] private Sprite inactiveSprite;
 
-    private bool canUse;
+    //private bool canUse;
     
     public bool hasTimer;
     
