@@ -65,12 +65,11 @@ public class DialogManager : MonoBehaviour
 
     private void Update()
     {
-
         //Автоматическое определение нужной анимации говорящего
         if (textRunning) SpeakerAnimator.SetTrigger("speak");
         else SpeakerAnimator.SetTrigger("idle");
-
-
+        
+        if (Input.GetKeyDown(KeyCode.Space)) textRunning = true;
     }
 
     //При помощи этой функции запускаем корутину с выводом текста
@@ -78,7 +77,7 @@ public class DialogManager : MonoBehaviour
     {
         if (phrasesList.Count > currentPhrase)
         {
-            StartCoroutine(RunText(3f));
+            StartCoroutine(AllText());
             currentPhrase++;
         }
     }
@@ -89,12 +88,88 @@ public class DialogManager : MonoBehaviour
 
     private string currentSpeaker;
 
+
+    public IEnumerator AllText()
+    {
+        foreach (var text in phrasesList)
+        {
+            foreach (var letter in text)
+            {
+                
+                if (!readedSpeaker)
+                {
+                    if (letter.ToString() == "a")
+                    {
+                        currentSpeaker = "a";
+                        readedSpeaker = true;
+                    }
+
+                    else
+                    {
+                        currentSpeaker = "b";
+                        readedSpeaker = true;
+                        
+                    }
+                    continue;
+                }
+
+                if (currentSpeaker == "a")
+                {
+                    textRunning = true;
+                    AiText.text += letter;
+                }
+                
+                else
+                {
+                    if (!readedEmotion)
+                    {
+                        if (letter.ToString() == "h")
+                        {
+                            emotionSpriteRenderer.sprite = happySprite;
+                        }
+                        else if (letter.ToString() == "t")
+                        {
+                            emotionSpriteRenderer.sprite = thoughtfulSprite;
+                        }
+                        else if (letter.ToString() == "d")
+                        {
+                            emotionSpriteRenderer.sprite = disconnectedSprite;
+                        }
+                        else if (letter.ToString() == "s")
+                        {
+                            emotionSpriteRenderer.sprite = surprisedSprite;
+                        }
+                        else if (letter.ToString() == "n")
+                        {
+                            emotionSpriteRenderer.sprite = normalSprite;
+                        }
+                        readedEmotion = true;
+                        continue;
+                    }
+                    
+                    textRunning = false;
+                    BearText.text += letter;
+                }
+            }
+            
+            
+            textRunning = false;
+            while (!textRunning)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            readedEmotion = false;
+            readedSpeaker = false;
+            AiText.text = "";
+            BearText.text = "";
+        }
+        closeButton.SetActive(true);
+    }
+
     public IEnumerator RunText(float pauseBetweenPhrases)
     {
         foreach (var text in phrasesList)
         {
-            speedText = 0.0001f;
-            
             foreach (var letter in text)
             {
                 
