@@ -26,7 +26,11 @@ public class RoomMusicCollider : MonoBehaviour
     public AudioClip[] clips;
     private int currentClip = 0;
 
+    private float timeInRoom;
+
     public float fadeInSec = 2f;
+
+    private float RoomK;
 
 
 
@@ -70,7 +74,8 @@ public class RoomMusicCollider : MonoBehaviour
             StartCoroutine(OxygenOnHealth(other));
             OnChange();
             roomNameText.text = roomName + " : " + oxygen.ToString() + "%";
-            
+            StartCoroutine(AdrenalineBoost(other));
+
         }
     }
     
@@ -87,8 +92,24 @@ public class RoomMusicCollider : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         StopCoroutine(OxygenOnHealth(other));
+        StopCoroutine(AdrenalineBoost(other));
+        timeInRoom = 0f;
     }
 
+
+    private IEnumerator AdrenalineBoost(Collider other)
+    {
+        while (true)
+        {
+            timeInRoom++;
+            if (!other.GetComponent<CharacterHealth>().isUsingAdr)
+            {
+                other.GetComponent<CharacterHealth>().TakeAdrenaline((2 * timeInRoom - 1) * other.GetComponent<CharacterHealth>().baseAdr * RoomK);
+                yield return new WaitForSeconds(1f);
+            }
+        }
+    }
+    
     private IEnumerator OxygenOnHealth(Collider other)
     {
         while (true)
@@ -175,6 +196,7 @@ public class RoomMusicCollider : MonoBehaviour
 
     public void OffLights()
     {
+        RoomK = 1;
         currentRoomState = roomState.off;
         foreach (var light in lights)
         {
@@ -186,6 +208,7 @@ public class RoomMusicCollider : MonoBehaviour
 
     public void EmergencyLightsOn()
     {
+        RoomK = 0.25f;
         currentRoomState = roomState.emergency;
         foreach (var light in lights)
         {
@@ -198,6 +221,7 @@ public class RoomMusicCollider : MonoBehaviour
     
     public void NormalLightsOn()
     {
+        RoomK = -1f;
         currentRoomState = roomState.normal;
         foreach (var light in lights)
         {
@@ -211,7 +235,7 @@ public class RoomMusicCollider : MonoBehaviour
 
     public void OxygenChange(float howMany)
     {
-        StopAllCoroutines();
+        StopCoroutine(OxygenCoroutine(howMany));
         StartCoroutine(OxygenCoroutine(howMany));
     }
 

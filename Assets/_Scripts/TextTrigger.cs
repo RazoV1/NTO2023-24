@@ -7,6 +7,12 @@ public class TextTrigger : MonoBehaviour
 {
     [SerializeField] private CharacterDialog dialogCharacterText;
     [SerializeField] private List<string> phrases;
+
+
+    public void StartTextFromButton()
+    {
+        dialogCharacterText.GetComponent<CharacterDialog>().StartText(phrases);
+    }
     
     private void OnTriggerEnter(Collider other)
     {
