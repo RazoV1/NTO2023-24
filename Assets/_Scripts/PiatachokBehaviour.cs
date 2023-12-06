@@ -21,6 +21,7 @@ public class PiatachokBehaviour : MonoBehaviour
     [SerializeField] private GameObject gunParent;
     public bool onShot;
     public bool isMovingRight;
+    public bool isActive;
     
     private void Start()
     {

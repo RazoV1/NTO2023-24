@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using TMPro;
-using UnityEditor.Build;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -39,6 +39,7 @@ public class DialogManager : MonoBehaviour
     private List<string> phrasesList;
     private int currentPhrase = 0;
     private bool textRunning;
+    public float speedText = 0.05f;
 
     //Эта переменная нужна для того, чтобы мы могли менять автоматическое определение 
     //анимации (в функции Update), на ручное в таймлайне
@@ -66,6 +67,8 @@ public class DialogManager : MonoBehaviour
         //Автоматическое определение нужной анимации говорящего
         if (textRunning) SpeakerAnimator.SetTrigger("speak");
         else SpeakerAnimator.SetTrigger("idle");
+        
+        if (Input.GetKeyDown(KeyCode.Space)) textRunning = true;
     }
 
     //При помощи этой функции запускаем корутину с выводом текста
@@ -73,7 +76,7 @@ public class DialogManager : MonoBehaviour
     {
         if (phrasesList.Count > currentPhrase)
         {
-            StartCoroutine(RunText(3f));
+            StartCoroutine(AllText());
             currentPhrase++;
         }
     }
@@ -83,7 +86,9 @@ public class DialogManager : MonoBehaviour
     private bool readedEmotion;
 
     private string currentSpeaker;
-    public IEnumerator RunText(float pauseBetweenPhrases)
+
+
+    public IEnumerator AllText()
     {
         foreach (var text in phrasesList)
         {
@@ -111,7 +116,6 @@ public class DialogManager : MonoBehaviour
                 {
                     textRunning = true;
                     AiText.text += letter;
-                    yield return new WaitForSeconds(0.05f);
                 }
                 
                 else
@@ -144,7 +148,85 @@ public class DialogManager : MonoBehaviour
                     
                     textRunning = false;
                     BearText.text += letter;
-                    yield return new WaitForSeconds(0.05f);
+                }
+            }
+            
+            
+            textRunning = false;
+            while (!textRunning)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            readedEmotion = false;
+            readedSpeaker = false;
+            AiText.text = "";
+            BearText.text = "";
+        }
+        closeButton.SetActive(true);
+    }
+
+    public IEnumerator RunText(float pauseBetweenPhrases)
+    {
+        foreach (var text in phrasesList)
+        {
+            foreach (var letter in text)
+            {
+                
+                if (!readedSpeaker)
+                {
+                    if (letter.ToString() == "a")
+                    {
+                        currentSpeaker = "a";
+                        readedSpeaker = true;
+                    }
+
+                    else
+                    {
+                        currentSpeaker = "b";
+                        readedSpeaker = true;
+                        
+                    }
+                    continue;
+                }
+
+                if (currentSpeaker == "a")
+                {
+                    textRunning = true;
+                    AiText.text += letter;
+                    yield return new WaitForSeconds(speedText);
+                }
+                
+                else
+                {
+                    if (!readedEmotion)
+                    {
+                        if (letter.ToString() == "h")
+                        {
+                            emotionSpriteRenderer.sprite = happySprite;
+                        }
+                        else if (letter.ToString() == "t")
+                        {
+                            emotionSpriteRenderer.sprite = thoughtfulSprite;
+                        }
+                        else if (letter.ToString() == "d")
+                        {
+                            emotionSpriteRenderer.sprite = disconnectedSprite;
+                        }
+                        else if (letter.ToString() == "s")
+                        {
+                            emotionSpriteRenderer.sprite = surprisedSprite;
+                        }
+                        else if (letter.ToString() == "n")
+                        {
+                            emotionSpriteRenderer.sprite = normalSprite;
+                        }
+                        readedEmotion = true;
+                        continue;
+                    }
+                    
+                    textRunning = false;
+                    BearText.text += letter;
+                    yield return new WaitForSeconds(speedText);
                 }
             }
 

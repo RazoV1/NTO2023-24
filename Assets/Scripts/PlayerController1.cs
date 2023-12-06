@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerController1 : MonoBehaviour
 {
     private Rigidbody rb;
+    private CharacterHealth health;
     public float Maxspeed;
     public float climbSpeed;
     public float currentSpeed;
@@ -45,6 +46,7 @@ public class PlayerController1 : MonoBehaviour
             //movement.y = jumpForce;
             rb.AddForce(new Vector3(0,jumpForce,0),ForceMode.Impulse);
            // movement = new Vector3(0, jumpForce, 0);
+           health.TakeStamina(15f);
         }
     }
     private void RegisterInput()
@@ -180,6 +182,7 @@ public class PlayerController1 : MonoBehaviour
 
     private void Start()
     {
+        health = GetComponent<CharacterHealth>();
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();

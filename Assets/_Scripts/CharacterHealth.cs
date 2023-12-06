@@ -8,12 +8,19 @@ public class CharacterHealth : Health
 {
     [SerializeField] private Image healthBar;
     [SerializeField] private float maxStamina;
+    [SerializeField] private float maxAdrenaline;
     private float currentStamina;
     public float oxygenResistance;
     [SerializeField] private Image staminaBar;
     [SerializeField] private float timeToRecoverStamina;
     private float currentTimeToRecoverStamina;
+    
+    [SerializeField] private Image adrenalineBar;
+    [SerializeField] private float timeToRecoverAdrenaline;
+    [SerializeField] private float currentAdrenaline;
+    public float baseAdr;
 
+    public bool isUsingAdr;
 
     private void Start()
     {
@@ -33,6 +40,12 @@ public class CharacterHealth : Health
 
         return false;
     }
+    
+    public void TakeAdrenaline(float adr)
+    {
+        currentAdrenaline += adr;
+        currentAdrenaline = Mathf.Clamp(currentAdrenaline, 0, maxAdrenaline);
+    }
 
     private void Update()
     {
@@ -51,6 +64,7 @@ public class CharacterHealth : Health
     {
         staminaBar.fillAmount = currentStamina / maxStamina;
         healthBar.fillAmount = currentHealth / maxHealth;
+        adrenalineBar.fillAmount = currentAdrenaline / maxAdrenaline;
     }
 
 }
