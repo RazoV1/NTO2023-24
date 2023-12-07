@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: "\u041F\u043B\u0430\u0441\u0442\u0438\u043A\u043E\u0432\u044B\u0439 \u043A\u0430\u0440\u043A\u0430\u0441"
   Icon: {fileID: 21300000, guid: 9bfd721d09ef6884abac44733dd947a1, type: 3}
-  comp1: {fileID: 11400000, guid: a92f442361f916142aa94fc1867b12b5, type: 2}
+  comp1: {fileID: 0}
   comp2: {fileID: 0}
