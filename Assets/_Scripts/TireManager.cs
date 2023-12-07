@@ -77,6 +77,7 @@ public class TireManager : PoweredBox
         {
             foreach (var door in doorToChangeState)
             {
+                if (door.doorController.securityState == SecurityState.manual) continue;
                 if (door.currentState == i)
                 {
                     if (door.isOpen) door.CloseDoor();

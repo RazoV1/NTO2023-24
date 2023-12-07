@@ -38,8 +38,18 @@ public class PlayerController1 : MonoBehaviour
 
     void Jump()
     {
+        if (health.isUsingAdr && !is_in_air)
+        {
+            animator.SetBool("IsFalling", true);
+            is_in_air = true;
+            //movement.y = jumpForce;
+            rb.AddForce(new Vector3(0,jumpForce* 2f,0),ForceMode.Impulse);
+            // movement = new Vector3(0, jumpForce, 0);
+            health.TakeStamina(15f);
+            health.TakeAdrenaline(15f);
+        }
         
-        if (!is_in_air)
+        else if (!is_in_air)
         {
             animator.SetBool("IsFalling", true);
             is_in_air = true;

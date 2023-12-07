@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: "\u0421\u043C\u0435\u0441\u044C \u0438\u0437 \u0441\u043C\u043E\u043B\u044B"
   m_EditorClassIdentifier: 
   Name: "\u0421\u043C\u043E\u043B\u0430"
-  Icon: {fileID: 21300000, guid: a17e192b1fd3ae6419160972819eee4b, type: 3}
+  Icon: {fileID: 21300000, guid: a51578ee4cf9d7b4db768fbb9ee777c6, type: 3}
   comp1: {fileID: 0}
   comp2: {fileID: 0}

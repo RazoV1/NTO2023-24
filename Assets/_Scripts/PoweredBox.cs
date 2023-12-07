@@ -12,11 +12,39 @@ public class PoweredBox : Box
     [SerializeField] public SpriteRenderer fuseSpriteRenderer;
     [SerializeField] public Sprite fuseActiveSprite;
     [SerializeField] public Sprite fuseInactiveSprite;
+    public SecurityState securityState;
 
-    [SerializeField]
-    protected bool isLoreFuse;
+    public enum SecurityState
+    {
+        manual,
+        tire,
+        programmator
+    }
     
+    
+    [SerializeField] protected bool isLoreFuse;
 
+
+
+    public void ChangeSecurityLevel(int level)
+    {
+        switch (level)
+        {
+            case 0:
+                securityState = SecurityState.manual;
+                break;
+
+            case 1:
+                securityState = SecurityState.tire;
+                break;
+            
+            case 2:
+                securityState = SecurityState.programmator;
+                break;
+            
+        }
+    }
+    
 
     public void PowerOn()
     {

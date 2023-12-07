@@ -18,7 +18,7 @@ public class Door : MonoBehaviour
     private Animator animator;
     
     [SerializeField] private SpriteRenderer timedSprite;
-    [SerializeField] private DoorController doorController;
+    public DoorController doorController;
     
 
     private void Start()

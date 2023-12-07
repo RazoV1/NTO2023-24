@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,7 @@ public class CharacterHealth : Health
     [SerializeField] private Image adrenalineBar;
     [SerializeField] private float timeToRecoverAdrenaline;
     [SerializeField] private float currentAdrenaline;
+    [SerializeField] private GameObject canUseAdrText;
     public float baseAdr;
 
     public bool isUsingAdr;
@@ -30,6 +32,16 @@ public class CharacterHealth : Health
         currentHealth = maxHealth;
     }
 
+    private IEnumerator AdrenalineByUSingChange()
+    {
+        while (isUsingAdr)
+        {
+            if (currentAdrenaline <= 0) isUsingAdr = false;
+            else if (isUsingAdr) currentAdrenaline -= 2f;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    
     public bool TakeStamina(float stamina)
     {
         if (currentStamina > stamina)
@@ -49,6 +61,17 @@ public class CharacterHealth : Health
 
     private void Update()
     {
+        if (currentAdrenaline >= 100)
+        {
+            canUseAdrText.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                canUseAdrText.SetActive(false);
+                isUsingAdr = true;
+                StartCoroutine(AdrenalineByUSingChange());
+            }
+        }
+
         if (currentStamina < maxStamina)
         {
             if (currentTimeToRecoverStamina <= 0)
