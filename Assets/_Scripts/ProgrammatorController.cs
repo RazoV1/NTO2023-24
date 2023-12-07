@@ -15,10 +15,25 @@ public class ProgrammatorController : MonoBehaviour
     [SerializeField]private Transform gridLayoutTransform;
     [SerializeField]private GameObject buttonPrefab;
 
+    private int doorControllersCount;
+    private int tireManagersCount;
+    private int lightManagersCount;
+    private int doorManagersCount;
+    private int codablePlatformSystemsCount;
+
 
     private void Awake()
     {
         doorControllers = GameObject.FindObjectsOfType<DoorController>();
+        lightManagers = GameObject.FindObjectsOfType<LightManager>();
+        tireManagers = GameObject.FindObjectsOfType<TireManager>();
+        doorManagers = GameObject.FindObjectsOfType<DoorsManager>();
+        codablePlatformSystems = GameObject.FindObjectsOfType<CodablePlatformSystem>();
+        print(doorControllers.Length);
+        print(lightManagers.Length);
+        print(tireManagers.Length);
+        print(doorManagers.Length);
+        print(codablePlatformSystems.Length);
     }
 
     private void OpenProgrammator()
@@ -28,10 +43,12 @@ public class ProgrammatorController : MonoBehaviour
 
     public void InstantiateAllDoorButtons()
     {
+        doorControllersCount = 0;
         foreach (var doorController in doorControllers)
         {
             if (doorController.securityState == PoweredBox.SecurityState.programmator && doorController.isPowered)
             {
+                doorControllersCount++; 
                 GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
                 currentPrefab.GetComponent<ButtonToActive>().Ui_active = doorController.UI_door;
                 currentPrefab.GetComponent<ButtonToActive>().buttonText.text = doorController.id.ToString();
@@ -41,10 +58,12 @@ public class ProgrammatorController : MonoBehaviour
     
     public void InstantiateAllLightManagers()
     {
+        lightManagersCount = 0;
         foreach (var lightManager in lightManagers)
         {
             if (lightManager.securityState == PoweredBox.SecurityState.programmator)
             {
+                lightManagersCount++;
                 GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
                 currentPrefab.GetComponent<ButtonToActive>().Ui_active = lightManager.UI_light;
                 currentPrefab.GetComponent<ButtonToActive>().buttonText.text = lightManager.roomName;
@@ -54,21 +73,76 @@ public class ProgrammatorController : MonoBehaviour
     
     public void InstantiateAllPlatforms()
     {
-        foreach (var lightManager in lightManagers)
+        codablePlatformSystemsCount = 0;
+        foreach (var codablePlatform in codablePlatformSystems)
         {
-            if (lightManager.securityState == PoweredBox.SecurityState.programmator)
-            {
-                GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
-                currentPrefab.GetComponent<ButtonToActive>().Ui_active = lightManager.UI_light;
-                currentPrefab.GetComponent<ButtonToActive>().buttonText.text = lightManager.roomName;
-            }
+            codablePlatformSystemsCount++;
+            GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
+            currentPrefab.GetComponent<ButtonToActive>().Ui_active = codablePlatform.UI;
+            currentPrefab.GetComponent<ButtonToActive>().buttonText.text = codablePlatform.platformName;
+        }
+    }
+    
+    public void InstantiateDoorManagers()
+    {
+        doorManagersCount = 0;
+        foreach (var doorManager in doorManagers)
+        {
+            doorManagersCount++;
+            GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
+            currentPrefab.GetComponent<ButtonToActive>().Ui_active = doorManager.UI_manager;
+            currentPrefab.GetComponent<ButtonToActive>().buttonText.text = doorManager.name;
+        }
+    }
+    
+    public void InstantiateTires()
+    {
+        tireManagersCount = 0;
+        foreach (var tireManager in tireManagers)
+        {
+            tireManagersCount++;
+            GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
+            currentPrefab.GetComponent<ButtonToActive>().Ui_active = tireManager.UI_manager;
+            currentPrefab.GetComponent<ButtonToActive>().buttonText.text = tireManager.name;
         }
     }
     
     
-    public void CloseAllButtons()
+    public void CloseAllLightButtons()
     {
-        for (int i = 0; i < doorControllers.Length; i++)
+        for (int i = 0; i < lightManagersCount; i++)
+        {
+            Destroy(gridLayoutTransform.GetChild(i));
+        }
+    }
+    
+    public void CloseAllTireButtons()
+    {
+        for (int i = 0; i < tireManagersCount; i++)
+        {
+            Destroy(gridLayoutTransform.GetChild(i));
+        }
+    }
+    
+    public void CloseAllDoorManagerButtons()
+    {
+        for (int i = 0; i < doorManagersCount; i++)
+        {
+            Destroy(gridLayoutTransform.GetChild(i));
+        }
+    }
+    
+    public void CloseAllPlatformButtons()
+    {
+        for (int i = 0; i < codablePlatformSystemsCount; i++)
+        {
+            Destroy(gridLayoutTransform.GetChild(i));
+        }
+    }
+    
+    public void CloseAllDoorButtons()
+    {
+        for (int i = 0; i < doorControllersCount; i++)
         {
             Destroy(gridLayoutTransform.GetChild(i));
         }

@@ -165,6 +165,8 @@ public class DialogManager : MonoBehaviour
         closeButton.SetActive(true);
     }
 
+    
+    //Корутина для плавного отображения текста по буквам, решили отложить до лучших времен P.S. она рабочая
     public IEnumerator RunText(float pauseBetweenPhrases)
     {
         foreach (var text in phrasesList)

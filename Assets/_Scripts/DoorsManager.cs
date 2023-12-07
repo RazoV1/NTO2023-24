@@ -11,7 +11,8 @@ public class DoorsManager : PoweredBox
     [SerializeField] private Item timer;
     //[SerializeField] private Item fuse;
     [SerializeField] private GameObject AdviceText;
-    [SerializeField] private GameObject UI_manager;
+    public GameObject UI_manager;
+    public string name;
     //private Inventory inventory;
     
     [SerializeField] private SpriteRenderer doorControllerSpriteRenderer;

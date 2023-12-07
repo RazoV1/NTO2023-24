@@ -12,9 +12,10 @@ public class TireManager : PoweredBox
     [SerializeField] private bool isCycled;
     [SerializeField] private SpriteRenderer tireManagerSpriteRenderer;
     [SerializeField] private GameObject AdviceText;
-    [SerializeField] private GameObject UI_manager;
+    public GameObject UI_manager;
     [SerializeField] private Item timer;
     [SerializeField] private SpriteRenderer cycledSprite;
+    public string name;
     
     private float cycleTime;
     private float currentCycleTime;

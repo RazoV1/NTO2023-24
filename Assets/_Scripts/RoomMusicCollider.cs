@@ -116,7 +116,6 @@ public class RoomMusicCollider : MonoBehaviour
         {
             if (oxygen <= other.GetComponent<CharacterHealth>().oxygenResistance) ;
             {
-                print(((100 - oxygen) / 100) * oxygenMaxDamage);
                 other.GetComponent<CharacterHealth>().TakeDamage(((100 - oxygen) / 100) * oxygenMaxDamage);
                 yield return new WaitForSeconds(1f);
             }
