@@ -8,6 +8,9 @@ public class ProgrammatorController : MonoBehaviour
 
     [SerializeField] private GameObject UI_Programmator;
     private DoorController[] doorControllers;
+    private LightManager[] lightManagers;
+    private TireManager[] tireManagers;
+    private DoorsManager[] doorManagers;
     [SerializeField]private Transform gridLayoutTransform;
     [SerializeField]private GameObject buttonPrefab;
 
