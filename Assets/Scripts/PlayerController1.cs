@@ -27,6 +27,8 @@ public class PlayerController1 : MonoBehaviour
     [SerializeField] private AudioClip loot;
     private float lastStepTime;
 
+    
+
     public IEnumerator LootAnim()
     {
         animator.applyRootMotion = true;

@@ -9,6 +9,7 @@ TagManager:
   - ladder
   - floor
   - room
+  - is_movable
   layers:
   - Default
   - TransparentFX

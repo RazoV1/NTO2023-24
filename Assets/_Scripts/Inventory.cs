@@ -11,12 +11,14 @@ public class Inventory : MonoBehaviour
 
     public List<Item> inventoryItems = new List<Item>();
      public List<int> inventoryItemsCount = new List<int>();
+    private PlayerController1 player;
      
      private void Start()
      {
          //inventoryItemsCount = new List<int>();
          //inventoryItems = new List<Item>();
          inventoryWindow = inventoryWindow.GetComponent<InventoryWindow>();
+        player = GetComponent<PlayerController1>();
      }
      
      // ReSharper disable Unity.PerformanceAnalysis
@@ -51,7 +53,8 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        
+        if (Input.GetKeyDown(KeyCode.I) && !player.is_coding)
         {
             inventoryWindow.Redraw();
             inventoryWindow.gameObject.SetActive(true);
