@@ -46,8 +46,21 @@ public class ProgrammatorController : MonoBehaviour
             if (lightManager.securityState == PoweredBox.SecurityState.programmator)
             {
                 GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
-                currentPrefab.GetComponent<ButtonToActive>().Ui_active = doorController.UI_door;
-                currentPrefab.GetComponent<ButtonToActive>().buttonText.text = doorController.id.ToString();
+                currentPrefab.GetComponent<ButtonToActive>().Ui_active = lightManager.UI_light;
+                currentPrefab.GetComponent<ButtonToActive>().buttonText.text = lightManager.roomName;
+            }
+        }
+    }
+    
+    public void InstantiateAllPlatforms()
+    {
+        foreach (var lightManager in lightManagers)
+        {
+            if (lightManager.securityState == PoweredBox.SecurityState.programmator)
+            {
+                GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
+                currentPrefab.GetComponent<ButtonToActive>().Ui_active = lightManager.UI_light;
+                currentPrefab.GetComponent<ButtonToActive>().buttonText.text = lightManager.roomName;
             }
         }
     }

@@ -7,12 +7,13 @@ public class LightManager : PoweredBox
     [Header("Light Manager")]
     [SerializeField] private GameObject AdviceText;
     [SerializeField] public SpriteRenderer colorSprite;
-    [SerializeField] private GameObject UI_light;
+    public GameObject UI_light;
     [SerializeField] private SpriteRenderer timedSprite;
     private bool isCycled;
     private float cycleTime;
     private float currentCycleTime;
     public int currentState;
+    public string roomName;
 
     [SerializeField] private List<RoomMusicCollider> rooms;
 

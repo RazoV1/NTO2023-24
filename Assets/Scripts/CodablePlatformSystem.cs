@@ -34,6 +34,7 @@ public class CodablePlatformSystem : MonoBehaviour
     protected Vector3 targetedPosition;
     protected float delay;
     protected float execotionPercent = 0;
+    public string platformName;
 
     private void Start()
     {
