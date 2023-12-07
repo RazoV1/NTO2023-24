@@ -16,7 +16,7 @@ public class PointList
     
     public List<Point> list;
 }
-public class CodablePlatformSystem : MonoBehaviour
+public class CodablePlatformSystem : PoweredBox
 {
     public TMP_InputField inputField;
     protected string[] commands;
