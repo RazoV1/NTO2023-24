@@ -8,7 +8,8 @@ public class DoorController : PoweredBox
     [SerializeField] private GameObject AdviceText;
     [SerializeField] public SpriteRenderer colorSprite;
     [SerializeField] private Door door;
-    [SerializeField] private GameObject UI_door;
+    [SerializeField] public GameObject UI_door;
+    public int id;
     private float cycleTime;
     private float currentCycleTime;
     public int currentState;
