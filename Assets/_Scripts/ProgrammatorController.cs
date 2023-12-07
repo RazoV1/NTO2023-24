@@ -11,6 +11,7 @@ public class ProgrammatorController : MonoBehaviour
     private LightManager[] lightManagers;
     private TireManager[] tireManagers;
     private DoorsManager[] doorManagers;
+    private CodablePlatformSystem[] codablePlatformSystems;
     [SerializeField]private Transform gridLayoutTransform;
     [SerializeField]private GameObject buttonPrefab;
 
@@ -29,7 +30,20 @@ public class ProgrammatorController : MonoBehaviour
     {
         foreach (var doorController in doorControllers)
         {
-            if (doorController.securityState == PoweredBox.SecurityState.programmator)
+            if (doorController.securityState == PoweredBox.SecurityState.programmator && doorController.isPowered)
+            {
+                GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
+                currentPrefab.GetComponent<ButtonToActive>().Ui_active = doorController.UI_door;
+                currentPrefab.GetComponent<ButtonToActive>().buttonText.text = doorController.id.ToString();
+            }
+        }
+    }
+    
+    public void InstantiateAllLightManagers()
+    {
+        foreach (var lightManager in lightManagers)
+        {
+            if (lightManager.securityState == PoweredBox.SecurityState.programmator)
             {
                 GameObject currentPrefab = Instantiate(buttonPrefab, gridLayoutTransform);
                 currentPrefab.GetComponent<ButtonToActive>().Ui_active = doorController.UI_door;
