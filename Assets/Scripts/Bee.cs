@@ -112,9 +112,20 @@ public class Bee : MonoBehaviour
     {
         if (Stingers == 0 && canStab && Vector3.Distance(transform.position,player.transform.position) <= detectionRange)
         {
-            currentTargetedPosition = player.transform.position;
-            UpdateOrientation(currentTargetedPosition);
-            TryStab();
+            if (Vector3.Distance(patroolPoints[0].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                        Vector3.Distance(patroolPoints[1].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                        Mathf.Max(patroolPoints[0].position.z, patroolPoints[1].position.z) - transform.position.z < 0)
+            {
+                currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                                                      Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                                                      Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+            }
+            else
+            {
+                currentTargetedPosition = player.transform.position;
+                UpdateOrientation(currentTargetedPosition);
+                TryStab();
+            }
         }
 
         RaycastHit hit = new RaycastHit();
@@ -153,6 +164,7 @@ public class Bee : MonoBehaviour
 
     private void Cycle()
     {
+        RaycastHit hit;
         if (Vector3.Distance(transform.position, player.transform.position) > detectionRange)
         {
             Move();
