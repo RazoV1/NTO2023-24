@@ -5,10 +5,10 @@ using UnityEngine;
 public class Bee : MonoBehaviour
 {
     public GameObject player;
-    public Vector3[] patroolPoints = new Vector3[2];
+    public Transform[] patroolPoints = new Transform[2];
     private int patroolInd = 0;
     private bool canShoot = true;
-    private bool canStab = true;
+    [SerializeField] private bool canStab = true;
     [SerializeField] private float detectionRange;
     [SerializeField] private float speed;
     [SerializeField] private float shootCD;
@@ -20,17 +20,25 @@ public class Bee : MonoBehaviour
     [SerializeField] private GameObject Stinger;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer sprite;
+
+    private float CurYOffset;
+
+    private Vector3 currentTargetedPosition;
     public int Stingers;
     public int HP;
-    
+
+    private Vector3 StartPos;
 
     private void Start()
     {
+        currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x), Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y), Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
         player = GameObject.Find("Player");
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        patroolPoints[0] = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 1);
-        patroolPoints[1] = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z + 1);
+        //patroolPoints[0] = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 1);
+        //patroolPoints[1] = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z + 1);
+        CurYOffset = Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y);
+        StartPos = Vector3.zero;
     }
 
     void Stab()
@@ -79,17 +87,15 @@ public class Bee : MonoBehaviour
 
     private void TryShooting()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) >= shootMinRange && canShoot)
-        {
-            Shoot();
-            animator.SetTrigger("shoot");
-            Stingers--;
-            StartCoroutine(ShootCooldown());
-        }
+        Shoot();
+        animator.SetTrigger("shoot");
+        Stingers--;
+        StartCoroutine(ShootCooldown());
     }
 
     private void UpdateOrientation(Vector3 currentTarget)
     {
+        
         if (currentTarget.x - transform.position.x > 0)
         {
             sprite.flipX = true;
@@ -100,52 +106,103 @@ public class Bee : MonoBehaviour
         }
     }
 
+    private void Move()
+    {
+        if (Stingers == 0 && canStab && Vector3.Distance(transform.position,player.transform.position) <= detectionRange)
+        {
+            currentTargetedPosition = player.transform.position;
+            UpdateOrientation(currentTargetedPosition);
+            TryStab();
+        }
+
+        RaycastHit hit = new RaycastHit();
+        Debug.DrawRay(transform.position, currentTargetedPosition - transform.position,Color.red,5f);
+        if (!Physics.Raycast(transform.position,currentTargetedPosition - transform.position,out hit,Vector3.Distance(transform.position,currentTargetedPosition)) || hit.collider.tag == "Player")
+        {
+            if (Vector3.Distance(currentTargetedPosition, transform.position) > 0.1f)
+            {
+                transform.position = Vector3.Lerp(transform.position, currentTargetedPosition, Time.deltaTime * speed);
+                if ((Stingers == 0 && canStab) || Vector3.Distance(transform.position, player.transform.position) > detectionRange)
+                {
+
+                    currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                    Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                    Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+                    //UpdateOrientation(currentTargetedPosition);
+                }
+            }
+            else
+            {
+                currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                    Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                    Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+            }
+        }
+        
+        
+        /*else
+        {
+            currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+            UpdateOrientation(currentTargetedPosition);
+        }*/
+    }
+
     private void Cycle()
     {
         if (Vector3.Distance(transform.position, player.transform.position) > detectionRange)
         {
-            UpdateOrientation(patroolPoints[patroolInd]);
-            if (Vector3.Distance(transform.position, patroolPoints[patroolInd]) > 0.4)
-            {
-                transform.position = Vector3.Lerp(transform.position, patroolPoints[patroolInd], Time.deltaTime * speed * 0.1f);
-            }
-            else
-            {
-                if (patroolPoints.Length - patroolInd == 1)
-                {
-                    patroolInd = 0;
-                }
-                else
-                {
-                    patroolInd++;
-                }
-            }
+            Move();
         }
         else
         {
             UpdateOrientation(player.transform.position);
-            if (Stingers > 0 && Vector3.Distance(transform.position, player.transform.position) > stabMinRange)
+            if (Stingers > 0)
             {
                 if (!canShoot)
                 {
-                    transform.position = Vector3.Lerp(transform.position, player.transform.position, Time.deltaTime);
+                    
+                    if (Vector3.Distance(patroolPoints[0].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                        Vector3.Distance(patroolPoints[1].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                        Mathf.Max(patroolPoints[0].position.z, patroolPoints[1].position.z) - transform.position.z < 0)
+                    {
+                        currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                                                              Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                                                              Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+                    }
+                    else
+                    {
+                        currentTargetedPosition = player.transform.position + (transform.position - player.transform.position).normalized * shootMinRange;
+                        currentTargetedPosition.y = CurYOffset;
+                    }
                 }
                 else 
                 {
+                    if (Vector3.Distance(patroolPoints[0].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                        Vector3.Distance(patroolPoints[1].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                        Mathf.Max(patroolPoints[0].position.z, patroolPoints[1].position.z) - transform.position.z < 0)
+                    {
+                        currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                                                              Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                                                              Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+                    }
+                    else
+                    {
+                        currentTargetedPosition = player.transform.position + (transform.position - player.transform.position).normalized * shootMinRange;
+                        currentTargetedPosition.y = CurYOffset;
+                    }
                     TryShooting();
+                    CurYOffset = Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y);
                 }
+                Move();
             }
             else
             {
-                if (Vector3.Distance(transform.position, player.transform.position) > stabMinRange)
-                {
-                    transform.position = Vector3.Lerp(transform.position, player.transform.position, Time.deltaTime);
-                }
-                else if(canStab)
-                {
-                    TryStab();
-                }
+                Move();
             }
+            
+            
         }
     }
 

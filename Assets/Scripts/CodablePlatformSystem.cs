@@ -57,10 +57,10 @@ public class CodablePlatformSystem : PoweredBox
     {
         if (inputField.text != "")
         {
-            if (inputField.text.Split("\n")[inputField.text.Length-1].Split(" ")[0] == inp.Split(" ")[0] || (inputField.text.Split("\n").Length == 1 && inputField.text.Split(" ")[0] == inp.Split(" ")[0]))
+            if (inputField.text.Split("\n")[inputField.text.Split("\n").Length -1].Split(" ")[0] == inp.Split(" ")[0] || (inputField.text.Split("\n").Length == 1 && inputField.text.Split(" ")[0] == inp.Split(" ")[0]))
             {
                 Debug.Log("L");
-                inputField.text = NewInpText() + (inputField.text[inputField.text.Length - 1] + 1).ToString() + "\n";
+                inputField.text = NewInpText() + (int.Parse(""+ inputField.text.Split("\n")[inputField.text.Split("\n").Length - 1].Split(" ")[1]) + 1).ToString();
                 
             }
             else
