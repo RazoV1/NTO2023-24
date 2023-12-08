@@ -11,6 +11,8 @@ public class ToolBox : Box
     [SerializeField] private Item item;
     [SerializeField] private int countItem;
     [SerializeField] private GameObject adviceText;
+    [SerializeField] private bool hasObjectsToActive;
+    [SerializeField] private bool hasObjectsToInactive;
 
     private bool used = false;
 
@@ -22,9 +24,11 @@ public class ToolBox : Box
         }
         else if (canUse && !isClosed && !used)
         {
-            
             DropItem();
-
+            if (hasObjectsToActive)
+            {
+                GetComponent<ObjectsToActiveInactive>().ActiveObjects();
+            }
         }
     }
 

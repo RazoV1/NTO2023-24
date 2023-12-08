@@ -23,6 +23,7 @@ public class CharacterHealth : Health
     public float baseAdr;
 
     public bool isUsingAdr;
+    public bool isDamageByAdr;
 
     private void Start()
     {
@@ -32,13 +33,24 @@ public class CharacterHealth : Health
         currentHealth = maxHealth;
     }
 
-    private IEnumerator AdrenalineByUSingChange()
+    private IEnumerator AdrenalineByUsingChange()
     {
         while (isUsingAdr)
         {
             if (currentAdrenaline <= 0) isUsingAdr = false;
             else if (isUsingAdr) currentAdrenaline -= 2f;
             yield return new WaitForSeconds(1f);
+            print("AdrenalineByUsingChange");
+        }
+    }
+    
+    private IEnumerator AdrenalineByHP()
+    {
+        while (!isUsingAdr)
+        {
+            TakeDamage(2f);
+            yield return new WaitForSeconds(1f);
+            print("AdrenalineByHP");
         }
     }
     
@@ -63,12 +75,14 @@ public class CharacterHealth : Health
     {
         if (currentAdrenaline >= 100)
         {
+            
             canUseAdrText.SetActive(true);
             if (Input.GetKeyDown(KeyCode.V))
             {
                 canUseAdrText.SetActive(false);
                 isUsingAdr = true;
-                StartCoroutine(AdrenalineByUSingChange());
+                StartCoroutine(AdrenalineByUsingChange());
+                StopCoroutine(AdrenalineByHP());
             }
         }
 

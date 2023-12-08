@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: Fuse
   Icon: {fileID: 21300000, guid: 6d938f49e451efa4a9b3019b344ffe1f, type: 3}
   comp1: {fileID: 11400000, guid: 819ff172df1b9fa4695b544aea949467, type: 2}
-  comp2: {fileID: 11400000, guid: 150cfb371c737654cb6d4b92da1ec409, type: 2}
+  comp2: {fileID: 11400000, guid: 662eeb97cfaa2bf458cedf4610bbb789, type: 2}

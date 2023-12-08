@@ -93,24 +93,6 @@ public class DoorsManager : PoweredBox
         isCycled = true;
     }
     
-    public void PowerUpFuse()
-    {
-        if (inventory.tryToDel(fuse, 1) && !hasFuse)
-        {
-            hasFuse = true;
-            isPowered = true;
-            fuseSpriteRenderer.color = Color.white;
-            doorControllerSpriteRenderer.sprite = activeSprite;
-        }
-    }
-    
-    public void PowerOffFuse()
-    {
-        hasFuse = false;
-        fuseSpriteRenderer.color = Color.black;
-        inventory.AddItem(fuse, 1);
-        doorControllerSpriteRenderer.sprite = inactiveSprite;
-    }
     
     public void PowerUpTimer()
     {

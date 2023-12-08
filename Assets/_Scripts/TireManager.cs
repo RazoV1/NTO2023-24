@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TireManager : PoweredBox
 {
+    
+    [Header("Tire Manager")]
+    
     [SerializeField] private List<Door> doorToChangeState;
     [SerializeField] private List<LightManager> lightToChangeState;
 

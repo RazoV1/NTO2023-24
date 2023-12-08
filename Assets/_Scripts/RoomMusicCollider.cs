@@ -93,6 +93,7 @@ public class RoomMusicCollider : MonoBehaviour
     {
         StopCoroutine(OxygenOnHealth(other));
         StopCoroutine(AdrenalineBoost(other));
+        StopAllCoroutines();
         timeInRoom = 0f;
     }
 
@@ -106,6 +107,7 @@ public class RoomMusicCollider : MonoBehaviour
             {
                 other.GetComponent<CharacterHealth>().TakeAdrenaline((2 * timeInRoom - 1) * other.GetComponent<CharacterHealth>().baseAdr * RoomK);
                 yield return new WaitForSeconds(1f);
+                print("AdrenalineBoost_" + roomName);
             }
         }
     }

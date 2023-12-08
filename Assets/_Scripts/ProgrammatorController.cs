@@ -36,6 +36,12 @@ public class ProgrammatorController : MonoBehaviour
         print(codablePlatformSystems.Length);
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P)) OpenProgrammator();
+    }
+
+
     private void OpenProgrammator()
     {
         UI_Programmator.SetActive(true);
@@ -112,7 +118,7 @@ public class ProgrammatorController : MonoBehaviour
     {
         for (int i = 0; i < lightManagersCount; i++)
         {
-            Destroy(gridLayoutTransform.GetChild(i));
+            Destroy(gridLayoutTransform.GetChild(i).gameObject);
         }
     }
     
@@ -120,7 +126,7 @@ public class ProgrammatorController : MonoBehaviour
     {
         for (int i = 0; i < tireManagersCount; i++)
         {
-            Destroy(gridLayoutTransform.GetChild(i));
+            Destroy(gridLayoutTransform.GetChild(i).gameObject);
         }
     }
     
@@ -128,7 +134,7 @@ public class ProgrammatorController : MonoBehaviour
     {
         for (int i = 0; i < doorManagersCount; i++)
         {
-            Destroy(gridLayoutTransform.GetChild(i));
+            Destroy(gridLayoutTransform.GetChild(i).gameObject);
         }
     }
     
@@ -136,15 +142,15 @@ public class ProgrammatorController : MonoBehaviour
     {
         for (int i = 0; i < codablePlatformSystemsCount; i++)
         {
-            Destroy(gridLayoutTransform.GetChild(i));
+            Destroy(gridLayoutTransform.GetChild(i).gameObject);
         }
     }
     
-    public void CloseAllDoorButtons()
+    public void CloseAllDoorControllerButtons()
     {
         for (int i = 0; i < doorControllersCount; i++)
         {
-            Destroy(gridLayoutTransform.GetChild(i));
+            Destroy(gridLayoutTransform.GetChild(i).gameObject);
         }
     }
 
