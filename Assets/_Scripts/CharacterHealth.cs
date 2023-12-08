@@ -21,6 +21,7 @@ public class CharacterHealth : Health
     [SerializeField] private float currentAdrenaline;
     [SerializeField] private GameObject canUseAdrText;
     public float baseAdr;
+    public Transform spawnPos;
 
     public bool isUsingAdr;
     public bool isDamageByAdr;
@@ -54,6 +55,7 @@ public class CharacterHealth : Health
         }
     }
     
+    
     public bool TakeStamina(float stamina)
     {
         if (currentStamina > stamina)
@@ -73,6 +75,11 @@ public class CharacterHealth : Health
 
     private void Update()
     {
+        if (isDead)
+        {
+            Respawn();
+        }
+        
         if (currentAdrenaline >= 100)
         {
             
@@ -97,6 +104,16 @@ public class CharacterHealth : Health
         RedrawBars();
     }
 
+    private void Respawn()
+    {
+        transform.position = spawnPos.position;
+        isDead = false;
+        currentAdrenaline = 0;
+        currentHealth = maxHealth;
+        currentStamina = maxStamina;
+    }
+    
+    
     private void RedrawBars()
     {
         staminaBar.fillAmount = currentStamina / maxStamina;

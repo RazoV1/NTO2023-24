@@ -7,6 +7,8 @@ public class ButtonToNextTaskOneTime : MonoBehaviour
     private bool used = false;
 
     [SerializeField] private int loreTask; 
+    [SerializeField] private bool hasItemsToActive;
+    [SerializeField] private bool hasItemsToInactive; 
     
     public void NextTask()
     {
@@ -17,6 +19,16 @@ public class ButtonToNextTaskOneTime : MonoBehaviour
             {
                 Camera.main.GetComponent<TaskbarManager>().NextTask();
                 used = true;
+                if (hasItemsToActive)
+                {
+                    GetComponent<ObjectsToActiveInactive>().ActiveObjects();
+                    hasItemsToActive = false;
+                }
+                if (hasItemsToInactive)
+                {
+                    GetComponent<ObjectsToActiveInactive>().InactiveObjects();
+                    hasItemsToInactive = false;
+                }
             }
         }
     }
