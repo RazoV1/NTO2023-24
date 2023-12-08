@@ -13,7 +13,6 @@ public class Point
 [System.Serializable]
 public class PointList
 {
-    
     public List<Point> list;
 }
 public class CodablePlatformSystem : PoweredBox
@@ -28,6 +27,7 @@ public class CodablePlatformSystem : PoweredBox
     [SerializeField] protected TextMeshProUGUI inpText;
     [SerializeField] protected Color ErrorCollor;
     [SerializeField] protected Color NormalColor;
+
     public bool IsCoding= false;
     public PointList ListOfPointLists = new PointList();
     public GameObject UI;
@@ -43,6 +43,44 @@ public class CodablePlatformSystem : PoweredBox
         can_move = true;
     }
 
+    protected string NewInpText()
+    {
+        string newS = "";
+        for (int i = 0; i < inputField.text.Length -1; i++)
+        {
+            newS += inputField.text[i];
+        }
+        return newS;
+    }
+
+    public void PrintInp(string inp)
+    {
+        if (inputField.text != "")
+        {
+            if (inputField.text.Split("\n")[inputField.text.Length-1].Split(" ")[0] == inp.Split(" ")[0] || (inputField.text.Split("\n").Length == 1 && inputField.text.Split(" ")[0] == inp.Split(" ")[0]))
+            {
+                Debug.Log("L");
+                inputField.text = NewInpText() + (inputField.text[inputField.text.Length - 1] + 1).ToString() + "\n";
+                
+            }
+            else
+            {
+                Debug.Log("L2");
+                inputField.text += "\n" + inp;
+            }
+        }
+        else
+        {
+            Debug.Log("L3");
+            inputField.text += inp;
+        }
+    }
+
+    public void ClearAll()
+    {
+        inputField.text = null;
+    }
+
     protected bool CanMove(Vector2 newPos)
     {
         foreach (Point i in ListOfPointLists.list)
@@ -54,7 +92,6 @@ public class CodablePlatformSystem : PoweredBox
             rect.yMax = Mathf.Max(i.list[0].position.y, i.list[1].position.y);
             rect.xMin = Mathf.Min(i.list[0].position.x, i.list[1].position.x);
             rect.yMin = Mathf.Min(i.list[0].position.y, i.list[1].position.y);
-
 
             Debug.DrawLine(new Vector2(i.list[0].position.x, i.list[0].position.y), new Vector2(i.list[1].position.x, i.list[1].position.y),Color.red,5f);
             if (rect.Contains(newPos))
@@ -198,6 +235,8 @@ public class CodablePlatformSystem : PoweredBox
         inputField.text = "";
         targetedPosition = platform.position;
     }
+
+    
 
     public void FinishCode()
     {
