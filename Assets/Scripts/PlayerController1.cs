@@ -21,7 +21,9 @@ public class PlayerController1 : MonoBehaviour
     private Vector2 lastDir;
     
 
+
     public bool is_coding;
+    [SerializeField] private float RunMultiplirer;
     [SerializeField] private AudioSource[] stepsAudioSources;
     [SerializeField] private AudioSource defaultSource;
     [SerializeField] private AudioClip loot;
@@ -36,6 +38,18 @@ public class PlayerController1 : MonoBehaviour
         defaultSource.PlayOneShot(loot);
         yield return new WaitForSeconds(0.6f);
         animator.applyRootMotion = false;
+    }
+
+    void Run()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Maxspeed *= RunMultiplirer;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            Maxspeed /= RunMultiplirer;
+        }
     }
 
     void Jump()
@@ -78,8 +92,10 @@ public class PlayerController1 : MonoBehaviour
                 lastStepTime = 0.4f;
             }
         }
+        Run();
         if (!is_in_air)
         {
+            
             movement = Vector3.Lerp(rb.velocity,Vector3.zero,Time.deltaTime * accelerationForce);
             if (Input.GetKey(KeyCode.D))
             {
