@@ -7,6 +7,7 @@ public class Stinger : MonoBehaviour
     public float speed;
     public float lifetime;
     private Rigidbody rb;
+    public float damage;
 
     private void Start()
     {
@@ -26,6 +27,7 @@ public class Stinger : MonoBehaviour
         if (collision.collider.tag == "Player")
         {
             Debug.Log("Shot!!");
+            collision.gameObject.GetComponent<CharacterHealth>().TakeDamage(damage);
         }
         GameObject.Destroy(gameObject);
     }

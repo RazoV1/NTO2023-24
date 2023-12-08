@@ -77,6 +77,7 @@ public class DoorsManager : PoweredBox
     
     public void ChangeAllShieldsPower()
     {
+        if (!hasFuse) return;
         foreach (var doorController in doorControllers)
         {
             if(!doorController.isPowered) doorController.PowerOn();

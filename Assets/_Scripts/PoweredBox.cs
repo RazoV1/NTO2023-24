@@ -69,7 +69,7 @@ public class PoweredBox : Box
         if (hasFuse) return;
         hasFuse = inventory.tryToDel(fuse, 1);
         if (!hasFuse) return;
-        if(isLoreFuse) Camera.main.GetComponent<TaskbarManager>().NextTask();
+        if(isLoreFuse && loreTask <= Camera.main.GetComponent<TaskbarManager>().currentTask) Camera.main.GetComponent<TaskbarManager>().NextTask();
         if (isPowered)
         {
             fuseSpriteRenderer.sprite = fuseActiveSprite;
@@ -87,6 +87,7 @@ public class PoweredBox : Box
     {
         if (!hasFuse) return;
         hasFuse = false;
+        inventory.AddItem(fuse, 1);
         fuseSpriteRenderer.color = Color.black;
         powerLedSpriteRenderer.color = Color.black;
         

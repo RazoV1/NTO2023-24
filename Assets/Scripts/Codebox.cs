@@ -47,5 +47,11 @@ public class Codebox : MonoBehaviour
             }
         }
         
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            player.is_coding = false;
+            system.UI.SetActive(false);
+        }
+        
     }
 }

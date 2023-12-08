@@ -26,6 +26,7 @@ public class Bee : MonoBehaviour
     private Vector3 currentTargetedPosition;
     public int Stingers;
     public int HP;
+    public float damage;
 
     private Vector3 StartPos;
 
@@ -51,6 +52,7 @@ public class Bee : MonoBehaviour
                 if (hit2.collider.tag == player.tag)
                 {
                     Debug.Log("stabbed!");
+                    player.GetComponent<CharacterHealth>().TakeDamage(damage);
                 }
             }
         }
