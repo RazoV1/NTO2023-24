@@ -45,10 +45,12 @@ public class PlayerController1 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Maxspeed *= RunMultiplirer;
+            animator.SetBool("isRunning",true);
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             Maxspeed /= RunMultiplirer;
+            animator.SetBool("isRunning", false);
         }
     }
 
