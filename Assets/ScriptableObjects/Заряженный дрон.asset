@@ -15,4 +15,4 @@ MonoBehaviour:
   Name: "\u0417\u0430\u0440\u044F\u0436\u0435\u043D\u043D\u044B\u0439 \u0434\u0440\u043E\u043D"
   Icon: {fileID: 21300000, guid: 93c205ad43e5a494491145ac7d5ae0a3, type: 3}
   comp1: {fileID: 11400000, guid: f5c7bf6cf38879a459f39d9154da2309, type: 2}
-  comp2: {fileID: 11400000, guid: 73efa598bfe2e384680abb24cedc16a7, type: 2}
+  comp2: {fileID: 11400000, guid: 6de9c1cf77fe7ce40a7853ab379eb3ac, type: 2}

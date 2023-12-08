@@ -9,6 +9,7 @@ public class TireManager : PoweredBox
     
     [SerializeField] private List<Door> doorToChangeState;
     [SerializeField] private List<LightManager> lightToChangeState;
+    [SerializeField] private List<RoomMusicCollider> roomMusicColliders;
 
 
     [SerializeField] private bool hasTimer;
