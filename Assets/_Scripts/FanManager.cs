@@ -106,20 +106,23 @@ public class FanManager : PoweredBox
                     switch (currentFanState)
                     {
                         case fanState.neutral:
-                            room.OxygenChange(1);
+                            room.oxygenForm = room.oxygenVelocity;
+                            room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.push;
                             return;
                         
                         
                         case fanState.pull:
-                            room.OxygenChange(1);
+                            room.oxygenForm = room.oxygenVelocity;
+                            room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.push;
                             return;
                         
                                                 
                         case fanState.push:
-                            room.OxygenChange(0);
-                            currentFanState = fanState.neutral;
+                            room.oxygenForm = -room.oxygenVelocity;
+                            room.OxygenChange(room.oxygenForm);
+                            currentFanState = fanState.pull;
                             return;
                     }
                 }
@@ -185,18 +188,23 @@ public class FanManager : PoweredBox
             switch (state)
             {
                 case 0:
-                    room.OxygenChange(0);
+                    room.oxygenForm = 0;
+                    room.OxygenChange(room.oxygenForm);
                     currentFanState = fanState.neutral;
                     continue;
                         
+                        
                 case 1:
-                    room.OxygenChange(-1);
+                    room.oxygenForm = -room.oxygenVelocity;
+                    room.OxygenChange(room.oxygenForm);
                     currentFanState = fanState.pull;
                     continue;
-                
+                        
+                                                
                 case 2:
+                    room.oxygenForm = room.oxygenVelocity;
+                    room.OxygenChange(room.oxygenForm);
                     currentFanState = fanState.push;
-                    room.OxygenChange(1);
                     continue;
             }
         }

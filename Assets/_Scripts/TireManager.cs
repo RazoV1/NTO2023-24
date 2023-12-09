@@ -78,6 +78,8 @@ public class TireManager : PoweredBox
     public void ChangeAllTires()
     {
         if (!isPowered || !hasFuse) return;
+
+
         for (int i = 0; i <= 4; i++)
         {
             foreach (var door in doorToChangeState)
@@ -123,6 +125,8 @@ public class TireManager : PoweredBox
     public void ChangeColorTires(int color)
     {
         if (!isPowered || !hasFuse) return;
+        
+        
         foreach (var door in doorToChangeState)
         {
             if (door.currentState == color)
