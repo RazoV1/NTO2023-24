@@ -131,8 +131,32 @@ public class TireManager : PoweredBox
         {
             if (door.currentState == color)
             {
-                if(door.isOpen) door.CloseDoor();
-                else if(!door.isOpen) door.OpenDoor();
+                if(door.isOpen) door.BackdoorCloseDoor();
+                else if(!door.isOpen) door.BackdoorOpenDoor();
+            }
+        }
+        
+        foreach (var roomMusicCollider in roomMusicColliders)
+        {
+            if (roomMusicCollider.tire == color)
+            {
+                if (roomMusicCollider.oxygenForm > 0)
+                {
+                    roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
+                    roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
+                }
+                else if (roomMusicCollider.oxygenForm < 0)
+                {
+                    roomMusicCollider.OxygenChange(roomMusicCollider.oxygenVelocity);
+                    roomMusicCollider.oxygenForm = roomMusicCollider.oxygenVelocity;
+                }
+                else if (roomMusicCollider.oxygenForm == 0)
+                {
+                    roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
+                    roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
+                    print("afafafasfasf");
+                }
+                
             }
         }
 

@@ -86,6 +86,12 @@ public class Door : MonoBehaviour
         animator.SetTrigger("open");
     }
 
+    public void BackdoorCloseDoor()
+    {
+        isOpen = false;
+        animator.SetTrigger("close");
+    }
+    
     public void CloseDoor()
     {
         if (!isOpen) return;

@@ -40,7 +40,8 @@ public class RoomMusicCollider : MonoBehaviour
     public float oxygenVelocity;
 
 
-
+    public int tire;
+    
     public float oxygen;
     [SerializeField] private float oxygenMaxDamage;
 
@@ -252,7 +253,7 @@ public class RoomMusicCollider : MonoBehaviour
 
     public void OxygenChange(float howMany)
     {
-        StopCoroutine(OxygenCoroutine(howMany));
+        StopAllCoroutines();
         StartCoroutine(OxygenCoroutine(howMany));
     }
 
