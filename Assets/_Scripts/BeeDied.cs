@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeeDied : MonoBehaviour
+public class BeeDied : ToolBox
 {
     [SerializeField] private Item item;
     [SerializeField] private GameObject AdviceText;
     [SerializeField] private bool isLore;
 
     [SerializeField] private List<Item> nonLoreDrops;
-    [SerializeField] private bool IsActualBee;
+    public bool IsActualBee;
     
     private bool canUse;
     private bool used = false;

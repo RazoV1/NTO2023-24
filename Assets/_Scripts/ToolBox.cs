@@ -8,7 +8,7 @@ public class ToolBox : Box
     
     [Header("Tool Box")]
 
-    [SerializeField] private Item item;
+    public Item item;
     [SerializeField] private int countItem;
     [SerializeField] private GameObject adviceText;
     [SerializeField] private bool hasObjectsToActive;

@@ -16,6 +16,7 @@ public class BeeHealth : Health
 
     private void OnDestroy()
     {
-        Instantiate(dedBee);
+        GameObject ded_Bee = Instantiate(dedBee, transform.position, Quaternion.identity);
+        ded_Bee.GetComponent<BeeDied>().IsActualBee = true;
     }
 }
