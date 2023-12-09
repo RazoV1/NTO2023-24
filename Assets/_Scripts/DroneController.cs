@@ -11,6 +11,8 @@ public class DroneController : MonoBehaviour
 
     [SerializeField] private SpriteRenderer sprite;
 
+    [SerializeField] private Item item;
+
     public float speed;
     public Vector2 offset;
     public float xScale;
@@ -69,7 +71,7 @@ public class DroneController : MonoBehaviour
             crest.gameObject.SetActive(true);
             sprite.gameObject.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && player.gameObject.GetComponent<Inventory>().hasItem(item))
         {
             if (target == player)
             {
