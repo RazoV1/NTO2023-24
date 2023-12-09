@@ -34,6 +34,9 @@ public class RoomMusicCollider : MonoBehaviour
     private float RoomK;
 
 
+    public float oxygenForm;
+    
+
     public float oxygenVelocity;
 
 
@@ -101,6 +104,8 @@ public class RoomMusicCollider : MonoBehaviour
         StopCoroutine(OxygenOnHealth(other));
         StopCoroutine(AdrenalineBoost(other));
         StopAllCoroutines();
+        OxygenChange(oxygenForm);
+        print("TriggerExit: "+roomName);
         timeInRoom = 0f;
     }
 
@@ -127,6 +132,10 @@ public class RoomMusicCollider : MonoBehaviour
             {
                 other.GetComponent<CharacterHealth>().TakeDamage(((100 - oxygen) / 100) * oxygenMaxDamage);
                 yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                yield return new WaitForNextFrameUnit();
             }
         }
     }
@@ -275,4 +284,6 @@ public class RoomMusicCollider : MonoBehaviour
             }
         }
     }
+    
+    
 }
