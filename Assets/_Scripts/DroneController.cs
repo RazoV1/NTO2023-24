@@ -20,7 +20,7 @@ public class DroneController : MonoBehaviour
     private float horizontalAxis;
     private float verticalAxis;
 
-    private bool canShoot;
+    private bool canShoot = false;
 
     [SerializeField] private Transform crest;
     [SerializeField] private Transform body;

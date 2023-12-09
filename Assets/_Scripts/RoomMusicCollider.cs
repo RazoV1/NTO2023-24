@@ -27,11 +27,14 @@ public class RoomMusicCollider : MonoBehaviour
     private int currentClip = 0;
 
     private float timeInRoom;
+    [SerializeField] private float V;
 
     public float fadeInSec = 2f;
 
     private float RoomK;
 
+
+    public float oxygenVelocity;
 
 
 
@@ -52,6 +55,10 @@ public class RoomMusicCollider : MonoBehaviour
 
     private void Start()
     {
+
+        oxygenVelocity = 100f / (V / 0.2f);
+        print(oxygenVelocity);
+        
         _currentMainAudio = audio_1;
         switch (currentRoomState)
         {
@@ -116,7 +123,7 @@ public class RoomMusicCollider : MonoBehaviour
     {
         while (true)
         {
-            if (oxygen <= other.GetComponent<CharacterHealth>().oxygenResistance) ;
+            if (oxygen <= other.GetComponent<CharacterHealth>().oxygenResistance)
             {
                 other.GetComponent<CharacterHealth>().TakeDamage(((100 - oxygen) / 100) * oxygenMaxDamage);
                 yield return new WaitForSeconds(1f);
@@ -263,6 +270,7 @@ public class RoomMusicCollider : MonoBehaviour
                     animator.SetTrigger("on");
                 }
 
+                print(roomName);
                 yield return new WaitForSeconds(1);
             }
         }
