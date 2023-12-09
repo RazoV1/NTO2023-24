@@ -7,6 +7,10 @@ public class BeeDied : MonoBehaviour
     [SerializeField] private Item item;
     [SerializeField] private GameObject AdviceText;
     [SerializeField] private bool isLore;
+
+    [SerializeField] private List<Item> nonLoreDrops;
+    [SerializeField] private bool IsActualBee;
+    
     private bool canUse;
     private bool used = false;
 
@@ -17,6 +21,10 @@ public class BeeDied : MonoBehaviour
     private void Start()
     {
         taskbarManager = Camera.main.GetComponent<TaskbarManager>();
+        if (isLore == false && IsActualBee)
+        {
+            item = nonLoreDrops[Random.Range(0, nonLoreDrops.Count-1)];
+        }
     }
 
     private void OnTriggerEnter(Collider other)
