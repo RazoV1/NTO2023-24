@@ -15,7 +15,7 @@ public class CharacterHealth : Health
     [SerializeField] private Image staminaBar;
     [SerializeField] private float timeToRecoverStamina;
     private float currentTimeToRecoverStamina;
-    
+
     [SerializeField] private Image adrenalineBar;
     [SerializeField] private float timeToRecoverAdrenaline;
     [SerializeField] private float currentAdrenaline;
@@ -28,6 +28,7 @@ public class CharacterHealth : Health
 
     private void Start()
     {
+
         healthBar = healthBar.GetComponent<Image>();
         staminaBar = staminaBar.GetComponent<Image>();
         currentStamina = maxStamina;
@@ -38,13 +39,21 @@ public class CharacterHealth : Health
     {
         while (isUsingAdr)
         {
-            if (currentAdrenaline <= 0) isUsingAdr = false;
-            else if (isUsingAdr) currentAdrenaline -= 2f;
-            yield return new WaitForSeconds(1f);
+            if (currentAdrenaline <= 0)
+            {
+                isUsingAdr = false;
+            }
+
+            if (isUsingAdr)
+            {
+                currentAdrenaline -= 2f;
+            }
+
             print("AdrenalineByUsingChange");
+            yield break;
         }
     }
-    
+
     private IEnumerator AdrenalineByHP()
     {
         while (!isUsingAdr)
@@ -78,7 +87,11 @@ public class CharacterHealth : Health
         if (isDead)
         {
             Respawn();
+            
         }
+
+        if (Input.GetKeyDown(KeyCode.L)) Time.timeScale = 10f;
+        if (Input.GetKeyDown(KeyCode.B)) Time.timeScale = 1f;
         
         if (currentAdrenaline >= 100)
         {
@@ -89,7 +102,7 @@ public class CharacterHealth : Health
                 canUseAdrText.SetActive(false);
                 isUsingAdr = true;
                 StartCoroutine(AdrenalineByUsingChange());
-                StopCoroutine(AdrenalineByHP());
+                StopAllCoroutines();
             }
         }
 
