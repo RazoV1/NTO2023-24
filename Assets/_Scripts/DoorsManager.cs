@@ -21,9 +21,7 @@ public class DoorsManager : PoweredBox
     [SerializeField] private Sprite inactiveSprite;
 
     //private bool canUse;
-    
-    public bool hasTimer;
-    
+
     public bool isCycled;
     
     private float cycleTime;
@@ -80,15 +78,28 @@ public class DoorsManager : PoweredBox
         if (!hasFuse) return;
         foreach (var doorController in doorControllers)
         {
-            if(!doorController.isPowered) doorController.PowerOn();
-            else if(doorController.isPowered) doorController.PowerDown();
+            switch (doorController.isPowered)
+            {
+                case false:
+                    doorController.PowerOn();
+                    print("f");
+                    continue;
+                case true:
+                    doorController.PowerDown();
+                    print("t");
+                    continue;
+            }
         }
     }
 
     public void ChangeCycleTime(float time)
     {
-        if(!hasFuse && !hasTimer) return;
-        if (time == 0) isCycled = false;
+        if(!hasFuse || !hasTimer) return;
+        if (time == 0)
+        {
+            isCycled = false;
+            return;
+        }
         currentCycleTime = time;
         cycleTime = time;
         isCycled = true;

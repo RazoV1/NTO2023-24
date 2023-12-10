@@ -109,21 +109,21 @@ public class FanManager : PoweredBox
                             room.oxygenForm = room.oxygenVelocity;
                             room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.push;
-                            return;
+                            continue;
                         
                         
                         case fanState.pull:
                             room.oxygenForm = room.oxygenVelocity;
                             room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.push;
-                            return;
+                            continue;
                         
                                                 
                         case fanState.push:
                             room.oxygenForm = -room.oxygenVelocity;
                             room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.pull;
-                            return;
+                            continue;
                     }
                 }
                 currentCycleTime = cycleTime;

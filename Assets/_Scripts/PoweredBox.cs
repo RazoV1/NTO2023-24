@@ -6,12 +6,14 @@ public class PoweredBox : Box
 {
     [Header("Powered Box")]
     [SerializeField] protected Item fuse;
+    [SerializeField] protected Item timer;
     [SerializeField] public bool isPowered;
     [SerializeField] public bool hasFuse;
     [SerializeField] public SpriteRenderer powerLedSpriteRenderer;
     [SerializeField] public SpriteRenderer fuseSpriteRenderer;
     [SerializeField] public Sprite fuseActiveSprite;
     [SerializeField] public Sprite fuseInactiveSprite;
+    [SerializeField] public bool hasTimer;
     public SecurityState securityState;
 
     public enum SecurityState
@@ -48,6 +50,7 @@ public class PoweredBox : Box
 
     public void PowerOn()
     {
+        print(gameObject.name);
         isPowered = true;
         if(!hasFuse) return;
         powerLedSpriteRenderer.color = Color.yellow;
@@ -91,5 +94,19 @@ public class PoweredBox : Box
         fuseSpriteRenderer.color = Color.black;
         powerLedSpriteRenderer.color = Color.black;
         
+    }
+    
+    public void TryToTimerPowerUp()
+    {
+        if (hasTimer) return;
+        hasTimer = inventory.tryToDel(timer, 1);
+    }
+    
+    public void TryToTimerPowerDown()
+    {
+        if (!hasTimer) return;
+        hasTimer = false;
+        inventory.AddItem(timer, 1);
+
     }
 }

@@ -106,7 +106,6 @@ public class RoomMusicCollider : MonoBehaviour
         StopCoroutine(AdrenalineBoost(other));
         StopAllCoroutines();
         OxygenChange(oxygenForm);
-        print("TriggerExit: "+roomName);
         timeInRoom = 0f;
     }
 
@@ -120,7 +119,6 @@ public class RoomMusicCollider : MonoBehaviour
             {
                 other.GetComponent<CharacterHealth>().TakeAdrenaline((2 * timeInRoom - 1) * other.GetComponent<CharacterHealth>().baseAdr * RoomK);
                 yield return new WaitForSeconds(1f);
-                print("AdrenalineBoost_" + roomName);
             }
         }
     }
@@ -261,6 +259,7 @@ public class RoomMusicCollider : MonoBehaviour
     {
         while (true)
         {
+            print("oxygenChange on : " + roomName);
             if (howMany == 0)
             {
                 foreach (var animator in fanAnimators)

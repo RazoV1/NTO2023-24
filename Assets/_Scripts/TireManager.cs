@@ -10,9 +10,7 @@ public class TireManager : PoweredBox
     [SerializeField] private List<Door> doorToChangeState;
     [SerializeField] private List<LightManager> lightToChangeState;
     [SerializeField] private List<RoomMusicCollider> roomMusicColliders;
-
-
-    [SerializeField] private bool hasTimer;
+    
     [SerializeField] private bool isCycled;
     [SerializeField] private SpriteRenderer tireManagerSpriteRenderer;
     [SerializeField] private GameObject AdviceText;
@@ -67,10 +65,10 @@ public class TireManager : PoweredBox
             if (currentCycleTime <= 0)
             {
                 if (!isPowered || !hasTimer || !hasFuse) return;
+                currentCycleTime = cycleTime;
                 ChangeAllTires();
                 if(cycledSprite.color == Color.black) cycledSprite.color = Color.yellow;
                 else if(cycledSprite.color == Color.yellow) cycledSprite.color = Color.black;
-                currentCycleTime = cycleTime;
             }
         }
     }
@@ -82,13 +80,32 @@ public class TireManager : PoweredBox
 
         for (int i = 0; i <= 4; i++)
         {
+            foreach (var roomMusicCollider in roomMusicColliders)
+            {
+                if (roomMusicCollider.oxygenForm > 0)
+                {
+                    roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
+                    roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
+                }
+                else if (roomMusicCollider.oxygenForm < 0)
+                {
+                    roomMusicCollider.OxygenChange(roomMusicCollider.oxygenVelocity);
+                    roomMusicCollider.oxygenForm = roomMusicCollider.oxygenVelocity;
+                }
+                else if (roomMusicCollider.oxygenForm == 0)
+                {
+                    roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
+                    roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
+                }
+            }
+            
             foreach (var door in doorToChangeState)
             {
                 if (door.doorController.securityState == SecurityState.manual) continue;
                 if (door.currentState == i)
                 {
-                    if (door.isOpen) door.CloseDoor();
-                    else if (!door.isOpen) door.OpenDoor();
+                    if (door.isOpen) door.BackdoorCloseDoor();
+                    else if (!door.isOpen) door.BackdoorOpenDoor();
                 }
             }
 
@@ -101,6 +118,26 @@ public class TireManager : PoweredBox
                     else if (light.currentLightState == LightManager.lightState.off) light.ChangeCurrentLightState(2);
                 }
             }
+            
+            foreach (var roomMusicCollider in roomMusicColliders)
+            { 
+                    if (roomMusicCollider.oxygenForm > 0)
+                    {
+                        roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
+                        roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
+                    }
+                    else if (roomMusicCollider.oxygenForm < 0)
+                    {
+                        roomMusicCollider.OxygenChange(roomMusicCollider.oxygenVelocity);
+                        roomMusicCollider.oxygenForm = roomMusicCollider.oxygenVelocity;
+                    }
+                    else if (roomMusicCollider.oxygenForm == 0)
+                    {
+                        roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
+                        roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
+                    }
+            }
+            
         }
 
     }
@@ -119,6 +156,7 @@ public class TireManager : PoweredBox
         {
             isCycled = false;
             cycledSprite.color = Color.black;
+            print(112);
         }
     }
     
@@ -126,20 +164,12 @@ public class TireManager : PoweredBox
     {
         if (!isPowered || !hasFuse) return;
         
-        
-        foreach (var door in doorToChangeState)
-        {
-            if (door.currentState == color)
-            {
-                if(door.isOpen) door.BackdoorCloseDoor();
-                else if(!door.isOpen) door.BackdoorOpenDoor();
-            }
-        }
-        
         foreach (var roomMusicCollider in roomMusicColliders)
         {
+            print("BBBBBBBBBBBBBBBBBBB");
             if (roomMusicCollider.tire == color)
             {
+                print("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 if (roomMusicCollider.oxygenForm > 0)
                 {
                     roomMusicCollider.OxygenChange(-roomMusicCollider.oxygenVelocity);
@@ -156,9 +186,18 @@ public class TireManager : PoweredBox
                     roomMusicCollider.oxygenForm = -roomMusicCollider.oxygenVelocity;
                     print("afafafasfasf");
                 }
-                
             }
         }
+        
+        foreach (var door in doorToChangeState)
+        {
+            if (door.currentState == color)
+            {
+                if(door.isOpen) door.BackdoorCloseDoor();
+                else if(!door.isOpen) door.BackdoorOpenDoor();
+            }
+        }
+        
 
         foreach (var light in lightToChangeState)
         {

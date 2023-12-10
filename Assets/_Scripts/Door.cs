@@ -153,6 +153,7 @@ public class Door : MonoBehaviour
     
     public void Timed(float time)
     {
+        if(!doorController.hasTimer) return;
         if (time > 0)
         {
             isCycled = true;
