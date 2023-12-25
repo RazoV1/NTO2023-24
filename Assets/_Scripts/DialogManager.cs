@@ -65,10 +65,12 @@ public class DialogManager : MonoBehaviour
     private void Update()
     {
         //Автоматическое определение нужной анимации говорящего
-        if (textRunning) SpeakerAnimator.SetTrigger("speak");
-        else SpeakerAnimator.SetTrigger("idle");
-        
+        //if (textRunning) SpeakerAnimator.SetTrigger("speak");
+        //else SpeakerAnimator.SetTrigger("idle");
+
         if (Input.GetKeyDown(KeyCode.Space)) textRunning = true;
+        print(currentPhrase);
+        print(textRunning);
     }
 
     //При помощи этой функции запускаем корутину с выводом текста
@@ -101,20 +103,21 @@ public class DialogManager : MonoBehaviour
                     {
                         currentSpeaker = "a";
                         readedSpeaker = true;
+                        SpeakerAnimator.SetTrigger("speak");
                     }
 
                     else
                     {
                         currentSpeaker = "b";
+                        SpeakerAnimator.SetTrigger("idle");
                         readedSpeaker = true;
-                        
                     }
                     continue;
                 }
 
                 if (currentSpeaker == "a")
                 {
-                    textRunning = true;
+                    textRunning = false;
                     AiText.text += letter;
                 }
                 
@@ -143,16 +146,13 @@ public class DialogManager : MonoBehaviour
                             emotionSpriteRenderer.sprite = normalSprite;
                         }
                         readedEmotion = true;
+                        textRunning = false;
                         continue;
                     }
-                    
-                    textRunning = false;
                     BearText.text += letter;
                 }
             }
             
-            
-            textRunning = false;
             while (!textRunning)
             {
                 yield return new WaitForEndOfFrame();
