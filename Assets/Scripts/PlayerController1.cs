@@ -134,7 +134,8 @@ public class PlayerController1 : MonoBehaviour
                 }
                 else
                 {
-                    is_climbing = false;
+                    is_animating = true;
+                    transform.position = new Vector3(transform.position.x, transform.position.y - climbSpeed * Time.deltaTime, transform.position.z);
                 }
             }
             else
@@ -143,8 +144,15 @@ public class PlayerController1 : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                is_climbing = false;
-                Jump();
+                if (is_climbing)
+                {
+                    is_climbing = false;
+                    rb.AddForce(new Vector3(0, 0, -10f));
+                }
+                else
+                {
+                    Jump();
+                }
             }
             if (movement.normalized.x < 0)
             {
