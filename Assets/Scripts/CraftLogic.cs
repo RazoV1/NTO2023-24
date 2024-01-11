@@ -13,9 +13,9 @@ public class CraftLogic : MonoBehaviour
     public bool can_use;
     
 
-    public void CraftMenu()
+    public void CraftMenu(bool c)
     {
-        is_opened = !is_opened;
+        is_opened = c;
         menu.SetActive(is_opened);
         CheckAvailability();
     }
@@ -45,6 +45,7 @@ public class CraftLogic : MonoBehaviour
             inventory.tryToDel(item.comp2, 1);
             inventory.AddItem(item, 1);
         }
+        CheckAvailability();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -70,7 +71,11 @@ public class CraftLogic : MonoBehaviour
     {
         if (can_use && Input.GetKeyDown(KeyCode.E))
         {
-            CraftMenu();
+            CraftMenu(true);
+        }
+        if (can_use && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CraftMenu(false);
         }
     }
 }

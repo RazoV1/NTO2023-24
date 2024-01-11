@@ -19,8 +19,6 @@ public class PlayerController1 : MonoBehaviour
     private bool is_climbing = false;
     private bool is_animating = false;
     private Vector2 lastDir;
-    
-
 
     public bool is_coding;
     [SerializeField] private float RunMultiplirer;
@@ -224,6 +222,10 @@ public class PlayerController1 : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        Jump();
+        lastDir = new Vector2(0.001f,0.001f);
+        animator.SetFloat("X",0.001f);
+        animator.SetFloat("Y",0.001f);
     }
     private void Update()
     {
