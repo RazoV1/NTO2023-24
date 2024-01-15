@@ -26,6 +26,8 @@ public class CharacterHealth : Health
     public bool isUsingAdr;
     public bool isDamageByAdr;
 
+    private bool bool_AdrenalineByUsingChange;
+
     private void Start()
     {
 
@@ -34,8 +36,7 @@ public class CharacterHealth : Health
         currentStamina = maxStamina;
         currentHealth = maxHealth;
     }
-
-    private IEnumerator AdrenalineByUsingChange()
+    private void AdrenalineByUsingChange()
     {
         while (isUsingAdr)
         {
@@ -50,7 +51,7 @@ public class CharacterHealth : Health
             }
 
             print("AdrenalineByUsingChange");
-            yield break;
+            break;
         }
     }
 
@@ -84,6 +85,8 @@ public class CharacterHealth : Health
 
     private void Update()
     {
+        if(bool_AdrenalineByUsingChange) AdrenalineByUsingChange();
+        
         if (isDead)
         {
             Respawn();
@@ -101,7 +104,7 @@ public class CharacterHealth : Health
             {
                 canUseAdrText.SetActive(false);
                 isUsingAdr = true;
-                StartCoroutine(AdrenalineByUsingChange());
+                bool_AdrenalineByUsingChange = true;
                 StopAllCoroutines();
             }
         }

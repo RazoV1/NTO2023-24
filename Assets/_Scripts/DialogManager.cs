@@ -39,7 +39,10 @@ public class DialogManager : MonoBehaviour
     private List<string> phrasesList;
     private int currentPhrase = 0;
     private bool textRunning;
+    private bool isWaiting = true;
     public float speedText = 0.05f;
+
+    private bool bool_AllText;
 
     //Эта переменная нужна для того, чтобы мы могли менять автоматическое определение 
     //анимации (в функции Update), на ручное в таймлайне
@@ -47,6 +50,9 @@ public class DialogManager : MonoBehaviour
     public bool customSpeakerAnim;
     
     void Start () {
+        
+        isWaiting = true;
+        
         if (instance == null) { 
             instance = this; 
         } else if(instance == this){
@@ -68,9 +74,14 @@ public class DialogManager : MonoBehaviour
         //if (textRunning) SpeakerAnimator.SetTrigger("speak");
         //else SpeakerAnimator.SetTrigger("idle");
 
+        
+        if(bool_AllText) LoadPhrase();
+
         if (Input.GetKeyDown(KeyCode.Space)) textRunning = true;
+        if (Input.GetKeyDown(KeyCode.Space)) isWaiting = false;
         print(currentPhrase);
         print(textRunning);
+        print("is waiting: " + isWaiting);
     }
 
     //При помощи этой функции запускаем корутину с выводом текста
@@ -78,8 +89,8 @@ public class DialogManager : MonoBehaviour
     {
         if (phrasesList.Count > currentPhrase)
         {
-            StartCoroutine(AllText());
-            currentPhrase++;
+            bool_AllText = true;
+            //currentPhrase++;
         }
     }
     
@@ -89,13 +100,102 @@ public class DialogManager : MonoBehaviour
 
     private string currentSpeaker;
 
+    
+    public void LoadPhrase()
+    {
+        foreach (var letter in phrasesList[currentPhrase])
+        {
+            if (currentPhrase == phrasesList.Count && isWaiting)
+            {
+                closeButton.SetActive(true);
+                readedEmotion = false;
+                readedSpeaker = false;
+            }
+            
+            if (isWaiting) return;
+            
+            readedEmotion = false;
+            readedSpeaker = false;
+            AiText.text = "";
+            BearText.text = "";
 
-    public IEnumerator AllText()
+            if (!readedSpeaker)
+            {
+                if (letter.ToString() == "a")
+                {
+                    currentSpeaker = "a";
+                    readedSpeaker = true;
+                    SpeakerAnimator.SetTrigger("speak");
+                }
+
+                else
+                {
+                    currentSpeaker = "b";
+                    SpeakerAnimator.SetTrigger("idle");
+                    readedSpeaker = true;
+                }
+            }
+
+            if (currentSpeaker == "a")
+            {
+                textRunning = false;
+                AiText.text = phrasesList[currentPhrase][1..];
+                currentPhrase++;
+                isWaiting = true;
+                return;
+            }
+
+            else
+            {
+                if (!readedEmotion)
+                {
+                    if (letter.ToString() == "h")
+                    {
+                        emotionSpriteRenderer.sprite = happySprite;
+                    }
+                    else if (letter.ToString() == "t")
+                    {
+                        emotionSpriteRenderer.sprite = thoughtfulSprite;
+                    }
+                    else if (letter.ToString() == "d")
+                    {
+                        emotionSpriteRenderer.sprite = disconnectedSprite;
+                    }
+                    else if (letter.ToString() == "s")
+                    {
+                        emotionSpriteRenderer.sprite = surprisedSprite;
+                    }
+                    else if (letter.ToString() == "n")
+                    {
+                        emotionSpriteRenderer.sprite = normalSprite;
+                    }
+
+                    readedEmotion = true;
+                    textRunning = false;
+                    BearText.text = phrasesList[currentPhrase][2..];
+                    currentPhrase++;
+                    isWaiting = true;
+                }
+                
+            }
+        }
+        
+        readedEmotion = false;
+        readedSpeaker = false;
+        AiText.text = "";
+        BearText.text = "";
+            
+        if(currentPhrase == phrasesList.Count && isWaiting) closeButton.SetActive(true);
+    }
+    
+
+    public void AllText()
     {
         foreach (var text in phrasesList)
         {
             foreach (var letter in text)
             {
+                if(isWaiting) return;
                 
                 if (!readedSpeaker)
                 {
@@ -149,14 +249,17 @@ public class DialogManager : MonoBehaviour
                         textRunning = false;
                         continue;
                     }
-                    BearText.text += letter;
+
+                    BearText.text = text;
+                    isWaiting = true;
                 }
             }
-            
-            while (!textRunning)
+
+            while (isWaiting)
             {
-                yield return new WaitForEndOfFrame();
+                return;
             }
+            
             readedEmotion = false;
             readedSpeaker = false;
             AiText.text = "";
