@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Timers;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,6 +20,10 @@ public class RoomMusicCollider : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roomNameText;
 
 
+    private bool bool_OxygenOnHealth;
+    private bool bool_AdrenalineBoost;
+    
+    
     public AudioSource audio_1;
     public AudioSource audio_2;
     private AudioSource _currentMainAudio;
@@ -59,7 +64,6 @@ public class RoomMusicCollider : MonoBehaviour
 
     private void Start()
     {
-
         oxygenVelocity = 100f / (V / 0.2f);
         print(oxygenVelocity);
         
@@ -78,15 +82,20 @@ public class RoomMusicCollider : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(bool_OxygenOnHealth) OxygenOnHealth(GameObject.FindGameObjectWithTag("Player"));
+        if(bool_AdrenalineBoost) AdrenalineBoost(GameObject.FindGameObjectWithTag("Player"));
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(OxygenOnHealth(other));
+            bool_OxygenOnHealth = true;
             OnChange();
             roomNameText.text = roomName + " : " + oxygen.ToString() + "%";
-            StartCoroutine(AdrenalineBoost(other));
-
+            bool_AdrenalineBoost = true;
         }
     }
     
@@ -102,40 +111,36 @@ public class RoomMusicCollider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        StopCoroutine(OxygenOnHealth(other));
-        StopCoroutine(AdrenalineBoost(other));
+        bool_OxygenOnHealth = false;
+        bool_AdrenalineBoost = false;
         StopAllCoroutines();
         OxygenChange(oxygenForm);
         timeInRoom = 0f;
     }
 
 
-    private IEnumerator AdrenalineBoost(Collider other)
+    private float currentWait_AdrenalineBoost;
+    private void AdrenalineBoost(GameObject other)
     {
-        while (true)
-        {
-            timeInRoom++;
-            if (!other.GetComponent<CharacterHealth>().isUsingAdr)
+        currentWait_AdrenalineBoost -= Time.deltaTime;
+        timeInRoom++;
+            if (currentWait_AdrenalineBoost <= 0 && !other.GetComponent<CharacterHealth>().isUsingAdr)
             {
                 other.GetComponent<CharacterHealth>().TakeAdrenaline((2 * timeInRoom - 1) * other.GetComponent<CharacterHealth>().baseAdr * RoomK);
-                yield return new WaitForSeconds(1f);
+                currentWait_AdrenalineBoost = 1f;
             }
-        }
     }
-    
-    private IEnumerator OxygenOnHealth(Collider other)
+
+
+    private float currentWait_OxygenOnHealth;
+    private void OxygenOnHealth(GameObject other)
     {
-        while (true)
-        {
-            if (oxygen <= other.GetComponent<CharacterHealth>().oxygenResistance)
-            {
-                other.GetComponent<CharacterHealth>().TakeDamage(((100 - oxygen) / 100) * oxygenMaxDamage);
-                yield return new WaitForSeconds(1f);
-            }
-            else
-            {
-                yield return new WaitForNextFrameUnit();
-            }
+
+        currentWait_OxygenOnHealth -= Time.deltaTime;
+        if (currentWait_OxygenOnHealth <= 0 && oxygen <= other.GetComponent<CharacterHealth>().oxygenResistance)
+        { 
+            other.GetComponent<CharacterHealth>().TakeDamage(((100 - oxygen) / 100) * oxygenMaxDamage);
+            currentWait_OxygenOnHealth = 1f;
         }
     }
 
@@ -179,11 +184,12 @@ public class RoomMusicCollider : MonoBehaviour
 
     public void PlayFade()
     {
-        StopCoroutine(PlayFadeCoroutine());
-        StartCoroutine(PlayFadeCoroutine());
+        //StopCoroutine(PlayFadeCoroutine());
+        //StartCoroutine(PlayFadeCoroutine());
+        PlayFadeVoid();
     }
 
-    private IEnumerator PlayFadeCoroutine()
+    private void PlayFadeVoid()
     {
         AudioSource newMainAudio = _currentMainAudio == audio_1 ? audio_2 : audio_1;
         if(currentRoomState == roomState.off) newMainAudio.clip = clips[0];
@@ -204,7 +210,7 @@ public class RoomMusicCollider : MonoBehaviour
             newMainAudio.volume += volume;
 
             if (newMainAudio.volume >= 1) break;
-            yield return null;
+            return;
         }
 
         _currentMainAudio = newMainAudio;
@@ -252,36 +258,36 @@ public class RoomMusicCollider : MonoBehaviour
     public void OxygenChange(float howMany)
     {
         StopAllCoroutines();
-        StartCoroutine(OxygenCoroutine(howMany));
+        OxygenVoid(howMany);
     }
 
-    private IEnumerator OxygenCoroutine(float howMany)
+
+    private float currentTime_OxygenVoid;
+    private void OxygenVoid(float howMany)
     {
-        while (true)
+        currentTime_OxygenVoid -= Time.deltaTime;
+        print("oxygenChange on : " + roomName);
+        if (howMany == 0 && currentTime_OxygenVoid <= 0)
         {
-            print("oxygenChange on : " + roomName);
-            if (howMany == 0)
+            foreach (var animator in fanAnimators)
             {
-                foreach (var animator in fanAnimators)
-                {
-                    animator.SetTrigger("off");
-                }
-
-                yield return new WaitForSeconds(1);
-
+                animator.SetTrigger("off");
             }
-            else
+
+            currentTime_OxygenVoid = 1;
+
+        }
+        else if(currentTime_OxygenVoid <= 0)
+        {
+            oxygen += howMany;
+            oxygen = Mathf.Clamp(oxygen, 0f, 100f);
+            foreach (var animator in fanAnimators)
             {
-                oxygen += howMany;
-                oxygen = Mathf.Clamp(oxygen, 0f, 100f);
-                foreach (var animator in fanAnimators)
-                {
-                    animator.SetTrigger("on");
-                }
-
-                print(roomName);
-                yield return new WaitForSeconds(1);
+                animator.SetTrigger("on");
             }
+
+            print(roomName);
+            currentTime_OxygenVoid = 1;
         }
     }
     
