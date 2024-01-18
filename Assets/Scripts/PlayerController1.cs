@@ -40,6 +40,8 @@ public class PlayerController1 : MonoBehaviour
 
     void Run()
     {
+        if(health.currentStamina < Time.deltaTime * 2) return;
+        
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Maxspeed *= RunMultiplirer;
@@ -54,6 +56,7 @@ public class PlayerController1 : MonoBehaviour
 
     void Jump()
     {
+        if(health.currentStamina < 15) return;
         if (health.isUsingAdr && !is_in_air)
         {
             animator.SetBool("IsFalling", true);
@@ -232,6 +235,12 @@ public class PlayerController1 : MonoBehaviour
         if (!is_coding)
         {
             RegisterInput();
+        }
+
+        if (animator.GetBool("isRunning"))
+        {
+            health.TakeStamina(Time.deltaTime * 10f);
+            if(health.isUsingAdr) health.TakeAdrenaline(Time.deltaTime * 10f);
         }
     }
 }

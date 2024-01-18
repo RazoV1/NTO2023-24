@@ -10,7 +10,7 @@ public class CharacterHealth : Health
     [SerializeField] private Image healthBar;
     [SerializeField] private float maxStamina;
     [SerializeField] private float maxAdrenaline;
-    private float currentStamina;
+    public float currentStamina;
     public float oxygenResistance;
     [SerializeField] private Image staminaBar;
     [SerializeField] private float timeToRecoverStamina;
@@ -26,7 +26,7 @@ public class CharacterHealth : Health
     public bool isUsingAdr;
     public bool isDamageByAdr;
 
-    private bool bool_AdrenalineByUsingChange;
+    private bool bool_AdrenalineByUsingChange = false;
 
     private void Start()
     {
@@ -36,9 +36,12 @@ public class CharacterHealth : Health
         currentStamina = maxStamina;
         currentHealth = maxHealth;
     }
+
+    private float currentTime_AdrenalineByUsingChange;
     private void AdrenalineByUsingChange()
     {
-        while (isUsingAdr)
+        currentTime_AdrenalineByUsingChange -= Time.deltaTime;
+        while (isUsingAdr && currentTime_AdrenalineByUsingChange <= 0)
         {
             if (currentAdrenaline <= 0)
             {
@@ -51,6 +54,7 @@ public class CharacterHealth : Health
             }
 
             print("AdrenalineByUsingChange");
+            currentTime_AdrenalineByUsingChange = 1f;
             break;
         }
     }
