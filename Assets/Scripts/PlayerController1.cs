@@ -271,6 +271,8 @@ public class PlayerController1 : MonoBehaviour
 
     private void Start()
     {
+        print(gameObject.ToString());
+        
         health = GetComponent<CharacterHealth>();
         rb = GetComponent<Rigidbody>();
         spriteRenderer = GetComponent<SpriteRenderer>();

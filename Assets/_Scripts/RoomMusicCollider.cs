@@ -126,7 +126,8 @@ public class RoomMusicCollider : MonoBehaviour
         timeInRoom++;
             if (currentWait_AdrenalineBoost <= 0 && !other.GetComponent<CharacterHealth>().isUsingAdr)
             {
-                other.GetComponent<CharacterHealth>().TakeAdrenaline((2 * timeInRoom - 1) * other.GetComponent<CharacterHealth>().baseAdr * RoomK);
+                //other.GetComponent<CharacterHealth>().TakeAdrenaline((2 * timeInRoom - 1) * other.GetComponent<CharacterHealth>().baseAdr * RoomK);
+                other.GetComponent<CharacterHealth>().TakeAdrenaline((other.GetComponent<CharacterHealth>().baseAdr * RoomK));
                 currentWait_AdrenalineBoost = 1f;
             }
     }

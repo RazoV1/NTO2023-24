@@ -78,8 +78,12 @@ public class CharacterHealth : Health
             return true;
         }
 
+        print(Screen.currentResolution.height);
+        print(Screen.currentResolution.width);
         return false;
     }
+    
+    
     
     public void TakeAdrenaline(float adr)
     {
