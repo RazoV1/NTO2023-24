@@ -10,6 +10,7 @@ public class Box : MonoBehaviour
     protected bool isClosed;
     [SerializeField] protected bool hasObjectsToActive;
     [SerializeField] protected bool hasObjectsToInactive;
+    [SerializeField] protected GameObject highlitningGameObject;
     public Inventory inventory;
     [Header("If isClosed")]
     [SerializeField] protected GameObject closedAdviceText;
@@ -26,14 +27,46 @@ public class Box : MonoBehaviour
     protected bool canUse;
 
 
+    virtual protected void Highlitning()
+    {
+        if (highlitningGameObject == null) return;
+
+        if (!isClosed)
+        {
+            if (isLore)
+            {
+                if (Camera.main.GetComponent<TaskbarManager>().currentTask == loreTask)
+                {
+                    highlitningGameObject.SetActive(true);
+                }
+                else
+                {
+                    highlitningGameObject.SetActive(false);
+                }
+            }
+
+            else
+            {
+                highlitningGameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            highlitningGameObject.SetActive(false);
+        }
+    }
 
     virtual protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-             Open();
+            Open();
         }
+
+        if (highlitningGameObject == null) return;
+        Highlitning();
     }
+    
 
     virtual protected void OnTriggerEnter(Collider other)
     {

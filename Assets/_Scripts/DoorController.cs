@@ -77,7 +77,7 @@ public class DoorController : PoweredBox
                 UnlockBox();
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (canUse && !isClosed)
             {
