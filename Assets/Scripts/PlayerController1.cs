@@ -18,6 +18,7 @@ public class PlayerController1 : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bool is_climbing = false;
     private bool is_animating = false;
+    private bool is_wall_climbing = false;
     private Vector2 lastDir;
 
     public bool is_coding;
@@ -57,7 +58,7 @@ public class PlayerController1 : MonoBehaviour
     void Jump()
     {
         if(health.currentStamina < 15) return;
-        if (health.isUsingAdr && !is_in_air)
+        if ((health.isUsingAdr && !is_in_air) & !is_wall_climbing)
         {
             animator.SetBool("IsFalling", true);
             is_in_air = true;
@@ -67,15 +68,28 @@ public class PlayerController1 : MonoBehaviour
             health.TakeStamina(15f);
             health.TakeAdrenaline(15f);
         }
-        
-        else if (!is_in_air)
+        else if (!is_in_air || is_wall_climbing)
         {
-            animator.SetBool("IsFalling", true);
-            is_in_air = true;
-            //movement.y = jumpForce;
-            rb.AddForce(new Vector3(0,jumpForce,0),ForceMode.Impulse);
-           // movement = new Vector3(0, jumpForce, 0);
-           health.TakeStamina(15f);
+            if (!is_wall_climbing)
+            {
+                animator.SetBool("IsFalling", true);
+                is_in_air = true;
+                //movement.y = jumpForce;
+
+                rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                // movement = new Vector3(0, jumpForce, 0);
+                health.TakeStamina(15f);
+            }
+            else
+            {
+                //is_in_air = true;
+                rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                health.TakeStamina(15f);
+            }
+        }
+        if (is_wall_climbing)
+        {
+            animator.SetTrigger("Climb");
         }
     }
     private void RegisterInput()
@@ -100,14 +114,14 @@ public class PlayerController1 : MonoBehaviour
         {
             
             movement = Vector3.Lerp(rb.velocity,Vector3.zero,Time.deltaTime * accelerationForce);
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) && !is_wall_climbing)
             {
 
                 currentSpeed = Mathf.Lerp(rb.velocity.x, Maxspeed, accelerationForce * Time.deltaTime);
                 movement.x = currentSpeed;
                 
             }
-            else if (Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.A) && !is_wall_climbing)
             {
                 currentSpeed = Mathf.Lerp(rb.velocity.x, -Maxspeed, accelerationForce * Time.deltaTime);
                 movement.x = currentSpeed;
@@ -125,6 +139,10 @@ public class PlayerController1 : MonoBehaviour
                     is_animating = true;
                     transform.position = new Vector3(transform.position.x,transform.position.y + climbSpeed * Time.deltaTime,transform.position.z);
                 }
+                if (is_wall_climbing)
+                {
+                    animator.SetTrigger("Climb");
+                }
             }
             else if (Input.GetKey(KeyCode.S))
             {
@@ -137,6 +155,10 @@ public class PlayerController1 : MonoBehaviour
                 {
                     is_animating = true;
                     transform.position = new Vector3(transform.position.x, transform.position.y - climbSpeed * Time.deltaTime, transform.position.z);
+                }
+                if (is_wall_climbing)
+                {
+                    animator.SetTrigger("Climb");
                 }
             }
             else
@@ -155,13 +177,16 @@ public class PlayerController1 : MonoBehaviour
                     Jump();
                 }
             }
-            if (movement.normalized.x < 0)
+            if (!is_wall_climbing)
             {
-                spriteRenderer.flipX = true;
-            }
-            else if (movement.normalized.x > 0)
-            {
-                spriteRenderer.flipX = false;
+                if (movement.normalized.x < 0)
+                {
+                    spriteRenderer.flipX = true;
+                }
+                else if (movement.normalized.x > 0)
+                {
+                    spriteRenderer.flipX = false;
+                }
             }
             animator.SetFloat("X",Input.GetAxis("Horizontal"));
             animator.SetFloat("Y", Input.GetAxis("Vertical"));
@@ -200,8 +225,28 @@ public class PlayerController1 : MonoBehaviour
                 movement.y = 0;
             }
         }
+        if (collision.gameObject.tag == "slime")
+        {
+            rb.useGravity = false;
+            is_in_air = false;
+            animator.SetBool("IsFalling", false);
+            animator.SetBool("IsWallClimbing", true);
+            is_wall_climbing = true;
+        }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "slime")
+        {
+            rb.useGravity = false;
+            is_in_air = false;
+            animator.SetBool("IsFalling", false);
+            animator.SetBool("IsWallClimbing", true);
+            is_wall_climbing = true;
+            rb.velocity = new Vector3(0, 0, 0);
+        }
+    }
     private void OnCollisionExit(Collision collision)
     {
         is_in_air = true;
@@ -216,6 +261,11 @@ public class PlayerController1 : MonoBehaviour
             {
                 Jump();
             }
+        }
+        if (collision.gameObject.tag == "slime")
+        {
+            animator.SetBool("IsWallClimbing", false);
+            is_wall_climbing = false;
         }
     }
 
