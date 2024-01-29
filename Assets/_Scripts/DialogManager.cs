@@ -66,18 +66,20 @@ public class DialogManager : MonoBehaviour
 
         //Инициализируем компоненты
         SpeakerAnimator = SpeakerAnimator.GetComponent<Animator>();
+
+        StartCoroutine(RunText(3f));
     }
 
     private void Update()
     {
         //Автоматическое определение нужной анимации говорящего
-        //if (textRunning) SpeakerAnimator.SetTrigger("speak");
-        //else SpeakerAnimator.SetTrigger("idle");
+        if (textRunning) SpeakerAnimator.SetTrigger("speak");
+        else SpeakerAnimator.SetTrigger("idle");
 
         
-        if(bool_AllText) LoadPhrase();
+        //if(bool_AllText) LoadPhrase();
 
-        if (Input.GetKeyDown(KeyCode.Space)) textRunning = true;
+        if (Input.GetKeyDown(KeyCode.Space)) bool_AllText = true;
         if (Input.GetKeyDown(KeyCode.Space)) isWaiting = false;
         print(currentPhrase);
         print(textRunning);
@@ -89,8 +91,8 @@ public class DialogManager : MonoBehaviour
     {
         if (phrasesList.Count > currentPhrase)
         {
-            bool_AllText = true;
-            //currentPhrase++;
+            //bool_AllText = true;
+            currentPhrase++;
         }
     }
     
@@ -270,6 +272,7 @@ public class DialogManager : MonoBehaviour
 
     
     //Корутина для плавного отображения текста по буквам, решили отложить до лучших времен P.S. она рабочая
+    private bool used = false;
     public IEnumerator RunText(float pauseBetweenPhrases)
     {
         foreach (var text in phrasesList)
@@ -298,6 +301,19 @@ public class DialogManager : MonoBehaviour
                 {
                     textRunning = true;
                     AiText.text += letter;
+                    if (bool_AllText)
+                    {
+                        AiText.text = text[1..];
+                        textRunning = false;
+                        yield return new WaitForSeconds(pauseBetweenPhrases);
+                        readedEmotion = false;
+                        readedSpeaker = false;
+                        AiText.text = "";
+                        BearText.text = "";
+                        bool_AllText = false;
+                        used = true;
+                        break;
+                    }
                     yield return new WaitForSeconds(speedText);
                 }
                 
@@ -331,16 +347,33 @@ public class DialogManager : MonoBehaviour
                     
                     textRunning = false;
                     BearText.text += letter;
+                    if (bool_AllText)
+                    {
+                        BearText.text = text[2..];
+                        textRunning = false;
+                        yield return new WaitForSeconds(pauseBetweenPhrases);
+                        used = true;
+                        readedEmotion = false;
+                        readedSpeaker = false;
+                        AiText.text = "";
+                        BearText.text = "";
+                        bool_AllText = false;
+                        break;
+                    }
+
                     yield return new WaitForSeconds(speedText);
                 }
             }
 
-            textRunning = false;
-            yield return new WaitForSeconds(pauseBetweenPhrases);
-            readedEmotion = false;
-            readedSpeaker = false;
-            AiText.text = "";
-            BearText.text = "";
+            if (!used)
+            {
+                textRunning = false;
+                yield return new WaitForSeconds(pauseBetweenPhrases);
+                readedEmotion = false;
+                readedSpeaker = false;
+                AiText.text = "";
+                BearText.text = "";
+            }
         }
         closeButton.SetActive(true);
     }
