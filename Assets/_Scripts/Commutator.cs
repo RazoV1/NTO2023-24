@@ -16,7 +16,7 @@ public class Commutator : MonoBehaviour
     [SerializeField] private bool isLore;
     [SerializeField] private int loreTask;
     [SerializeField] private GameObject highlitning;
-    
+
 
     private TaskbarManager taskbarManager;
 
@@ -24,6 +24,8 @@ public class Commutator : MonoBehaviour
     [SerializeField] private GameObject door;
     [SerializeField] private GameObject emergencyLightning;
     [SerializeField] private GameObject normalLightning;
+
+    public int index;
     
     private void Start()
     {
@@ -87,7 +89,8 @@ public class Commutator : MonoBehaviour
                     door.GetComponent<Door>().BackdoorOpenDoor();
                 }
             }
-            
         }
     }
+    
+    
 }
