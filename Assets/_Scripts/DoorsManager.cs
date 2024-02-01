@@ -26,6 +26,8 @@ public class DoorsManager : PoweredBox
     
     private float cycleTime;
     private float currentCycleTime;
+
+    public int index;
     
     private void Start()
     {
