@@ -287,17 +287,12 @@ public class SavingSystem : MonoBehaviour
             if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_isPowered") == 1) doorManager.isPowered = true;
             else if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_isPowered") == 0) doorManager.isPowered = false;
 
-            if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_isBroken") == 1) doorManager.isBroken = true;
-            else if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_isBroken") == 0) doorManager.isBroken = false;
-            
             if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_hasFuse") == 1) doorManager.hasFuse = true;
             else if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_hasFuse") == 0) doorManager.hasFuse = false;
 
             if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_hasTimer") == 1) doorManager.hasTimer = true;
             else if(PlayerPrefs.GetInt("DoorController"+doorManager.index+"_hasTimer") == 0) doorManager.hasTimer = false;
         }
-
-        
     }
     
     private void OnApplicationQuit()
