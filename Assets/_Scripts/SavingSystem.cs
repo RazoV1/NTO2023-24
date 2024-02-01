@@ -18,6 +18,18 @@ public class SavingSystem : MonoBehaviour
 
     private void Start()
     {
+
+        if (PlayerPrefs.GetFloat("Player_X") == 0)
+        {
+            PlayerPrefs.SetFloat("Player_X", -9.48f);
+            PlayerPrefs.SetFloat("Player_Y", -10.327f);
+            PlayerPrefs.SetFloat("Player_Z", -0.77f);
+        }
+        else
+        {
+            LoadAll();
+        }
+        
         if (_doors != null)
         {
             _doors = new List<Door>();
@@ -27,7 +39,7 @@ public class SavingSystem : MonoBehaviour
                 _doors.Add(doorController.door);
             }
         }
-        LoadAll();
+
     }
 
 
@@ -84,11 +96,12 @@ public class SavingSystem : MonoBehaviour
         
         //Inventory
         PlayerPrefs.SetInt("InventoryCount", _player.GetComponent<Inventory>().inventoryItems.Count);
-        for (int i = 0; i < _player.GetComponent<Inventory>().inventoryItems.Count; i++)
+        /*for (int i = 0; i < _player.GetComponent<Inventory>().inventoryItems.Count; i++)
         {
-            PlayerPrefs.SetString("InventoryItem_"+ i.ToString(), _player.GetComponent<Inventory>().inventoryItems[i].GetComponent<Item>().Name);
-            PlayerPrefs.SetInt("InventoryItem_"+ i.ToString()+"_Count", _player.GetComponent<Inventory>().inventoryItemsCount[i]);
-        }
+            PlayerPrefs.SetString("InventoryItem_"+ i, _player.GetComponent<Inventory>().inventoryItems[i].ToString());
+            print(_player.GetComponent<Inventory>().inventoryItems[i].GetComponent<Item>().Name + "_" + _player.GetComponent<Inventory>().inventoryItemsCount[i]);
+            PlayerPrefs.SetInt("InventoryItem_"+ i +"_Count", _player.GetComponent<Inventory>().inventoryItemsCount[i]);
+        }*/
         
         //Managers
         //TireManager
@@ -212,10 +225,9 @@ public class SavingSystem : MonoBehaviour
         {
             foreach (var item in _items)
             {
-                if (item.Name == PlayerPrefs.GetString("InventoryItem_" + i))
+                if (item.name == PlayerPrefs.GetString("InventoryItem_" + i))
                 {
-                    _player.GetComponent<Inventory>().inventoryItems.Add(item);
-                    _player.GetComponent<Inventory>().inventoryItemsCount.Add(PlayerPrefs.GetInt("InventoryItem_"+ i.ToString()+"_Count"));
+                    _player.GetComponent<Inventory>().AddItem(item, PlayerPrefs.GetInt("InventoryItem_"+ i +"_Count"));
                 }
             }
         }
