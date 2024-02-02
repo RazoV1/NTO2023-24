@@ -29,7 +29,18 @@ public class TaskbarManager : MonoBehaviour
     {
         currentTask++;
         TaskText.text = tasksList[currentTask];
-        print(currentTask);
     }
+
+    public void UpdateTaskText()
+    {
+       Invoke("WaitTimeToUpdateText", 0.05f);
+    }
+
+    public void WaitTimeToUpdateText()
+    {
+        TaskText.text = tasksList[currentTask];
+    }
+
+
 }
 

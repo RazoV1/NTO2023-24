@@ -173,6 +173,7 @@ public class SavingSystem : MonoBehaviour
         //Character
         _player.transform.position = new Vector3(PlayerPrefs.GetFloat("Player_X"), PlayerPrefs.GetFloat("Player_Y"), PlayerPrefs.GetFloat("Player_Z")); 
         Camera.main.GetComponent<TaskbarManager>().currentTask = PlayerPrefs.GetInt("CurrentTask");
+        Camera.main.GetComponent<TaskbarManager>().UpdateTaskText();
 
         //DoorControllers
         foreach (var doorController in _doorControllers)
