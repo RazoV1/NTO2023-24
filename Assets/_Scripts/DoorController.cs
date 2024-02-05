@@ -7,16 +7,18 @@ public class DoorController : PoweredBox
     [Header("Door Controller")]
     [SerializeField] private GameObject AdviceText;
     [SerializeField] public SpriteRenderer colorSprite;
-    [SerializeField] private Door door;
+    public Door door;
     [SerializeField] public GameObject UI_door;
     public int id;
     private float cycleTime;
     private float currentCycleTime;
     public int currentState;
-
+    
     public Item key_uni;
     
     public bool isBroken;
+    
+    public int index;
 
     private void Start()
     {
@@ -77,7 +79,7 @@ public class DoorController : PoweredBox
                 UnlockBox();
             }
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (canUse && !isClosed)
             {

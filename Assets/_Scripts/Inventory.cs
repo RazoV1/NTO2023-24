@@ -12,6 +12,8 @@ public class Inventory : MonoBehaviour
     public List<Item> inventoryItems = new List<Item>();
      public List<int> inventoryItemsCount = new List<int>();
     private PlayerController1 player;
+
+    public Item testItem;
      
      private void Start()
      {
@@ -35,6 +37,9 @@ public class Inventory : MonoBehaviour
         inventoryItems.Add(item);
         inventoryItemsCount.Add(count);
         inventoryWindow.Redraw();
+        
+        PlayerPrefs.SetString("InventoryItem_"+ (inventoryItems.Count -1), item.Name);
+        PlayerPrefs.SetInt("InventoryItem_"+ (inventoryItems.Count -1) + "_Count", inventoryItemsCount[inventoryItems.Count -1]);
     }
     
     // ReSharper disable Unity.PerformanceAnalysis
@@ -48,12 +53,13 @@ public class Inventory : MonoBehaviour
                 return;
             }
         }
+        PlayerPrefs.SetString("InventoryItem_"+ (inventoryItems.Count -1), item.Name);
+        PlayerPrefs.SetInt("InventoryItem_"+ (inventoryItems.Count -1) + "_Count", inventoryItemsCount[inventoryItems.Count -1]);
         inventoryWindow.Redraw();
     }
 
     private void Update()
     {
-        
         if (Input.GetKeyDown(KeyCode.I) && !player.is_coding)
         {
             inventoryWindow.Redraw();
@@ -91,10 +97,20 @@ public class Inventory : MonoBehaviour
                 if (inventoryItemsCount[i] >= count)
                 {
                     inventoryItemsCount[i] -= count;
+                    PlayerPrefs.SetString("InventoryItem_"+ (inventoryItems.Count -1), item.Name);
+                    PlayerPrefs.SetInt("InventoryItem_"+ (inventoryItems.Count -1) + "_Count", inventoryItemsCount[inventoryItems.Count -1]);
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private void OnApplicationQuit()
+    {
+        for (int i = 0; i<inventoryItems.Count; i++)
+        {
+            PlayerPrefs.SetInt("InventoryItem_"+ i + "_Count", inventoryItemsCount[i]);
+        }
     }
 }

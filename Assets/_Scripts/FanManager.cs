@@ -9,7 +9,7 @@ public class FanManager : PoweredBox
     [SerializeField] public SpriteRenderer colorSprite;
     [SerializeField] private GameObject UI_fan;
     [SerializeField] private SpriteRenderer timedSprite;
-    private bool isCycled;
+    public bool isCycled;
     private float cycleTime;
     private float currentCycleTime;
     public int currentState;
@@ -31,6 +31,8 @@ public class FanManager : PoweredBox
 
     private bool isActive;
 
+    public int index;
+    
     private void Start()
     {
         colorSprite = colorSprite.GetComponent<SpriteRenderer>();

@@ -23,6 +23,8 @@ public class CharacterHealth : Health
     public float baseAdr;
     public Transform spawnPos;
 
+    [SerializeField] private Animator respawnLocker;
+    
     public bool isUsingAdr;
     public bool isDamageByAdr;
 
@@ -135,6 +137,9 @@ public class CharacterHealth : Health
         currentAdrenaline = 0;
         currentHealth = maxHealth;
         currentStamina = maxStamina;
+        respawnLocker.GetComponent<Animator>().SetTrigger("death");
+        gameObject.SetActive(false);
+        Invoke("SetActiveTrue", 0.5f);
     }
     
     
@@ -143,6 +148,11 @@ public class CharacterHealth : Health
         staminaBar.fillAmount = currentStamina / maxStamina;
         healthBar.fillAmount = currentHealth / maxHealth;
         adrenalineBar.fillAmount = currentAdrenaline / maxAdrenaline;
+    }
+
+    private void SetActiveTrue()
+    {
+        gameObject.SetActive(true);
     }
 
 }

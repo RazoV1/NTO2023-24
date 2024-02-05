@@ -61,6 +61,11 @@ public class RoomMusicCollider : MonoBehaviour
     }
 
     public roomState currentRoomState;
+    
+    
+    public int currentRoomStateInt;
+
+    public int index;
 
     private void Start()
     {
@@ -84,6 +89,21 @@ public class RoomMusicCollider : MonoBehaviour
 
     private void Update()
     {
+        switch (currentRoomState)
+        {
+            case roomState.off:
+                currentRoomStateInt = 0;
+                break;
+            
+            case roomState.emergency:
+                currentRoomStateInt = 1;
+                break;
+            
+            case roomState.normal:
+                currentRoomStateInt = 2;
+                break;
+        }
+        
         if(bool_OxygenOnHealth) OxygenOnHealth(GameObject.FindGameObjectWithTag("Player"));
         if(bool_AdrenalineBoost) AdrenalineBoost(GameObject.FindGameObjectWithTag("Player"));
     }

@@ -9,7 +9,7 @@ public class LightManager : PoweredBox
     [SerializeField] public SpriteRenderer colorSprite;
     public GameObject UI_light;
     [SerializeField] private SpriteRenderer timedSprite;
-    private bool isCycled;
+    public bool isCycled;
     private float cycleTime;
     private float currentCycleTime;
     public int currentState;
@@ -31,6 +31,8 @@ public class LightManager : PoweredBox
     public bool isBroken;
 
     private bool isActive;
+
+    public int index;
 
     private void Start()
     {
