@@ -21,6 +21,8 @@ public class Bee : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer sprite;
 
+    private Vector3 StartPoint;
+
     private float CurYOffset;
 
     private Vector3 currentTargetedPosition;
@@ -28,10 +30,13 @@ public class Bee : MonoBehaviour
     public int HP;
     public float damage;
 
+    private bool is_waiting = false;
+
     private Vector3 StartPos;
 
     private void Start()
     {
+        StartPoint = transform.position;
         currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x), Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y), Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
         player = GameObject.Find("Player");
         animator = GetComponent<Animator>();
@@ -60,7 +65,8 @@ public class Bee : MonoBehaviour
     IEnumerator StabCooldown()
     {
         canStab = false;
-        yield return new WaitForSeconds(stabCD);
+        yield return new WaitForSeconds(stabCD + Random.Range(0f, 7.00001f));
+        Debug.Log(stabCD + Random.Range(0f, 7.00001f));
         canStab = true;
     }
 
@@ -68,6 +74,7 @@ public class Bee : MonoBehaviour
     {
         if (Vector3.Distance(transform.position,player.transform.position) <= stabMinRange && canStab)
         {
+            
             Stab();
             animator.SetTrigger("stab");
             StartCoroutine(StabCooldown());
@@ -83,8 +90,15 @@ public class Bee : MonoBehaviour
     IEnumerator ShootCooldown()
     {
         canShoot = false;
-        yield return new WaitForSeconds(shootCD);
+        yield return new WaitForSeconds(shootCD + Random.Range(0f, 4.00001f));
         canShoot = true;
+    }
+
+    IEnumerator BasikWait()
+    {
+        is_waiting = true;
+        yield return new WaitForSeconds(Random.Range(0.0001f, 2.8001f));
+        is_waiting = false;
     }
 
     private void TryShooting()
@@ -92,6 +106,10 @@ public class Bee : MonoBehaviour
         Shoot();
         animator.SetTrigger("shoot");
         Stingers--;
+        if (Stingers == 0)
+        {
+            speed *= 1.5f;
+        }
         StartCoroutine(ShootCooldown());
     }
 
@@ -110,7 +128,8 @@ public class Bee : MonoBehaviour
 
     private void Move()
     {
-        if (Stingers == 0 && canStab && Vector3.Distance(transform.position,player.transform.position) <= detectionRange)
+        RaycastHit hit = new RaycastHit();
+        if (Stingers == 0 && canStab)
         {
             if (Vector3.Distance(patroolPoints[0].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
                         Vector3.Distance(patroolPoints[1].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
@@ -120,76 +139,78 @@ public class Bee : MonoBehaviour
                                                       Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
                                                       Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
             }
-            else
+            else if (Physics.Raycast(shootingPoint.position, player.transform.position - shootingPoint.position, out hit, Vector3.Distance(shootingPoint.position, player.transform.position),layerMask:7))
             {
-                currentTargetedPosition = player.transform.position;
-                UpdateOrientation(currentTargetedPosition);
-                TryStab();
+                if (hit.collider.tag != "Player")
+                {
+                    Debug.Log("L");
+
+                }
+                else
+                {
+                    currentTargetedPosition = player.transform.position;
+                    UpdateOrientation(currentTargetedPosition);
+                    TryStab();
+                }
             }
         }
-
-        RaycastHit hit = new RaycastHit();
-        Debug.DrawRay(transform.position, currentTargetedPosition - transform.position,Color.red,5f);
-        if (!Physics.Raycast(transform.position,currentTargetedPosition - transform.position,out hit,Vector3.Distance(transform.position,currentTargetedPosition)) || hit.collider.tag == "Player")
+        
+        
+        Debug.DrawRay(shootingPoint.position, currentTargetedPosition - transform.position,Color.red,5f);
+        if (!is_waiting)
         {
             if (Vector3.Distance(currentTargetedPosition, transform.position) > 0.1f)
             {
                 transform.position = Vector3.Lerp(transform.position, currentTargetedPosition, Time.deltaTime * speed);
-                if ((Stingers == 0 && canStab) || Vector3.Distance(transform.position, player.transform.position) > detectionRange)
-                {
-
-                    currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
-                    Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
-                    Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
-                    //UpdateOrientation(currentTargetedPosition);
-                }
+                
+                /*currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
+                Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
+                Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));*/
             }
-            else
+            else 
             {
+                
                 currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
                     Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
                     Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
             }
         }
-        
-        
-        /*else
-        {
-            currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
-                Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
-                Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
-            UpdateOrientation(currentTargetedPosition);
-        }*/
     }
 
     private void Cycle()
     {
         RaycastHit hit;
-        if (Vector3.Distance(transform.position, player.transform.position) > detectionRange)
+        if (Vector3.Distance(transform.position, player.transform.position) > detectionRange /* || !Physics.Raycast(shootingPoint.position, currentTargetedPosition - shootingPoint.position, out hit, Vector3.Distance(shootingPoint.position, currentTargetedPosition))*/)
         {
             Move();
         }
-        else
+        else if (Physics.Raycast(shootingPoint.position, player.transform.position - shootingPoint.position, out hit, Vector3.Distance(shootingPoint.position, player.transform.position), layerMask: 7))
         {
+            if (hit.collider.tag != "Player")
+            {
+                Move();
+                return;
+            }
             UpdateOrientation(player.transform.position);
             if (Stingers > 0)
             {
                 if (!canShoot)
                 {
-                    
-                    if (Vector3.Distance(patroolPoints[0].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
+                    /*if (Vector3.Distance(patroolPoints[0].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
                         Vector3.Distance(patroolPoints[1].position, transform.position) > Vector3.Distance(patroolPoints[0].position, patroolPoints[1].position) ||
                         Mathf.Max(patroolPoints[0].position.z, patroolPoints[1].position.z) - transform.position.z < 0)
                     {
                         currentTargetedPosition = new Vector3(Random.Range(patroolPoints[0].position.x, patroolPoints[1].position.x),
                                                               Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y),
                                                               Random.Range(patroolPoints[0].position.z, patroolPoints[1].position.z));
+                        Move();
                     }
                     else
                     {
                         currentTargetedPosition = player.transform.position + (transform.position - player.transform.position).normalized * shootMinRange;
                         currentTargetedPosition.y = CurYOffset;
-                    }
+                    }*/
+                    Move();
                 }
                 else 
                 {
@@ -207,6 +228,7 @@ public class Bee : MonoBehaviour
                         currentTargetedPosition.y = CurYOffset;
                     }
                     TryShooting();
+                    //StartCoroutine(BasikWait());
                     CurYOffset = Random.Range(patroolPoints[0].position.y, patroolPoints[1].position.y);
                 }
                 Move();
@@ -215,8 +237,6 @@ public class Bee : MonoBehaviour
             {
                 Move();
             }
-            
-            
         }
     }
 

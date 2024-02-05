@@ -12,11 +12,21 @@ public class VinniePoohBehaviour : MonoBehaviour
     private float currentAttackCD;
     [SerializeField] private float damage;
     [SerializeField] private Transform playerTransform;
-    private Animator animator;
+    [HideInInspector] public Animator animator;
 
     public bool onTarget;
     public bool onAttack;
-    private NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
+
+    [SerializeField] private float RushRange;
+    [SerializeField] private float RushChance;
+    [SerializeField] private bool RushDmgCd;
+
+    private Vector3 RushPosition;
+    private bool isRushing = false;
+    public int HP;
+
+    public bool isDead = false;
 
     private void Start()
     {
@@ -25,28 +35,27 @@ public class VinniePoohBehaviour : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = movementSpeed;
     }
-    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isDead)
         {
             agent.SetDestination(playerTransform.position);
             onTarget = true;
+            isRushing = true;
+            Rush();
         }
     }
-
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player") && !onAttack)
+        if (other.CompareTag("Player") && !onAttack && !isRushing && !isDead)
         {
             agent.SetDestination(playerTransform.position);
             onTarget = true;
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isDead)
         {
             agent.SetDestination(transform.position);
             onTarget = false;
@@ -60,48 +69,84 @@ public class VinniePoohBehaviour : MonoBehaviour
             }
         } 
     }
-
+    private void Rush()
+    {
+        isRushing = true;
+        RushPosition = playerTransform.position;
+        agent.SetDestination(RushPosition);
+        agent.speed = movementSpeed * 2f;
+    }
+    IEnumerator CDRushDamage()
+    {
+        RushDmgCd = false;
+        yield return new WaitForSeconds(0.1f);
+        RushDmgCd = true;
+    }
+    void RushDamage()
+    {
+       
+        if (Vector3.Distance(transform.position, playerTransform.position) <= 0.2f && RushDmgCd && isRushing && !isDead)
+        {
+            playerTransform.GetComponent<CharacterHealth>().TakeDamage(1);
+            StartCoroutine(CDRushDamage());
+        }
+        if (Vector3.Distance(transform.position,RushPosition) <= 0.2f && !isDead)
+        {
+            StopRush();
+        }
+    }
+    private void StopRush()
+    {
+        isRushing = false;
+        agent.speed = movementSpeed;
+    }
     private void Update()
     {
-        currentAttackCD -= Time.deltaTime;
-        
-        if (Vector3.Distance(transform.position, playerTransform.position) <= 0.4f && currentAttackCD <= 0)
+        if (!isDead)
         {
-            playerTransform.GetComponent<CharacterHealth>().TakeDamage(damage);
-            currentAttackCD = attackCD;
-            onAttack = true;
-            agent.destination = transform.position;
-            Invoke("OnAttackToFalse", currentAttackCD);
-            onTarget = false;
-            if (transform.position.x < playerTransform.position.x)
+            currentAttackCD -= Time.deltaTime;
+            RushDamage();
+            if (!isRushing)
             {
-                animator.SetTrigger("rightAttack");
+                if (Vector3.Distance(transform.position, playerTransform.position) <= 0.4f && currentAttackCD <= 0)
+                {
+                    playerTransform.GetComponent<CharacterHealth>().TakeDamage(damage);
+                    currentAttackCD = attackCD;
+                    onAttack = true;
+                    agent.destination = transform.position;
+                    Invoke("OnAttackToFalse", currentAttackCD);
+                    onTarget = false;
+                    if (transform.position.x < playerTransform.position.x)
+                    {
+                        animator.SetTrigger("rightAttack");
+                    }
+                    else if (transform.position.x > playerTransform.position.x)
+                    {
+                        animator.SetTrigger("leftAttack");
+                    }
+                }
             }
-            else if (transform.position.x > playerTransform.position.x)
+            if (onTarget && !onAttack)
             {
-                animator.SetTrigger("leftAttack");
+                if (transform.position.x < playerTransform.position.x)
+                {
+                    animator.SetTrigger("rightWalk");
+                }
+                else if (transform.position.x > playerTransform.position.x)
+                {
+                    animator.SetTrigger("leftWalk");
+                }
             }
-
+            transform.LookAt(transform.position + new Vector3(0, 0, 1));
         }
         
-        else if (onTarget && !onAttack)
-        {
-            if (transform.position.x < playerTransform.position.x)
-            {
-                animator.SetTrigger("rightWalk");
-            }
-            else if (transform.position.x > playerTransform.position.x)
-            {
-                animator.SetTrigger("leftWalk");
-            }
-        }
-        
-        transform.LookAt(transform.position + new Vector3(0, 0, 1));
     }
-
     private void OnAttackToFalse()
     {
         onAttack = false;
-        agent.destination = playerTransform.position;
+        if (!isRushing)
+        {
+            agent.destination = playerTransform.position;
+        }
     }
 }

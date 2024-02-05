@@ -15,7 +15,7 @@ public class DroneController : MonoBehaviour
     [SerializeField] private Item item;
 
     public float speed;
-    public Vector2 offset;
+    public Vector3 offset;
     public float xScale;
 
     private float horizontalAxis;
@@ -25,12 +25,14 @@ public class DroneController : MonoBehaviour
 
     [SerializeField] private Transform crest;
     [SerializeField] private Transform body;
-    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private int bulletsCount;
     [SerializeField] private Transform shotSpawnPosition;
+    [SerializeField] private Transform shotSpawnMask;
     [SerializeField] private float baseBulletSpeed;
 
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject SlimeBullet;
+    [SerializeField] private int SlimeBulletCount;
     
     private Vector3 mousePosition;
     public float moveSpeed = 2f;
@@ -47,7 +49,7 @@ public class DroneController : MonoBehaviour
         Vector3 newPos = target.position;
         if (target == player)
         {
-            newPos.z = target.position.z;
+            newPos.z = target.position.z + offset.z;
             newPos.x = target.position.x + offset.x;
             newPos.y = target.position.y + offset.y;
         }
@@ -79,6 +81,7 @@ public class DroneController : MonoBehaviour
                 crest.GetComponent<SpriteRenderer>().sortingOrder = -1;
                 sprite.sortingOrder = -1;
                 body.gameObject.SetActive(false);
+                shotSpawnMask.gameObject.SetActive(false);
                 canShoot = false;
                 target = backpack;
                 speed *= 10;
@@ -87,50 +90,47 @@ public class DroneController : MonoBehaviour
             {
                 crest.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 body.gameObject.SetActive(true);
+                shotSpawnMask.gameObject.SetActive(true);
                 sprite.sortingOrder = 3;
                 canShoot = true; 
-                
                 target = player;
                 speed /= 10;
             }
         }
     }
-
     public void SlimeShot()
     {
         GameObject currentBullet = Instantiate(SlimeBullet);
         currentBullet.transform.position = shotSpawnPosition.position;
-        currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(body.transform.forward.x, body.transform.forward.y, 0).normalized * baseBulletSpeed;
+        currentBullet.GetComponent<Rigidbody>().velocity = shotSpawnPosition.transform.forward.normalized * baseBulletSpeed;
     }
-
     public IEnumerator Shot()
     {
         for (int i = 1; i <= bulletsCount; i++)
         {
             GameObject currentBullet = Instantiate(bulletPrefab);
             currentBullet.transform.position = shotSpawnPosition.position;
-
-            //currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Cos(body.rotation.x) * transform.localScale.x,Mathf.Sin(body.rotation.x), 0).normalized * baseBulletSpeed;
-            currentBullet.GetComponent<Rigidbody>().velocity = new Vector3(body.transform.forward.x, body.transform.forward.y, 0).normalized * baseBulletSpeed; 
+            currentBullet.GetComponent<Rigidbody>().velocity = shotSpawnPosition.transform.forward.normalized * baseBulletSpeed; 
             yield return new WaitForSeconds(0.1f);
         }
     }
     private void FixedUpdate()
     {
-        Follow();
-        //LookOnCursor();
-        
+        Follow();   
     }
     private void Update()
     {
         LookOnCursor3D();
         ChangeTarget();
-        if (Input.GetKeyDown(KeyCode.C) && canShoot)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canShoot)
         {
             StartCoroutine(Shot());
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && canShoot)
+        {
+            SlimeShot();
+        }
     }
-
     void LookOnCursor(){ //заставляет свет следить за курсором мышки
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = body.position.z;
@@ -150,6 +150,8 @@ public class DroneController : MonoBehaviour
         if (Physics.Raycast(mousePos, out hit))
         {
             body.LookAt(hit.point);
+            shotSpawnPosition.LookAt(hit.point);
+            shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
         }
     }
 }
