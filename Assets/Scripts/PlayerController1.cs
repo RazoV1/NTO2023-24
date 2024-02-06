@@ -19,7 +19,7 @@ public class PlayerController1 : MonoBehaviour
     private bool is_climbing = false;
     private bool is_animating = false;
     private bool is_wall_climbing = false;
-    private Vector2 lastDir;
+    [HideInInspector] public Vector2 lastDir;
 
     public bool is_coding;
     [SerializeField] private float RunMultiplirer;

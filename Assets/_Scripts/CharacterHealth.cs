@@ -49,18 +49,15 @@ public class CharacterHealth : Health
             {
                 isUsingAdr = false;
             }
-
             if (isUsingAdr)
             {
                 currentAdrenaline -= 2f;
             }
-
             print("AdrenalineByUsingChange");
             currentTime_AdrenalineByUsingChange = 1f;
             break;
         }
     }
-
     private IEnumerator AdrenalineByHP()
     {
         while (!isUsingAdr)
@@ -70,8 +67,6 @@ public class CharacterHealth : Health
             print("AdrenalineByHP");
         }
     }
-    
-    
     public bool TakeStamina(float stamina)
     {
         if (currentStamina > stamina)
@@ -84,9 +79,6 @@ public class CharacterHealth : Health
         print(Screen.currentResolution.width);
         return false;
     }
-    
-    
-    
     public void TakeAdrenaline(float adr)
     {
         currentAdrenaline += adr;
@@ -140,6 +132,8 @@ public class CharacterHealth : Health
         respawnLocker.GetComponent<Animator>().SetTrigger("death");
         gameObject.SetActive(false);
         Invoke("SetActiveTrue", 0.5f);
+        PlayerController1 p = gameObject.GetComponent<PlayerController1>();
+        p.lastDir = new Vector2(0,-0.001f);
     }
     
     
