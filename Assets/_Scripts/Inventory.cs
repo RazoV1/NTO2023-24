@@ -93,6 +93,7 @@ public class Inventory : MonoBehaviour
         {
             if (inventoryItems[i].Name == item.Name)
             {
+                print("1 HONEy");
                 if (inventoryItemsCount[i] >= 1)
                 {
                     return inventoryItemsCount[i];

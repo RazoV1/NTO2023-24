@@ -20,6 +20,8 @@ public class HoneyDisplacing : MonoBehaviour
 
     private void Update()
     {
+        text.text = _inventory.countItem(honey).ToString();
+        
         if (Input.GetKeyDown(KeyCode.H))
         {
             if (_inventory.tryToDel(honey, 1))
