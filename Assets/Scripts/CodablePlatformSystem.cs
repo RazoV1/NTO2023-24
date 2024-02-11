@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
+using System.Linq;
 
 [System.Serializable]
 public class Point
@@ -28,7 +29,16 @@ public class CodablePlatformSystem : PoweredBox
     [SerializeField] protected Color ErrorCollor;
     [SerializeField] protected Color NormalColor;
 
-    public bool IsCoding= false;
+    private int commandIndex = 0;
+    private int cycleSkipAmount;
+
+    private bool isInCycle = false;
+    private List<string> cycleCommands = new List<string>();
+    private int CycleRepeats;
+    private bool isCycleFinite = false;
+
+
+    public bool IsCoding = false;
     public PointList ListOfPointLists = new PointList();
     public GameObject UI;
     protected Vector3 targetedPosition;
@@ -42,17 +52,15 @@ public class CodablePlatformSystem : PoweredBox
         inpText.color = NormalColor;
         can_move = true;
     }
-
     protected string NewInpText()
     {
         string newS = "";
-        for (int i = 0; i < inputField.text.Length -1; i++)
+        for (int i = 0; i < inputField.text.Length - 1; i++)
         {
             newS += inputField.text[i];
         }
         return newS;
     }
-
     public void PrintInp(string inp)
     {
         if (inputField.text != "")
@@ -61,7 +69,6 @@ public class CodablePlatformSystem : PoweredBox
             {
                 Debug.Log("L");
                 inputField.text = NewInpText() + (int.Parse(""+ inputField.text.Split("\n")[inputField.text.Split("\n").Length - 1].Split(" ")[1]) + 1).ToString();
-                
             }
             else
             {
@@ -92,7 +99,6 @@ public class CodablePlatformSystem : PoweredBox
             rect.yMax = Mathf.Max(i.list[0].position.y, i.list[1].position.y);
             rect.xMin = Mathf.Min(i.list[0].position.x, i.list[1].position.x);
             rect.yMin = Mathf.Min(i.list[0].position.y, i.list[1].position.y);
-
             Debug.DrawLine(new Vector2(i.list[0].position.x, i.list[0].position.y), new Vector2(i.list[1].position.x, i.list[1].position.y),Color.red,5f);
             if (rect.Contains(newPos))
             {
@@ -118,8 +124,22 @@ public class CodablePlatformSystem : PoweredBox
         {
             targetedPosition = platform.position;
         }
+        //Debug.Log(commands);
+        
+        /*foreach (string i in commands)
+        {
+            Debug.Log(i);
+        }*/
         foreach (string i in commands)
         {
+            
+            if (cycleSkipAmount > 0)
+            {
+                cycleSkipAmount--;
+                commandIndex++;
+                Debug.Log("skippedStep");
+                continue;
+            }
             inputField.text = "Executing... " + execotionPercent / commands.Length * 100f + "%";
             if (i == "")
             {
@@ -132,6 +152,148 @@ public class CodablePlatformSystem : PoweredBox
                 string arg = i.Split(' ')[1];
                 if (numArray.Contains(arg))
                 {
+                    Debug.Log(command);
+                    if (command == "cycle")
+                    {
+                        CycleRepeats = int.Parse(arg);
+                        Debug.Log(CycleRepeats);
+                        
+                        for (int j = commandIndex+1; j < commands.Length; j++)
+                        {
+                            isCycleFinite = false;
+                            if (commands[j].Split(' ')[0] == "endcycle")
+                            {
+                                cycleSkipAmount = cycleCommands.Count;
+                                isCycleFinite = true;
+                                Debug.Log(cycleCommands);
+                                foreach (string c in cycleCommands)
+                                {
+                                    Debug.Log(c);
+                                }
+                                Debug.Log("cycled!");
+                                break;
+                            }
+                            cycleCommands.Add(commands[j]);
+                            Debug.Log("addedCommand");
+                        }
+                        if (!isCycleFinite)
+                        {
+                            Debug.Log("Error! Invalid cycle");
+                            execotionPercent = 0;
+                            StartCoroutine(Error("Error! Invalid cycle"));
+                            StopCoroutine(Execute());
+                            yield return null;
+                            break;
+                        }
+                        else
+                        {
+                            for (int rep = 0; rep < CycleRepeats; rep++)
+                            {
+                                foreach (string j in cycleCommands)
+                                {
+                                    if (j == "")
+                                    {
+                                        execotionPercent++;
+                                        continue;
+                                    }
+                                    if (j.Contains(' '))
+                                    {
+                                        string Ccommand = j.Split(' ')[0];
+                                        string Carg = j.Split(' ')[1];
+                                        if (numArray.Contains(Carg))
+                                        {
+
+                                            if (Ccommand == "delay")
+                                            {
+                                                yield return new WaitForSeconds(int.Parse(Carg));
+                                                execotionPercent++;
+                                                continue;
+                                            }
+                                            else if (Ccommand == "up")
+                                            {
+                                                targetedPosition.y = platform.position.y + baseStep * int.Parse(Carg);
+                                                can_move = CanMove(targetedPosition);
+                                            }
+                                            else if (Ccommand == "down")
+                                            {
+                                                targetedPosition.y = platform.position.y - baseStep * int.Parse(Carg);
+                                                can_move = CanMove(targetedPosition);
+                                            }
+                                            else if (Ccommand == "right")
+                                            {
+                                                targetedPosition.x = platform.position.x + baseStep * int.Parse(Carg);
+                                                can_move = CanMove(targetedPosition);
+                                            }
+                                            else if (Ccommand == "left")
+                                            {
+                                                targetedPosition.x = platform.position.x - baseStep * int.Parse(Carg);
+                                                can_move = CanMove(targetedPosition);
+                                            }
+                                            else
+                                            {
+                                                Debug.Log("Error! Unknown command");
+                                                execotionPercent = 0;
+                                                StartCoroutine(Error("Error! Unknown command"));
+                                                StopCoroutine(Execute());
+                                                yield return null;
+                                            }
+
+                                            if (!can_move)
+                                            {
+                                                Debug.Log("Error! Cant move here and ur stupid");
+                                                execotionPercent = 0;
+                                                StartCoroutine(Error("Error! Cant move here and ur stupid"));
+                                                yield return null;
+                                                StopCoroutine(Execute());
+                                            }
+                                            execotionPercent++;
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("Error! Invalid argument");
+                                            execotionPercent = 0;
+                                            StartCoroutine(Error("Error! Invalid argument"));
+                                            StopCoroutine(Execute());
+                                            yield return null;
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("Error! Invalid input");
+                                        execotionPercent = 0;
+                                        StartCoroutine(Error("Error! Invalid input"));
+                                        StopCoroutine(Execute());
+                                        yield return null;
+                                    }
+                                    if (targetedPosition != null && can_move)
+                                    {
+                                        while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
+                                        {
+                                            platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);
+                                            yield return null;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        targetedPosition = platform.position;
+                                    }
+                                    platform.position = targetedPosition;
+                                    commands = new string[0];
+                                    yield return null;
+                                }
+                            }
+                            isInCycle = false;
+                            cycleCommands = new List<string>();
+                            continue;
+                        }
+                    }
+                    if (command == "endcycle")
+                    {
+                        execotionPercent++;
+                        commandIndex++;
+                        continue;
+                    }
                     if (command == "delay")
                     {
                         yield return new WaitForSeconds(int.Parse(arg));
@@ -140,11 +302,8 @@ public class CodablePlatformSystem : PoweredBox
                     }
                     else if (command == "up")
                     {
-
                         targetedPosition.y = platform.position.y + baseStep * int.Parse(arg);
                         can_move = CanMove(targetedPosition);
-
-                        //Debug.Log(platform.position.y + baseStep * int.Parse(arg));
                     }
                     else if (command == "down")
                     {
@@ -167,9 +326,10 @@ public class CodablePlatformSystem : PoweredBox
                         execotionPercent = 0;
                         StartCoroutine(Error("Error! Unknown command"));
                         StopCoroutine(Execute());
+
                         yield return null;
                     }
-
+                    
                     if (!can_move)
                     {
                         Debug.Log("Error! Cant move here and ur stupid");
@@ -180,6 +340,7 @@ public class CodablePlatformSystem : PoweredBox
 
                     }
                     execotionPercent++;
+                    commandIndex++;
                 }
                 else
                 {
@@ -212,16 +373,17 @@ public class CodablePlatformSystem : PoweredBox
                 targetedPosition = platform.position;
             }
             platform.position = targetedPosition;
-
+            commands = new string[0];
             yield return null;
         }
 
-        if (execotionPercent == 1)
+        if (execotionPercent >= 1)
         {
             inputField.text = "Finished!";
         }
         execotionPercent = 0;
         commands = new string[0];
+        commandIndex = 0;
     }
 
     protected IEnumerator Error(string error)
