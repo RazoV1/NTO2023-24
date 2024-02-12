@@ -16,6 +16,7 @@ public class HoneyDisplacing : MonoBehaviour
     {
         _inventory = _inventory.GetComponent<Inventory>();
         _health = _health.GetComponent<CharacterHealth>();
+        text = GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
