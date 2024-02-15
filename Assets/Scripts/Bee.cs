@@ -33,6 +33,8 @@ public class Bee : MonoBehaviour
     private bool is_waiting = false;
 
     private Vector3 StartPos;
+    
+    public int state; // 0 - обычная; 1 - относится ко входному шлюзу
 
     private void Start()
     {

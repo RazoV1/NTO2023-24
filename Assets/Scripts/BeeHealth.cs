@@ -18,5 +18,9 @@ public class BeeHealth : Health
     {
         GameObject ded_Bee = Instantiate(dedBee, transform.position, Quaternion.identity);
         ded_Bee.GetComponent<BeeDied>().IsActualBee = true;
+        if (GetComponent<Bee>().state == 1)
+        {
+            Camera.main.GetComponent<TaskbarManager>().enterRoom_beesKilled++;
+        }
     }
 }

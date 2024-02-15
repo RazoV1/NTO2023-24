@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,7 +15,8 @@ public class TaskbarManager : MonoBehaviour
 
     private List<string> tasksList;
     public int currentTask = 0;
-    
+
+    public int enterRoom_beesKilled;
 
     void Start()
     {
@@ -41,6 +43,15 @@ public class TaskbarManager : MonoBehaviour
         TaskText.text = tasksList[currentTask];
     }
 
-
+    private void Update()
+    {
+        if (currentTask == 35)
+        {
+            if (enterRoom_beesKilled >= 12)
+            {
+                NextTask();
+            }
+        }
+    }
 }
 
