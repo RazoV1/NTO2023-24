@@ -22,6 +22,9 @@ public class BeeBehaviour : MonoBehaviour
     private bool isMovingRight;
     private bool isFollowingPlayer;
     
+    [SerializeField] private int state; // 0 - обычная; 1 - относится ко входному шлюзу
+
+    
     private void Start()
     {
         startPosition = transform.position;
