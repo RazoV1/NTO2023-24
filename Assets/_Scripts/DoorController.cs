@@ -17,6 +17,9 @@ public class DoorController : PoweredBox
     public Item key_uni;
     
     public bool isBroken;
+
+    public bool isLoreClose = false;
+    public int loreTaskToClose;
     
     public int index;
 
@@ -75,8 +78,15 @@ public class DoorController : PoweredBox
         {
             if (isClosed && canUse)
             {
-                print(1);
-                UnlockBox();
+                if (isLoreClose && loreTaskToClose<=Camera.main.GetComponent<TaskbarManager>().currentTask)
+                {
+                    Camera.main.GetComponent<TaskbarManager>().NextTask();
+                    UnlockBox();
+                }
+                else
+                {
+                    UnlockBox();
+                }
             }
         }
         if (Input.GetKeyDown(KeyCode.E))
