@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class MapGenerator : MonoBehaviour
     public Transform p2;
 
     public float distanceMultiplier;
-    public float minDistance;
+    public float maxDistance;
     public GameObject point;
 
     public FTLMapPointLogic[] points;
@@ -27,15 +28,30 @@ public class MapGenerator : MonoBehaviour
             FTLMapPointLogic newPoint = Instantiate(point,canvas).GetComponent<FTLMapPointLogic>();
             points[i] = newPoint;
             Vector2 circle = Random.insideUnitCircle;
-            circle[0] = Mathf.Clamp01(circle[0]);
+            circle[0] = Mathf.Clamp(circle[0], 0.3f, 1f);
+            //circle[1] = Mathf.Clamp(circle[1],-01f,1f);
             newPoint.transform.position = previousPoint + (circle * distanceMultiplier);
+            newPoint.transform.position = new Vector2(newPoint.transform.position.x, circle[1] * distanceMultiplier);
             previousPoint = newPoint.transform.position;
             pointPos[i] = previousPoint;
         }
-        /*for (int i = 0; i < pointNum; i++)
+        for (int i = 0; i < pointNum; i++)
         {
-            for (int j =)
-            points[i].connectedPoints = 
-        }*/
+            foreach (FTLMapPointLogic p in points[i..(pointNum-1)])
+            {
+                if (Vector2.Distance(points[i].transform.position,p.transform.position) < maxDistance)
+                {
+                    points[i].connectedPoints.Add(p);
+                }
+            }
+            points[i].ConnectPoints();
+        }
+        points[0].isActive = false;
+        points[0].isPlayerOnPoint = true;
+        foreach (FTLMapPointLogic p in points[0].connectedPoints)
+        {
+            p.isActive = true;
+            p.button.GetComponent<Button>().interactable = true;
+        }
     }
 }
