@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyBullet : MonoBehaviour
 {
@@ -17,7 +19,7 @@ public class EnemyBullet : MonoBehaviour
             transform.position,
             target.gameObject.transform.position, 
             Time.deltaTime * 2);
-
+        
         if (Vector2.Distance(transform.position, target.transform.position) < 1f)
         {
             playerSpaceship.TakeDamage(target, canGoThroughShields, damage);

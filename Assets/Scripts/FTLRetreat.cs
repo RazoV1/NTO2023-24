@@ -14,6 +14,7 @@ public class FTLRetreat : MonoBehaviour
     private void Start()
     {
         MapCanvas = GameObject.Find("Map");
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("SampleScene"));
         MapCanvas.active = false;
         button.interactable = false;
     }

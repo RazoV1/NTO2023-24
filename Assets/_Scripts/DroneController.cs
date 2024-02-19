@@ -13,6 +13,7 @@ public class DroneController : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
 
     [SerializeField] private Item item;
+    [SerializeField] private Item battleItem;
 
     public float speed;
     public Vector3 offset;
@@ -53,12 +54,9 @@ public class DroneController : MonoBehaviour
             newPos.x = target.position.x + offset.x;
             newPos.y = target.position.y + offset.y;
         }
-        
         crest.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles,new Vector3(0, 0, horizontalAxis * -30f), 100 * Time.deltaTime));
-        
         transform.position = Vector3.Lerp(transform.position, newPos, speed * Time.deltaTime);
     }
-
     void ChangeTarget()
     {
         if (target == backpack)
@@ -122,23 +120,23 @@ public class DroneController : MonoBehaviour
     {
         LookOnCursor3D();
         ChangeTarget();
-        if (Input.GetKeyDown(KeyCode.Alpha1) && canShoot)
+        if (player.gameObject.GetComponent<Inventory>().hasItem(battleItem))
         {
-            StartCoroutine(Shot());
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && canShoot)
-        {
-            SlimeShot();
+            if (Input.GetKeyDown(KeyCode.Alpha1) && canShoot)
+            {
+                StartCoroutine(Shot());
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2) && canShoot)
+            {
+                SlimeShot();
+            }
         }
     }
-    void LookOnCursor(){ //заставляет свет следить за курсором мышки
+    void LookOnCursor()
+    {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = body.position.z;
-        mousePos.y += body.position.y - Camera.main.transform.position.y; //расстояние между камерой и объектом
-        //print(mousePos);
-        
-        //print(mousePos);
-
+        mousePos.y += body.position.y - Camera.main.transform.position.y;
         body.LookAt(mousePos);
     }
     private void LookOnCursor3D() //свет смотрит на точку в пространстве за курсором.

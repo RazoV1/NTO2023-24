@@ -82,7 +82,9 @@ public class FTLMapPointLogic : MonoBehaviour
         {
             isPlayerOnPoint = true;
             isActive = false;
+            Scene s = SceneManager.GetSceneByName("SampleScene");
             SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+            
             foreach (FTLMapPointLogic point in connectedPoints)
             {
                 point.isActive = true;

@@ -1753,7 +1753,7 @@ MonoBehaviour:
   MapCanvas: {fileID: 0}
   image: {fileID: 480337573}
   button: {fileID: 480337571}
-  retreatFillSpeed: 0.01
+  retreatFillSpeed: 0.05
 --- !u!114 &480337573
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyWeapon : MonoBehaviour
 {
@@ -41,6 +44,7 @@ public class EnemyWeapon : MonoBehaviour
                     //enemy.TakeDamage(target, CanGoThroughShield, damage);
                     //print(i);
                     EnemyBullet currentBullet = Instantiate(bulletPrefab);
+                    
                     currentBullet.transform.position = bulletSpawnPos.position + new Vector3(0, i, 0);
                     currentBullet.damage = damage;
                     currentBullet.canGoThroughShields = CanGoThroughShield;
@@ -75,5 +79,6 @@ public class EnemyWeapon : MonoBehaviour
     private void Update()
     {
         Cycle();
+        
     }
 }
