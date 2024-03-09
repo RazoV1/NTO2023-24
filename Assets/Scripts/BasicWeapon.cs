@@ -13,7 +13,7 @@ public class BasicWeapon : MonoBehaviour
     public BasicPart target;
     public EnemyBehaviour enemy;
     public bool isOnCooldown;
-    public bool is_automatic = true;
+    public bool is_automatic = false;
     [SerializeField] private Bullet bulletPrefab; 
     [SerializeField] private Transform bulletSpawnPos;
     private float timeToWait = 0;
@@ -48,25 +48,33 @@ public class BasicWeapon : MonoBehaviour
                 if (target != null && !is_automatic && !isOnCooldown)
                 {
                     enemy.TakeDamage(target,CanGoThroughShield,1);
-                    target = null;
+                    //target = null;
                     StartCoroutine(Cooldown());
                 }
             }
             if (!isOnCooldown && target != null && is_automatic)
             {
-                for (int i = 0; i < Rounds; i++)
-                {
-                    //enemy.TakeDamage(target, CanGoThroughShield, damage);
-                    //print(i);
-                    Bullet currentBullet = Instantiate(bulletPrefab);
-                    currentBullet.transform.position = bulletSpawnPos.position + new Vector3(0, i, 0);
-                    currentBullet.damage = damage;
-                    currentBullet.canGoThroughShields = CanGoThroughShield;
-                    currentBullet.target = target;
-                    currentBullet.enemy = enemy;
-                }
-                StartCoroutine(Cooldown());
+                Shoot();
             }
+        }
+    }
+
+    public void Shoot()
+    {
+        if (!isOnCooldown && target != null)
+        {
+            for (int i = 0; i < Rounds; i++)
+            {
+                //enemy.TakeDamage(target, CanGoThroughShield, damage);
+                //print(i);
+                Bullet currentBullet = Instantiate(bulletPrefab);
+                currentBullet.transform.position = bulletSpawnPos.position + new Vector3(0, i, 0);
+                currentBullet.damage = damage;
+                currentBullet.canGoThroughShields = CanGoThroughShield;
+                currentBullet.target = target;
+                currentBullet.enemy = enemy;
+            }
+            StartCoroutine(Cooldown());
         }
     }
 

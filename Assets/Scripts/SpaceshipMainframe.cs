@@ -17,6 +17,7 @@ public class SpaceshipMainframe : MonoBehaviour
     public BasicWeapon LaserRifle;
     public BasicWeapon RocketLauncher;
     public BasicWeapon LaserBeam;
+    public BasicWeapon[] allWeapons;
     public GameObject miss;
     [Header("Shield")]
     public BasicPart Shields;
@@ -87,13 +88,10 @@ public class SpaceshipMainframe : MonoBehaviour
         {
             evasionVis.color = Color.green;
         }
-        evasionVis.text = "evasion: "+EvasionChance*10f+"%";
+        evasionVis.text = EvasionChance*10f+"%";
     }
 
-    private void UpdateWeapons()
-    {
-
-    }
+    
     #endregion
     public void TakeDamage(BasicPart part,bool through_shields,int damage)
     {

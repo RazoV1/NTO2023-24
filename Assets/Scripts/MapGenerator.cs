@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Linq;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -9,15 +11,38 @@ public class MapGenerator : MonoBehaviour
     public Transform p1;
     public Transform p2;
 
+    public TMPro.TextMeshProUGUI score;
+    public int rightAns;
+    public TMP_InputField input;
+
     public float distanceMultiplier;
     public float maxDistance;
     public GameObject point;
 
+    public FTLMapPointLogic movePoint;
+
     public FTLMapPointLogic[] points;
     public Vector2[] pointPos;
+    public List<bool> isVisitedAll;
+
+    public bool isOGE;
 
     public Transform canvas;
 
+    private void Update()
+    {
+        if (isOGE)
+        {
+            if (input.text == rightAns.ToString())
+            {
+                score.text = (int.Parse(input.text) + 1).ToString();
+                movePoint.PlayerMoveOnPoint();
+                gameObject.SetActive(false);
+                
+            }
+        }
+    }
+    
     void Start()
     {
         points = new FTLMapPointLogic[pointNum];
@@ -35,9 +60,12 @@ public class MapGenerator : MonoBehaviour
             previousPoint = newPoint.transform.position;
             pointPos[i] = previousPoint;
         }
+        points[0].isActive = false;
+        points[0].isPlayerOnPoint = true;
+        points[0].isVisited = true;
         for (int i = 0; i < pointNum; i++)
         {
-            foreach (FTLMapPointLogic p in points[i..(pointNum-1)])
+            foreach (FTLMapPointLogic p in points[i..(pointNum)])
             {
                 if (Vector2.Distance(points[i].transform.position,p.transform.position) < maxDistance)
                 {
@@ -46,12 +74,20 @@ public class MapGenerator : MonoBehaviour
             }
             points[i].ConnectPoints();
         }
-        points[0].isActive = false;
-        points[0].isPlayerOnPoint = true;
         foreach (FTLMapPointLogic p in points[0].connectedPoints)
         {
             p.isActive = true;
             p.button.GetComponent<Button>().interactable = true;
+        }
+        if (isOGE)
+        {
+            points[points.Length - 1].IsOGEEnd = true;
+            /*foreach (var p in points)
+            {
+                rightAns += p.minLen;
+                Debug.Log(rightAns);
+            }
+            rightAns = (int)(rightAns%100);*/
         }
     }
 }
