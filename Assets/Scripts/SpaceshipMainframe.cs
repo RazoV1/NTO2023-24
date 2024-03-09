@@ -12,6 +12,7 @@ public class SpaceshipMainframe : MonoBehaviour
     public BasicPart[] parts;
     public EnergyStorage energy;
     public Image HullVis;
+    public Sprite deadCell;
     [Header("Weaponary")]
     public BasicPart Weaponary;
     public BasicWeapon LaserRifle;
@@ -67,7 +68,6 @@ public class SpaceshipMainframe : MonoBehaviour
         if (Shields.UsingEnergy % 2 == 0 || Shields.HP<=0)
         {
             ProtLayers = (Shields.UsingEnergy / 2) - LayersInCooldown;
-            
         }
         else
         {
@@ -90,8 +90,6 @@ public class SpaceshipMainframe : MonoBehaviour
         }
         evasionVis.text = EvasionChance*10f+"%";
     }
-
-    
     #endregion
     public void TakeDamage(BasicPart part,bool through_shields,int damage)
     {
@@ -118,7 +116,12 @@ public class SpaceshipMainframe : MonoBehaviour
                     {
                         
                         part.MaxEnergy -= 2;
-
+                        part.powers[part.MaxEnergy+1].GetComponent<Image>().sprite = deadCell;
+                        part.powers[part.MaxEnergy].GetComponent<Image>().sprite = deadCell;
+                        part.powers[part.MaxEnergy].name = "ded";
+                        part.powers[part.MaxEnergy+1].name = "ded";
+                        part.powers[part.MaxEnergy + 1].SetActive(true);
+                        part.powers[part.MaxEnergy].SetActive(true);
                         if (part.UsingEnergy >= 2)
                         {
                             if (part.UsingEnergy % 2 == 0)
@@ -127,7 +130,7 @@ public class SpaceshipMainframe : MonoBehaviour
                                 energy.FreePoints += 2;
                                 foreach (GameObject g in energy.powerVisualiser)
                                 {
-                                    if (!g.active)
+                                    if (!g.active && g.name != "ded")
                                     {
                                         g.SetActive(true);
                                         break;
@@ -135,7 +138,7 @@ public class SpaceshipMainframe : MonoBehaviour
                                 }
                                 foreach (GameObject g in energy.powerVisualiser)
                                 {
-                                    if (!g.active)
+                                    if (!g.active && g.name != "ded")
                                     {
                                         g.SetActive(true);
                                         break;
@@ -143,7 +146,7 @@ public class SpaceshipMainframe : MonoBehaviour
                                 }
                                 for (int i = part.powers.Length - 1; i >= 0; i--)
                                 {
-                                    if (part.powers[i].active)
+                                    if (part.powers[i].active && part.name != "ded")
                                     {
                                         part.powers[i].SetActive(false);
                                         break;
@@ -151,7 +154,7 @@ public class SpaceshipMainframe : MonoBehaviour
                                 }
                                 for (int i = part.powers.Length - 1; i >= 0; i--)
                                 {
-                                    if (part.powers[i].active)
+                                    if (part.powers[i].active && part.name != "ded")
                                     {
                                         part.powers[i].SetActive(false);
                                         break;
@@ -164,7 +167,7 @@ public class SpaceshipMainframe : MonoBehaviour
                                 energy.FreePoints ++;
                                 foreach (GameObject g in energy.powerVisualiser)
                                 {
-                                    if (!g.active)
+                                    if (!g.active && g.name != "ded")
                                     {
                                         g.SetActive(true);
                                         break;
@@ -172,7 +175,7 @@ public class SpaceshipMainframe : MonoBehaviour
                                 }
                                 for (int i = part.powers.Length - 1; i >= 0; i--)
                                 {
-                                    if (part.powers[i].active)
+                                    if (part.powers[i].active && part.powers[i].name != "ded")
                                     {
                                         part.powers[i].SetActive(false);
                                         break;

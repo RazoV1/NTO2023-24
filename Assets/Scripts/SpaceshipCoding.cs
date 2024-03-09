@@ -17,12 +17,21 @@ public class SpaceshipCoding : MonoBehaviour
     public GameObject content;
     public GameObject menu;
     public float yOffset;
+    public float xOffset;
     public List<Condition> programm;
     public List<Condition> executionQueue;
 
     public void HideMenu()
     {
         menu.SetActive(!menu.active);
+        if (menu.active)
+        {
+            Time.timeScale = 0.00000001f;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
     }
 
     bool CheckWeaponCondition(WeaponConditionClass weaponIf)
@@ -41,9 +50,8 @@ public class SpaceshipCoding : MonoBehaviour
         {
             if (mainframe.allWeapons[weaponIf.weapon.value - 1].isOnCooldown != isLoaded)
             {
-                if (isLoaded && mainframe.allWeapons[weaponIf.weapon.value-1].MaxEnergy == mainframe.allWeapons[weaponIf.weapon.value - 1].UsingEnergy)
+                if (isLoaded && mainframe.allWeapons[weaponIf.weapon.value-1].MaxEnergy == mainframe.allWeapons[weaponIf.weapon.value - 1].UsingEnergy && mainframe.allWeapons[weaponIf.weapon.value - 1].target != null)
                 {
-                    //mainframe.allWeapons[weaponIf.weapon.value].Shoot();
                     return true;
                 }
                 else
@@ -66,7 +74,7 @@ public class SpaceshipCoding : MonoBehaviour
     {
         if (targetCond.oper.value == 0)
         {
-            if (mainframe.parts[targetCond.checkPart.value - 1].HP >= targetCond.number)
+            if (enemyMainframe.parts[targetCond.checkPart.value - 1].HP >= targetCond.number)
             {
                 return true;
             }
@@ -77,7 +85,7 @@ public class SpaceshipCoding : MonoBehaviour
         }
         else
         {
-            if (mainframe.parts[targetCond.checkPart.value - 1].HP <= targetCond.number)
+            if (enemyMainframe.parts[targetCond.checkPart.value - 1].HP <= targetCond.number)
             {
                 return true;
             }
@@ -96,7 +104,7 @@ public class SpaceshipCoding : MonoBehaviour
     {
         GameObject c = Instantiate(condition,content.transform,false);
         programm.Add(c.GetComponent<Condition>());
-        c.transform.position = new Vector2(c.transform.position.x,content.transform.position.y + yOffset*programm.Count);
+        c.transform.position = new Vector2(c.transform.position.x + xOffset,content.transform.position.y + yOffset*programm.Count);
     }
     bool RunOneIf()
     {

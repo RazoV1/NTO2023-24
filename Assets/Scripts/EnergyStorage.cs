@@ -74,7 +74,7 @@ public class EnergyStorage : MonoBehaviour
             FreePoints++;
             for (int i = weapon.powers.Length - 1; i >= 0; i--)
             {
-                if (weapon.powers[i].active)
+                if (weapon.powers[i].active && weapon.powers[i].name != "ded")
                 {
                     weapon.powers[i].SetActive(false);
                     break;
@@ -98,7 +98,7 @@ public class EnergyStorage : MonoBehaviour
             FreePoints++;
             for (int i = part.powers.Length - 1; i >= 0; i--)
             {
-                if (part.powers[i].active)
+                if (part.powers[i].active && part.powers[i].name != "ded")
                 {
                     part.powers[i].SetActive(false);
                     break;
