@@ -177,15 +177,16 @@ public class SpaceshipCoding : MonoBehaviour
             }
             else if (c.conditionType == "targetIf")
             {
+                TargetCondition t = c.GetComponent<TargetCondition>();
                 if (conditionOperator == "or")
                 {
-                    if (CheckTargetCondition(c.GetComponent<TargetCondition>()))
+                    if (CheckTargetCondition(t))
                     {
                         isIfTrue = true;
                         conditionOperator = "";
                         continue;
                     }
-                    else if (!CheckTargetCondition(c.GetComponent<TargetCondition>())) 
+                    else if (!CheckTargetCondition(t)) 
                     {
                         if (isIfTrue)
                         {
@@ -200,7 +201,7 @@ public class SpaceshipCoding : MonoBehaviour
                 }
                 else if (conditionOperator == "and")
                 {
-                    if (CheckTargetCondition(c.GetComponent<TargetCondition>()))
+                    if (CheckTargetCondition(t))
                     {
                         if (isIfTrue)
                         {
@@ -212,20 +213,20 @@ public class SpaceshipCoding : MonoBehaviour
                             return false;
                         }
                     }
-                    else if (!CheckTargetCondition(c.GetComponent<TargetCondition>()))
+                    else if (!CheckTargetCondition(t))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (CheckTargetCondition(c.GetComponent<TargetCondition>()))
+                    if (CheckTargetCondition(t))
                     {
                         isIfTrue = true;
                         conditionOperator = "";
                         continue;
                     }
-                    else if (!CheckTargetCondition(c.GetComponent<TargetCondition>()))
+                    else if (!CheckTargetCondition(t))
                     {
                         isIfTrue = false;
                         conditionOperator = "";
@@ -250,6 +251,22 @@ public class SpaceshipCoding : MonoBehaviour
                         {
                             mainframe.allWeapons[c.GetComponent<WeaponConditionClass>().weapon.value - 1].Shoot();
                             Debug.Log("Fire!");
+                        }
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        //Debug.Log("im gut)");
+                        //throw;
+                    }
+                }
+                else if (c.conditionType == "targetIf")
+                {
+                    try
+                    {
+                        if (CheckTargetCondition(c.GetComponent<TargetCondition>()))
+                        {
+                            mainframe.allWeapons[c.GetComponent<TargetCondition>().weapon.value - 1].target = enemyMainframe.parts[c.GetComponent<TargetCondition>().targetPart.value-1];
+                            Debug.Log("SetTarget!");
                         }
                     }
                     catch (IndexOutOfRangeException)

@@ -17,7 +17,7 @@ public class LightingControll : MonoBehaviour
         yield return new WaitForSeconds(activeTime);
         canDamage = false;
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (canDamage && other.name == "Player")
         {
