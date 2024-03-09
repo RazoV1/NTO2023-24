@@ -119,7 +119,6 @@ public class SpaceshipCoding : MonoBehaviour
             }
             if (c.conditionType == "weaponIf")
             {
-                
                 if (conditionOperator == "or")
                 {
                     if (CheckWeaponCondition(c.GetComponent<WeaponConditionClass>()))
@@ -176,7 +175,7 @@ public class SpaceshipCoding : MonoBehaviour
                     }
                 }
             }
-            /*else if (c.conditionType == "targetIf")
+            else if (c.conditionType == "targetIf")
             {
                 if (conditionOperator == "or")
                 {
@@ -186,7 +185,7 @@ public class SpaceshipCoding : MonoBehaviour
                         conditionOperator = "";
                         continue;
                     }
-                    else if (!CheckWeaponCondition(c.GetComponent<TargetCondition>())) 
+                    else if (!CheckTargetCondition(c.GetComponent<TargetCondition>())) 
                     {
                         if (isIfTrue)
                         {
@@ -201,7 +200,7 @@ public class SpaceshipCoding : MonoBehaviour
                 }
                 else if (conditionOperator == "and")
                 {
-                    if (CheckWeaponCondition(c.GetComponent<TargetCondition>()))
+                    if (CheckTargetCondition(c.GetComponent<TargetCondition>()))
                     {
                         if (isIfTrue)
                         {
@@ -213,27 +212,27 @@ public class SpaceshipCoding : MonoBehaviour
                             return false;
                         }
                     }
-                    else if (!CheckWeaponCondition(c.GetComponent<TargetCondition>()))
+                    else if (!CheckTargetCondition(c.GetComponent<TargetCondition>()))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (CheckWeaponCondition(c.GetComponent<TargetCondition>()))
+                    if (CheckTargetCondition(c.GetComponent<TargetCondition>()))
                     {
                         isIfTrue = true;
                         conditionOperator = "";
                         continue;
                     }
-                    else if (!CheckWeaponCondition(c.GetComponent<TargetCondition>()))
+                    else if (!CheckTargetCondition(c.GetComponent<TargetCondition>()))
                     {
                         isIfTrue = false;
                         conditionOperator = "";
                         continue;
                     }
                 }
-            }*/
+            }
         }
         return isIfTrue;
     }
