@@ -16,11 +16,12 @@ public class TargetCondition : Condition
 
     private void Update()
     {
-        number = numInput.text.ConvertTo<int>();
+        number = int.Parse(numInput.text);
+        //Debug.Log(number);
     }
 
     private void Awake()
     {
-        conditionType = "targetCondition";
+        conditionType = "targetIf";
     }
 }
