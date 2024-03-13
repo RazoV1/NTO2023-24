@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Linq.Expressions;
 
 public class SpaceshipCoding : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class SpaceshipCoding : MonoBehaviour
     public float xOffset;
     public List<Condition> programm;
     public List<Condition> executionQueue;
+    public FTLRepairDrone drone;
 
     public void HideMenu()
     {
@@ -34,6 +36,7 @@ public class SpaceshipCoding : MonoBehaviour
         }
     }
 
+    #region ConditionChecks
     bool CheckWeaponCondition(WeaponConditionClass weaponIf)
     {
         bool isLoaded;
@@ -72,30 +75,82 @@ public class SpaceshipCoding : MonoBehaviour
     }
     bool CheckTargetCondition(TargetCondition targetCond)
     {
-        if (targetCond.oper.value == 0)
+        try
         {
-            if (enemyMainframe.parts[targetCond.checkPart.value - 1].HP >= targetCond.number)
+            if (targetCond.oper.value == 0)
             {
-                return true;
+                if (enemyMainframe.parts[targetCond.checkPart.value - 1].HP >= targetCond.number)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                if (enemyMainframe.parts[targetCond.checkPart.value - 1].HP <= targetCond.number)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    bool CheckEnergyCondition(EnergyCondition energyIf)
+    {
+        if (mainframe.energy.FreePoints >= energyIf.number)
+        {
+            return true;
         }
         else
         {
-            if (enemyMainframe.parts[targetCond.checkPart.value - 1].HP <= targetCond.number)
+            return false;
+        }
+    }
+    bool CheckRepairCondition(RepaitCondition repair)
+    {
+        try
+        {
+            if (repair.oper.value == 0)
             {
-                return true;
+                if (mainframe.parts[repair.part1.value-1].HP > repair.number)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                if (mainframe.parts[repair.part1.value - 1].HP < repair.number)
+                {
+                    Debug.Log("t");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
-        
+        catch
+        {
+            return false; 
+        }
     }
+    #endregion
+
     private void Update()
     {
         Execution();
@@ -135,7 +190,7 @@ public class SpaceshipCoding : MonoBehaviour
                         conditionOperator = "";
                         continue;
                     }
-                    else if (!CheckWeaponCondition(c.GetComponent<WeaponConditionClass>())) 
+                    else if (!CheckWeaponCondition(c.GetComponent<WeaponConditionClass>()))
                     {
                         if (isIfTrue)
                         {
@@ -194,7 +249,7 @@ public class SpaceshipCoding : MonoBehaviour
                         conditionOperator = "";
                         continue;
                     }
-                    else if (!CheckTargetCondition(t)) 
+                    else if (!CheckTargetCondition(t))
                     {
                         if (isIfTrue)
                         {
@@ -242,6 +297,124 @@ public class SpaceshipCoding : MonoBehaviour
                     }
                 }
             }
+            else if (c.conditionType == "energyIf")
+            {
+                EnergyCondition t = c.GetComponent<EnergyCondition>();
+                if (conditionOperator == "or")
+                {
+                    if (CheckEnergyCondition(t))
+                    {
+                        isIfTrue = true;
+                        conditionOperator = "";
+                        continue;
+                    }
+                    else if (!CheckEnergyCondition(t))
+                    {
+                        if (isIfTrue)
+                        {
+                            conditionOperator = "";
+                            continue;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (conditionOperator == "and")
+                {
+                    if (CheckEnergyCondition(t))
+                    {
+                        if (isIfTrue)
+                        {
+                            conditionOperator = "";
+                            continue;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else if (!CheckEnergyCondition(t))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (CheckEnergyCondition(t))
+                    {
+                        isIfTrue = true;
+                        conditionOperator = "";
+                        continue;
+                    }
+                    else if (!CheckEnergyCondition(t))
+                    {
+                        isIfTrue = false;
+                        conditionOperator = "";
+                        continue;
+                    }
+                }
+            }
+            else if (c.conditionType == "repairIf")
+            {
+                RepaitCondition t = c.GetComponent<RepaitCondition>();
+                if (conditionOperator == "or")
+                {
+                    if (CheckRepairCondition(t))
+                    {
+                        isIfTrue = true;
+                        conditionOperator = "";
+                        continue;
+                    }
+                    else if (!CheckRepairCondition(t))
+                    {
+                        if (isIfTrue)
+                        {
+                            conditionOperator = "";
+                            continue;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (conditionOperator == "and")
+                {
+                    if (CheckRepairCondition(t))
+                    {
+                        if (isIfTrue)
+                        {
+                            conditionOperator = "";
+                            continue;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else if (!CheckRepairCondition(t))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (CheckRepairCondition(t))
+                    {
+                        isIfTrue = true;
+                        conditionOperator = "";
+                        continue;
+                    }
+                    else if (!CheckRepairCondition(t))
+                    {
+                        isIfTrue = false;
+                        conditionOperator = "";
+                        continue;
+                    }
+                }
+            }
         }
         return isIfTrue;
     }
@@ -281,6 +454,49 @@ public class SpaceshipCoding : MonoBehaviour
                     {
                         //Debug.Log("im gut)");
                         //throw;
+                    }
+                }
+                else if (c.conditionType == "energyIf")
+                {
+                    try
+                    {
+                        if (CheckEnergyCondition(c.GetComponent<EnergyCondition>()))
+                        {
+                            
+                            for (int i = 0; i < c.GetComponent<EnergyCondition>().number; i++)
+                            {
+                                if (c.GetComponent<EnergyCondition>().weapon.value > 6)
+                                {
+                                    mainframe.energy.POWERWeapon(mainframe.allWeapons[c.GetComponent<EnergyCondition>().weapon.value - 1]);
+                                }
+                                else
+                                {
+                                    mainframe.energy.POWER(mainframe.parts[c.GetComponent<EnergyCondition>().weapon.value - 1]);
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        //Debug.Log("L");
+                    }
+                }
+                else if (c.conditionType == "repairIf")
+                {
+                    try
+                    {
+                        if (CheckRepairCondition(c.GetComponent<RepaitCondition>()))
+                        {
+                            if (!drone.isFixing)
+                            {
+                                drone.isFixing = true;
+                                drone.StartCoroutine(drone.RepairCycle(mainframe.parts[c.GetComponent<RepaitCondition>().part1.value - 1]));
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        //D;
                     }
                 }
             }

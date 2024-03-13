@@ -130,7 +130,7 @@ public class FTLMapPointLogic : MonoBehaviour
                 }
                 if (!IsOGE)
                 {
-                    maxChance += 3;
+                    maxChance -= 3;
                     continue;
                 }
             }

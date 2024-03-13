@@ -16,8 +16,14 @@ public class TargetCondition : Condition
 
     private void Update()
     {
-        number = int.Parse(numInput.text);
-        //Debug.Log(number);
+        try
+        {
+            number = int.Parse(numInput.text);
+        }
+        catch
+        {
+            //Debug.Log(number);
+        }
     }
 
     private void Awake()
