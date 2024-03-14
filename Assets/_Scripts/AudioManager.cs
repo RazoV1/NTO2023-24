@@ -16,9 +16,12 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         audioMixer = audioMixer.GetComponent<AudioMixer>();
-        
+        OnMusicSliderChange();
     }
-
+    private void Update()
+    {
+        OnMusicSliderChange();
+    }
     public void OnMusicSliderChange()
     {
         audioMixer.SetFloat("MusicVolume", -80 + musicSlider.value * 100);
