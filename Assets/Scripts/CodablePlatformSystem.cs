@@ -560,7 +560,7 @@ public class CodablePlatformSystem : PoweredBox
                                                     continue;
                                                 }
                                             }
-                                            if (command == "endif")
+                                            if (Ccommand == "endif")
                                             {
                                                 execotionPercent++;
                                                 commandIndex++;
