@@ -545,9 +545,9 @@ public class CodablePlatformSystem : PoweredBox
                                                 }
                                                 else
                                                 {
-                                                    for (int j = commandIndex + 1; j < commands.Length; j++)
+                                                    for (int jj = commandIndex + 1; jj < commands.Length; jj++)
                                                     {
-                                                        if (commands[j].Split(' ')[0] == "endif")
+                                                        if (commands[jj].Split(' ')[0] == "endif")
                                                         {
                                                             break;
                                                         }
