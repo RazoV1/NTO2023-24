@@ -301,7 +301,7 @@ PrefabInstance:
     - target: {fileID: 6030497587235946902, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: playerColor
       value: 
-      objectReference: {fileID: 21300000, guid: 25b2c196566899243a058aa827a4c68f, type: 3}
+      objectReference: {fileID: 21300000, guid: 8e31a9e7abaef164d8a379178139a1bd, type: 3}
     - target: {fileID: 6030497587235946902, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: lineRenderer
       value: 
@@ -309,14 +309,14 @@ PrefabInstance:
     - target: {fileID: 6030497587235946902, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: exploredColor
       value: 
-      objectReference: {fileID: 21300000, guid: 2f9d62b048dff8947a699f5c68d8033d, type: 3}
+      objectReference: {fileID: 21300000, guid: 25b2c196566899243a058aa827a4c68f, type: 3}
     - target: {fileID: 6030497587235946902, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: unexploredColor
       value: 
       objectReference: {fileID: 21300000, guid: 7e4f8077f4378454693ddeedb955fb36, type: 3}
     - target: {fileID: 6030497587235946902, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: tasks.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6030497587235946902, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: tasks.Array.data[0]
@@ -338,6 +338,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button
       objectReference: {fileID: 0}
+    - target: {fileID: 6030497587235946904, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030497587235946904, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2f9d62b048dff8947a699f5c68d8033d, type: 3}
     - target: {fileID: 6030497587235946905, guid: ad455041da7d87b4cb1cf4cd4983e0ef, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ActivateOGE
@@ -1054,6 +1062,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5972218546652727189, guid: eeb7cb5927299e4439e4194b35672ff5, type: 3}
+      propertyPath: task
+      value: 
+      objectReference: {fileID: 544068815}
+    - target: {fileID: 5972218546652727189, guid: eeb7cb5927299e4439e4194b35672ff5, type: 3}
       propertyPath: rightAns
       value: 19
       objectReference: {fileID: 0}
@@ -1503,6 +1515,10 @@ PrefabInstance:
     - target: {fileID: 8122894814717982346, guid: 3dc6d89329d61214ba889c85fcc9647a, type: 3}
       propertyPath: m_Name
       value: AnswerField
+      objectReference: {fileID: 0}
+    - target: {fileID: 8836246909559901453, guid: 3dc6d89329d61214ba889c85fcc9647a, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8050004233625917205, guid: 3dc6d89329d61214ba889c85fcc9647a, type: 3}
@@ -2519,16 +2535,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f522d23c685cd4a85b80183ce8d415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointNum: 15
+  pointNum: 10
   p1: {fileID: 1137055762}
   p2: {fileID: 1596321749}
   score: {fileID: 0}
   rightAns: 0
   input: {fileID: 0}
   distanceMultiplier: 3
-  maxDistance: 5.32
+  maxDistance: 4
   point: {fileID: 1522392086}
   movePoint: {fileID: 0}
+  exit: {fileID: 21300000, guid: 57671f37b9b79c146b2a4050f8529c75, type: 3}
   points: []
   pointPos: []
   isVisitedAll: 
@@ -2782,6 +2799,7 @@ MonoBehaviour:
   maxDistance: 5.32
   point: {fileID: 112339840}
   movePoint: {fileID: 0}
+  exit: {fileID: 0}
   points: []
   pointPos: []
   isVisitedAll: 

@@ -16,9 +16,11 @@ public class OGEAnswer : MonoBehaviour
     {
         if (inputField.text == rightAns.ToString() && !isUsed)
         {
-            isUsed = true;
+            //isUsed = true;
+            inputField.text = "";
             SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
-            Destroy(task);
+            //Destroy(task);
+            task.SetActive(false);
         }
     }
 }

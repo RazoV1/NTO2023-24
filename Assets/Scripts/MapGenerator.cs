@@ -21,6 +21,8 @@ public class MapGenerator : MonoBehaviour
 
     public FTLMapPointLogic movePoint;
 
+    public Sprite exit;
+
     public FTLMapPointLogic[] points;
     public Vector2[] pointPos;
     public List<bool> isVisitedAll;
@@ -63,6 +65,7 @@ public class MapGenerator : MonoBehaviour
         points[0].isActive = false;
         points[0].isPlayerOnPoint = true;
         points[0].isVisited = true;
+        points[points.Length - 1].button.sprite = exit;
         for (int i = 0; i < pointNum; i++)
         {
             foreach (FTLMapPointLogic p in points[i..(pointNum)])

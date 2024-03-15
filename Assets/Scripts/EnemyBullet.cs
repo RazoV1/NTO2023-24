@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,12 +15,8 @@ public class EnemyBullet : MonoBehaviour
 
     private void Update()
     {
-        //transform.LookAt(target.gameObject.transform.position);
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            target.gameObject.transform.position, 
-            Time.deltaTime * 2);
-        
+        transform.rotation = Quaternion.Euler(0, 0, -90 + MathF.Acos((transform.position.y - target.transform.position.y) / Vector2.Distance(transform.position, target.transform.position)) * (180 / MathF.PI));
+        transform.position = Vector2.MoveTowards(transform.position,target.transform.position, Time.deltaTime * 2);
         if (Vector2.Distance(transform.position, target.transform.position) < 1f)
         {
             playerSpaceship.TakeDamage(target, canGoThroughShields, damage);

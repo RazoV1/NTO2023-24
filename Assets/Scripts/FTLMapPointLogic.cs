@@ -124,10 +124,11 @@ public class FTLMapPointLogic : MonoBehaviour
                     //t.text = Weights[Weights.Count - 1].ToString();
                     //t.transform.position = transform.position + (point.transform.position - transform.position) / 2f;
                     //weightsObj.Add(t.gameObject);
-                    point.sourcePoints.Add(this);
+                    //point.sourcePoints.Add(this);
                     //minLen = Weights[0];
-                    point.sourcePoints.Add(this);
+                    //point.sourcePoints.Add(this);
                 }
+                point.sourcePoints.Add(this);
                 if (!IsOGE)
                 {
                     maxChance -= 3;
@@ -147,8 +148,9 @@ public class FTLMapPointLogic : MonoBehaviour
                     //t.text = Weights[Weights.Count - 1].ToString();
                     //t.transform.position = transform.position + (point.transform.position - transform.position) / 2f;
                     //weightsObj.Add(t.gameObject);
-                    point.sourcePoints.Add(this);
+                    //point.sourcePoints.Add(this);
                 }
+                point.sourcePoints.Add(this);
                 chance--;
             }
             else
@@ -211,10 +213,6 @@ public class FTLMapPointLogic : MonoBehaviour
             {
                 button.sprite = unexploredColor;
             }
-            else
-            {
-                button.sprite = exploredColor;
-            }
         }
     }
 
@@ -223,6 +221,7 @@ public class FTLMapPointLogic : MonoBehaviour
         if (isActive && !isPlayerOnPoint && !IsOGE)
         {
             tasks[Random.Range(0, tasks.Length)].SetActive(true);
+            PlayerMoveOnPoint();
         }
     }
 
@@ -232,12 +231,20 @@ public class FTLMapPointLogic : MonoBehaviour
         {
             isPlayerOnPoint = true;
             isActive = false;
-            Scene s = SceneManager.GetSceneByName("SampleScene");
-            SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+            //Scene s = SceneManager.GetSceneByName("SampleScene");
+            //SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
             foreach (FTLMapPointLogic point in connectedPoints)
             {
                 point.isActive = true;
                 point.button.GetComponent<Button>().interactable = true;
+            }
+            foreach (FTLMapPointLogic p in sourcePoints)
+            {
+                if (p.isPlayerOnPoint)
+                {
+                    p.isPlayerOnPoint = false;
+                    p.button.sprite = p.exploredColor;
+                }
             }
         }
     }

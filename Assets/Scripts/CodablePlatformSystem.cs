@@ -152,11 +152,11 @@ public class CodablePlatformSystem : PoweredBox
                 execotionPercent++;
                 continue;
             }
-            if (i.Contains(' '))
+            if (i.Contains(' ') || i == "endcycle" || i == "endif")
             {
                 string command = i.Split(' ')[0];
                 string arg = i.Split(' ')[1];
-                if (numArray.Contains(arg) || (command == "if"))
+                if (numArray.Contains(arg) || (command == "if") || command == "endcycle")
                 {
                     Debug.Log(command);
                     if (command == "if")
