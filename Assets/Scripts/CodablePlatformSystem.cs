@@ -152,7 +152,7 @@ public class CodablePlatformSystem : PoweredBox
                 execotionPercent++;
                 continue;
             }
-            if (i.Contains(' ') || i.Contains("if") || i == "endcycle" || i == "endif")
+            if (i.Contains(' ') || i.Contains("if") || i.Contains("endcycle") || i.Contains("endif"))
             {
                 string command = i.Split(' ')[0];
                 string arg = i.Split(' ')[1];
@@ -382,7 +382,7 @@ public class CodablePlatformSystem : PoweredBox
                                         execotionPercent++;
                                         continue;
                                     }
-                                    if (j.Contains(' ') || j.Contains("if"))
+                                    if (j.Contains(' ') || j.Contains("if") || j.Contains("endcycle"))
                                     {
                                         string Ccommand = j.Split(' ')[0];
                                         string Carg = j.Split(' ')[1];
@@ -564,6 +564,7 @@ public class CodablePlatformSystem : PoweredBox
                                             if (Ccommand == "endif")
                                             {
                                                 execotionPercent++;
+                                                ifCommands = new List<string>();
                                                 commandIndex++;
                                                 continue;
                                             }
