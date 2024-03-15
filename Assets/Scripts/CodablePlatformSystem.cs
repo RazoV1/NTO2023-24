@@ -385,9 +385,187 @@ public class CodablePlatformSystem : PoweredBox
                                     {
                                         string Ccommand = j.Split(' ')[0];
                                         string Carg = j.Split(' ')[1];
-                                        if (numArray.Contains(Carg))
+                                        if (numArray.Contains(Carg) || Ccommand == "if")
                                         {
+                                            if (Ccommand == "if")
+                                            {
+                                                if (Carg == "canup")
+                                                {
+                                                    targetedPosition.y = platform.position.y + baseStep;
+                                                    ifCan_move = CanMove(targetedPosition);
+                                                    targetedPosition.y = platform.position.y - baseStep;
+                                                }
+                                                else if (Carg == "candown")
+                                                {
+                                                    targetedPosition.y = platform.position.y - baseStep;
+                                                    ifCan_move = CanMove(targetedPosition);
+                                                    targetedPosition.y = platform.position.y + baseStep;
+                                                }
+                                                else if (Carg == "canright")
+                                                {
+                                                    targetedPosition.x = platform.position.x + baseStep;
+                                                    ifCan_move = CanMove(targetedPosition);
+                                                    targetedPosition.x = platform.position.x - baseStep;
+                                                }
+                                                else if (Carg == "canleft")
+                                                {
+                                                    targetedPosition.x = platform.position.x - baseStep;
+                                                    ifCan_move = CanMove(targetedPosition);
+                                                    targetedPosition.x = platform.position.x + baseStep;
+                                                }
+                                                if (ifCan_move)
+                                                {
+                                                    ifRepeats = 1;
+                                                    Debug.Log(CycleRepeats);
 
+                                                    for (int jj = commandIndex + 1; jj < commands.Length; jj++)
+                                                    {
+                                                        isIfFinite = false;
+                                                        if (commands[jj].Split(' ')[0] == "endif")
+                                                        {
+                                                            cycleSkipAmount = ifCommands.Count;
+                                                            isIfFinite = true;
+                                                            Debug.Log(ifCommands);
+                                                            foreach (string cc in ifCommands)
+                                                            {
+                                                                Debug.Log(cc);
+                                                            }
+                                                            Debug.Log("ifed!");
+                                                            break;
+                                                        }
+                                                        ifCommands.Add(commands[jj]);
+                                                        Debug.Log("addedCommand");
+                                                    }
+                                                    if (!isIfFinite)
+                                                    {
+                                                        Debug.Log("Error! Invalid cycle");
+                                                        execotionPercent = 0;
+                                                        StartCoroutine(Error("Error! Invalid cycle"));
+                                                        StopCoroutine(Execute());
+                                                        yield return null;
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (string jj in ifCommands)
+                                                        {
+                                                            if (jj == "")
+                                                            {
+                                                                execotionPercent++;
+                                                                continue;
+                                                            }
+                                                            if (jj.Contains(' '))
+                                                            {
+                                                                string CCcommand = jj.Split(' ')[0];
+                                                                string CCarg = jj.Split(' ')[1];
+                                                                if (numArray.Contains(CCarg))
+                                                                {
+                                                                    if (CCcommand == "delay")
+                                                                    {
+                                                                        yield return new WaitForSeconds(int.Parse(CCarg));
+                                                                        execotionPercent++;
+                                                                        continue;
+                                                                    }
+                                                                    else if (CCcommand == "up")
+                                                                    {
+                                                                        targetedPosition.y = platform.position.y + baseStep * int.Parse(CCarg);
+                                                                        can_move = CanMove(targetedPosition);
+                                                                    }
+                                                                    else if (CCcommand == "down")
+                                                                    {
+                                                                        targetedPosition.y = platform.position.y - baseStep * int.Parse(CCarg);
+                                                                        can_move = CanMove(targetedPosition);
+                                                                    }
+                                                                    else if (CCcommand == "right")
+                                                                    {
+                                                                        targetedPosition.x = platform.position.x + baseStep * int.Parse(CCarg);
+                                                                        can_move = CanMove(targetedPosition);
+                                                                    }
+                                                                    else if (CCcommand == "left")
+                                                                    {
+                                                                        targetedPosition.x = platform.position.x - baseStep * int.Parse(CCarg);
+                                                                        can_move = CanMove(targetedPosition);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        Debug.Log("Error! Unknown command");
+                                                                        execotionPercent = 0;
+                                                                        StartCoroutine(Error("Error! Unknown command"));
+                                                                        StopCoroutine(Execute());
+                                                                        yield return null;
+                                                                    }
+
+                                                                    if (!can_move)
+                                                                    {
+                                                                        Debug.Log("Error! Cant move here and ur stupid");
+                                                                        execotionPercent = 0;
+                                                                        StartCoroutine(Error("Error! Cant move here and ur stupid"));
+                                                                        yield return null;
+                                                                        StopCoroutine(Execute());
+                                                                    }
+                                                                    execotionPercent++;
+                                                                }
+                                                                else
+                                                                {
+                                                                    Debug.Log("Error! Invalid argument");
+                                                                    execotionPercent = 0;
+                                                                    StartCoroutine(Error("Error! Invalid argument"));
+                                                                    StopCoroutine(Execute());
+                                                                    yield return null;
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                Debug.Log("Error! Invalid input");
+                                                                execotionPercent = 0;
+                                                                StartCoroutine(Error("Error! Invalid input"));
+                                                                StopCoroutine(Execute());
+                                                                yield return null;
+                                                            }
+                                                            if (targetedPosition != null && can_move)
+                                                            {
+                                                                while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
+                                                                {
+                                                                    platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);
+                                                                    yield return null;
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                targetedPosition = platform.position;
+                                                            }
+                                                            platform.position = targetedPosition;
+                                                            commands = new string[0];
+                                                            yield return null;
+                                                        }
+                                                    }
+                                                    isInCycle = false;
+                                                    ifCommands = new List<string>();
+                                                    continue;
+                                                }
+                                                else
+                                                {
+                                                    for (int j = commandIndex + 1; j < commands.Length; j++)
+                                                    {
+                                                        if (commands[j].Split(' ')[0] == "endif")
+                                                        {
+                                                            break;
+                                                        }
+                                                        //ifCommands.Add(commands[j]);
+                                                        cycleSkipAmount++;
+                                                        Debug.Log("addedCommand");
+                                                    }
+                                                    execotionPercent++;
+                                                    commandIndex++;
+                                                    continue;
+                                                }
+                                            }
+                                            if (command == "endif")
+                                            {
+                                                execotionPercent++;
+                                                commandIndex++;
+                                                continue;
+                                            }
                                             if (Ccommand == "delay")
                                             {
                                                 yield return new WaitForSeconds(int.Parse(Carg));
