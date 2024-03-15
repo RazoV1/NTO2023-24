@@ -9,14 +9,21 @@ public class Bullet : MonoBehaviour
     public int damage;
     public bool canGoThroughShields;
     public EnemyBehaviour enemy;
+    public float speed;
 
+
+    private void Start()
+    {
+        //transform.localRotation = Quaternion.Euler(0, 0, 180 + MathF.Atan((transform.position.y - target.transform.position.y) / Vector2.Distance(transform.position, target.transform.position)) * (180 / MathF.PI));
+    }
     private void Update()
     {
         //transform.LookAt(target.gameObject.transform.position);
         transform.position = Vector2.MoveTowards(
             transform.position,
             target.gameObject.transform.position, 
-            Time.deltaTime * 2);
+            Time.deltaTime * speed);
+        //transform.localRotation = Quaternion.Euler(0, 0, 180 + MathF.Atan((transform.position.y - target.transform.position.y) / Vector2.Distance(transform.position, target.transform.position)) * (180 / MathF.PI));
 
         if (Vector2.Distance(transform.position, target.transform.position) < 1f)
         {

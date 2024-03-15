@@ -22,6 +22,9 @@ public class FTLMapPointLogic : MonoBehaviour
     public float minConnectDistance;
     public LineRenderer lineRenderer;
 
+    public SpriteRenderer dangerZone;
+    public float dangerZoneStep;
+
     public bool IsOGE;
     public bool IsOGEEnd;
     public int minLen = 0;
@@ -231,6 +234,7 @@ public class FTLMapPointLogic : MonoBehaviour
         {
             isPlayerOnPoint = true;
             isActive = false;
+            dangerZone.size = new Vector2(dangerZone.size.x + dangerZoneStep, 10.24976f);
             //Scene s = SceneManager.GetSceneByName("SampleScene");
             //SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
             foreach (FTLMapPointLogic point in connectedPoints)

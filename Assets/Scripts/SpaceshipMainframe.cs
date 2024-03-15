@@ -22,6 +22,7 @@ public class SpaceshipMainframe : MonoBehaviour
     public GameObject miss;
     [Header("Shield")]
     public BasicPart Shields;
+    public SpriteRenderer shieldRender;
     public Image ShieldVis;
     public int ProtLayers;
     private int LayersInCooldown;
@@ -68,13 +69,13 @@ public class SpaceshipMainframe : MonoBehaviour
         if (Shields.UsingEnergy % 2 == 0 || Shields.HP<=0)
         {
             ProtLayers = (Shields.UsingEnergy / 2) - LayersInCooldown;
+            
         }
         else
         {
             ProtLayers = ((Shields.UsingEnergy - 1) / 2) - LayersInCooldown;
         }
         ShieldVis.fillAmount = ProtLayers / 4f;
-
     }
 
     private void UpdateEvasion()
@@ -198,5 +199,18 @@ public class SpaceshipMainframe : MonoBehaviour
         UpdateEvasion();
         UpdateHull();
         UpdateShields();
+        float a;
+        if (ProtLayers == 0)
+        {
+            a = 0f;
+        }
+        else
+        {
+            a = 255f / Mathf.Abs(ProtLayers - 4);
+        }
+        Debug.Log(a);
+        Color color = shieldRender.color;
+        color.a = a;
+        shieldRender.material.color = color;
     }
 }

@@ -12,11 +12,12 @@ public class EnemyBullet : MonoBehaviour
     public int damage;
     public bool canGoThroughShields;
     public SpaceshipMainframe playerSpaceship;
+    public float speed;
 
     private void Update()
     {
-        transform.localRotation = Quaternion.Euler(0, 0, -90 + MathF.Acos((transform.position.y - target.transform.position.y) / Vector2.Distance(transform.position, target.transform.position)) * (180 / MathF.PI));
-        transform.position = Vector2.MoveTowards(transform.position,target.transform.position, Time.deltaTime * 2);
+        transform.localRotation = Quaternion.Euler(0, 0, 180+ MathF.Atan2((transform.position.y - target.transform.position.y), (transform.position.x - target.transform.position.x)) * (180 / MathF.PI));
+        transform.position = Vector2.MoveTowards(transform.position,target.transform.position, Time.deltaTime * speed);
         if (Vector2.Distance(transform.position, target.transform.position) < 1f)
         {
             playerSpaceship.TakeDamage(target, canGoThroughShields, damage);
