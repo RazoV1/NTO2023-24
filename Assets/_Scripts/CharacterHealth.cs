@@ -94,9 +94,6 @@ public class CharacterHealth : Health
             Respawn();
             
         }
-
-        if (Input.GetKeyDown(KeyCode.L)) Time.timeScale = 10f;
-        if (Input.GetKeyDown(KeyCode.B)) Time.timeScale = 1f;
         
         if (currentAdrenaline >= 100)
         {

@@ -7,7 +7,7 @@ public class LightingControll : MonoBehaviour
 {
     public GameObject mask;
     public int damage;
-    private bool canDamage = false;
+    public bool canDamage = false;
     [SerializeField] private float activeTime;
     [SerializeField] private float passiveTime;
 
@@ -18,14 +18,18 @@ public class LightingControll : MonoBehaviour
 
     public IEnumerator cycle()
     {
-        print("Start work");
-        yield return new WaitForSeconds(passiveTime);
-        canDamage = true;
-        transform.position += Vector3.forward * 10;
-        yield return new WaitForSeconds(activeTime);
-        transform.position += Vector3.forward * -10;
-        canDamage = false;
-        print("Work over");
+        while (true)
+        {
+            yield return new WaitForSeconds(activeTime);
+            transform.position += Vector3.forward * 10;
+            canDamage = false;
+            print("Work over");
+            print("Start work");
+            yield return new WaitForSeconds(passiveTime);
+            canDamage = true;
+            transform.position += Vector3.forward * -10;
+
+        }
     }
     private void OnTriggerStay(Collider other)
     {
