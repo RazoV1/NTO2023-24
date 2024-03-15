@@ -149,7 +149,7 @@ public class DroneController : MonoBehaviour
         {
             body.LookAt(hit.point);
             shotSpawnPosition.LookAt(hit.point);
-            shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
+            //shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
         }
     }
 }
