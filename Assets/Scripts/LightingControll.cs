@@ -23,8 +23,8 @@ public class LightingControll : MonoBehaviour
             yield return new WaitForSeconds(activeTime);
             transform.position += Vector3.forward * 10;
             canDamage = false;
-            print("Work over");
-            print("Start work");
+            //print("Work over");
+            //print("Start work");
             yield return new WaitForSeconds(passiveTime);
             canDamage = true;
             transform.position += Vector3.forward * -10;

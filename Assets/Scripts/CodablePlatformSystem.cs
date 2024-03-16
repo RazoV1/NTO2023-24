@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using TMPro;
 using System.Linq;
 using UnityEditor;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class Point
@@ -20,7 +21,7 @@ public class PointList
 public class CodablePlatformSystem : PoweredBox
 {
     public TMP_InputField inputField;
-    protected string[] commands;
+    [SerializeField]protected string[] commands;
     [SerializeField] protected Transform platform;
     [SerializeField] protected float platformSpeed;
     [SerializeField] protected float baseStep;
@@ -30,16 +31,17 @@ public class CodablePlatformSystem : PoweredBox
     [SerializeField] protected Color ErrorCollor;
     [SerializeField] protected Color NormalColor;
 
-    private int commandIndex = 0;
+    [SerializeField]private int commandIndex = 0;
     private int cycleSkipAmount;
+    private int ifSkipAmount;
 
     private bool isInCycle = false;
-    private List<string> cycleCommands = new List<string>();
+    [SerializeField]private List<string> cycleCommands = new List<string>();
     private int CycleRepeats;
     private bool isCycleFinite = false;
 
     private bool isInIf = false;
-    private List<string> ifCommands = new List<string>();
+    [SerializeField]private List<string> ifCommands = new List<string>();
     private int ifRepeats;
     private bool isIfFinite = false;
 
@@ -99,8 +101,8 @@ public class CodablePlatformSystem : PoweredBox
     {
         foreach (Point i in ListOfPointLists.list)
         {
-            Debug.Log(i.list[0].position);
-            Debug.Log(i.list[1].position);
+            //Debug.Log(i.list[0].position);
+            //Debug.Log(i.list[1].position);
             Rect rect = new Rect(i.list[0].position, i.list[1].position);
             rect.xMax = Mathf.Max(i.list[0].position.x, i.list[1].position.x);
             rect.yMax = Mathf.Max(i.list[0].position.y, i.list[1].position.y);
@@ -109,11 +111,11 @@ public class CodablePlatformSystem : PoweredBox
             Debug.DrawLine(new Vector2(i.list[0].position.x, i.list[0].position.y), new Vector2(i.list[1].position.x, i.list[1].position.y),Color.red,5f);
             if (rect.Contains(newPos))
             {
-                Debug.Log("EZ");
+                //Debug.Log("EZ");
                 return true;
             }
         }
-        Debug.Log("L");
+        //Debug.Log("L");
         return false;
     }
 
@@ -143,7 +145,13 @@ public class CodablePlatformSystem : PoweredBox
             {
                 cycleSkipAmount--;
                 commandIndex++;
-                Debug.Log("skippedStep");
+                //Debug.Log("skippedStep");
+                continue;
+            }
+            if (ifSkipAmount > 0)
+            {
+                ifSkipAmount--;
+                commandIndex++;
                 continue;
             }
             inputField.text = "Executing... " + execotionPercent / commands.Length * 100f + "%";
@@ -158,7 +166,7 @@ public class CodablePlatformSystem : PoweredBox
                 string arg = i.Split(' ')[1];
                 if (numArray.Contains(arg) || (command == "if") || command == "endcycle")
                 {
-                    Debug.Log(command);
+                    //Debug.Log(command);
                     if (command == "if")
                     {
                         if (arg == "canup")
@@ -188,14 +196,14 @@ public class CodablePlatformSystem : PoweredBox
                         if (ifCan_move)
                         {
                             ifRepeats = 1;
-                            Debug.Log(CycleRepeats);
+                            //Debug.Log(CycleRepeats);
 
                             for (int j = commandIndex + 1; j < commands.Length; j++)
                             {
                                 isIfFinite = false;
                                 if (commands[j].Split(' ')[0] == "endif")
                                 {
-                                    cycleSkipAmount = ifCommands.Count;
+                                    ifSkipAmount = ifCommands.Count;
                                     isIfFinite = true;
                                     Debug.Log(ifCommands);
                                     foreach (string c in ifCommands)
@@ -210,9 +218,9 @@ public class CodablePlatformSystem : PoweredBox
                             }
                             if (!isIfFinite)
                             {
-                                Debug.Log("Error! Invalid cycle");
+                                Debug.Log("Error! Invalid if");
                                 execotionPercent = 0;
-                                StartCoroutine(Error("Error! Invalid cycle"));
+                                StartCoroutine(Error("Error! Invalid if"));
                                 StopCoroutine(Execute());
                                 yield return null;
                                 break;
@@ -324,8 +332,8 @@ public class CodablePlatformSystem : PoweredBox
                                     break;
                                 }
                                 //ifCommands.Add(commands[j]);
-                                cycleSkipAmount++;
-                                Debug.Log("addedCommand");
+                                ifSkipAmount++;
+                                //Debug.Log("addedCommand");
                             }
                             execotionPercent++;
                             commandIndex++;
@@ -342,25 +350,21 @@ public class CodablePlatformSystem : PoweredBox
                     if (command == "cycle")
                     {
                         CycleRepeats = int.Parse(arg);
-                        Debug.Log(CycleRepeats);
-                        
+                        //Debug.Log(CycleRepeats);
+                        //Debug.Log(commands.Length);
                         for (int j = commandIndex+1; j < commands.Length; j++)
                         {
                             isCycleFinite = false;
+                            //Debug.Log(j);
                             if (commands[j].Split(' ')[0] == "endcycle")
                             {
                                 cycleSkipAmount = cycleCommands.Count;
                                 isCycleFinite = true;
-                                Debug.Log(cycleCommands);
-                                foreach (string c in cycleCommands)
-                                {
-                                    Debug.Log(c);
-                                }
-                                Debug.Log("cycled!");
+                                //Debug.Log("cycled!");
                                 break;
                             }
                             cycleCommands.Add(commands[j]);
-                            Debug.Log("addedCommand");
+                            //Debug.Log(commands[j]);
                         }
                         if (!isCycleFinite)
                         {
@@ -377,16 +381,22 @@ public class CodablePlatformSystem : PoweredBox
                             {
                                 foreach (string j in cycleCommands)
                                 {
-                                    if (j == "")
+                                    if (ifSkipAmount > 0)
                                     {
-                                        execotionPercent++;
+                                        ifSkipAmount--;
+                                        Debug.Log("skipped");
+                                        continue;
+                                    }
+                                        if (j == "")
+                                    {
+                                        //execotionPercent++;
                                         continue;
                                     }
                                     if (j.Contains(' ') || j.Contains("if") || j.Contains("endcycle"))
                                     {
                                         string Ccommand = j.Split(' ')[0];
                                         string Carg = j.Split(' ')[1];
-                                        if (numArray.Contains(Carg) || Ccommand == "if")
+                                        if (numArray.Contains(Carg) || Ccommand == "if" || j.Contains("if") || j.Contains("endcycle"))
                                         {
                                             if (Ccommand == "if")
                                             {
@@ -417,29 +427,29 @@ public class CodablePlatformSystem : PoweredBox
                                                 if (ifCan_move)
                                                 {
                                                     ifRepeats = 1;
-                                                    Debug.Log(CycleRepeats);
+                                                    //Debug.Log(CycleRepeats);
 
-                                                    for (int jj = commandIndex + 1; jj < commands.Length; jj++)
+                                                    for (int jj = commandIndex + 2; jj < commands.Length; jj++)
                                                     {
                                                         isIfFinite = false;
                                                         if (commands[jj].Split(' ')[0] == "endif")
                                                         {
-                                                            cycleSkipAmount = ifCommands.Count;
+                                                            //cycleSkipAmount = ifCommands.Count;
                                                             isIfFinite = true;
-                                                            Debug.Log(ifCommands);
+                                                            //Debug.Log(ifCommands);
                                                             foreach (string cc in ifCommands)
                                                             {
                                                                 Debug.Log(cc);
                                                             }
-                                                            Debug.Log("ifed!");
+                                                            //Debug.Log("ifed!");
                                                             break;
                                                         }
                                                         ifCommands.Add(commands[jj]);
-                                                        Debug.Log("addedCommand");
+                                                        //Debug.Log("addedCommand");
                                                     }
                                                     if (!isIfFinite)
                                                     {
-                                                        Debug.Log("Error! Invalid cycle");
+                                                        Debug.Log("Error! Invalid if");
                                                         execotionPercent = 0;
                                                         StartCoroutine(Error("Error! Invalid cycle"));
                                                         StopCoroutine(Execute());
@@ -452,7 +462,7 @@ public class CodablePlatformSystem : PoweredBox
                                                         {
                                                             if (jj == "")
                                                             {
-                                                                execotionPercent++;
+                                                                //execotionPercent++;
                                                                 continue;
                                                             }
                                                             if (jj.Contains(' '))
@@ -464,7 +474,7 @@ public class CodablePlatformSystem : PoweredBox
                                                                     if (CCcommand == "delay")
                                                                     {
                                                                         yield return new WaitForSeconds(int.Parse(CCarg));
-                                                                        execotionPercent++;
+                                                                        //execotionPercent++;
                                                                         continue;
                                                                     }
                                                                     else if (CCcommand == "up")
@@ -504,7 +514,7 @@ public class CodablePlatformSystem : PoweredBox
                                                                         yield return null;
                                                                         StopCoroutine(Execute());
                                                                     }
-                                                                    execotionPercent++;
+                                                                    //execotionPercent++;
                                                                 }
                                                                 else
                                                                 {
@@ -536,42 +546,51 @@ public class CodablePlatformSystem : PoweredBox
                                                                 targetedPosition = platform.position;
                                                             }
                                                             platform.position = targetedPosition;
-                                                            commands = new string[0];
+                                                            //commands = new string[0];
                                                             yield return null;
                                                         }
                                                     }
-                                                    isInCycle = false;
+                                                    //isInCycle = false;
+                                                    ifSkipAmount = ifCommands.Count + 1;
                                                     ifCommands = new List<string>();
+                                                    
                                                     continue;
                                                 }
                                                 else
                                                 {
-                                                    for (int jj = commandIndex + 1; jj < commands.Length; jj++)
+                                                    for (int jj = commandIndex + cycleCommands.IndexOf(j); jj < commands.Length; jj++)
                                                     {
                                                         if (commands[jj].Split(' ')[0] == "endif")
                                                         {
                                                             break;
                                                         }
                                                         //ifCommands.Add(commands[j]);
-                                                        cycleSkipAmount++;
-                                                        Debug.Log("addedCommand");
+                                                        ifSkipAmount++;
+                                                        //Debug.Log("addedCommand");
                                                     }
-                                                    execotionPercent++;
-                                                    commandIndex++;
-                                                    continue;
+                                                    targetedPosition = platform.position;
+                                                    ifSkipAmount++;
+                                                    //execotionPercent++;
+                                                    //commandIndex++; 
                                                 }
+                                                
+                                                continue;
+                                            }
+                                            if (Ccommand == "endcycle")
+                                            {
+                                                continue;
                                             }
                                             if (Ccommand == "endif")
                                             {
-                                                execotionPercent++;
-                                                ifCommands = new List<string>();
-                                                commandIndex++;
+                                                //execotionPercent++;
+                                                //ifCommands = new List<string>();
+                                                //commandIndex++;
                                                 continue;
                                             }
                                             if (Ccommand == "delay")
                                             {
                                                 yield return new WaitForSeconds(int.Parse(Carg));
-                                                execotionPercent++;
+                                                //execotionPercent++;
                                                 continue;
                                             }
                                             else if (Ccommand == "up")
@@ -611,7 +630,7 @@ public class CodablePlatformSystem : PoweredBox
                                                 yield return null;
                                                 StopCoroutine(Execute());
                                             }
-                                            execotionPercent++;
+                                            //execotionPercent++;
                                         }
                                         else
                                         {
@@ -644,12 +663,14 @@ public class CodablePlatformSystem : PoweredBox
                                         targetedPosition = platform.position;
                                     }
                                     platform.position = targetedPosition;
-                                    commands = new string[0];
+                                    //commands = new string[0];
                                     yield return null;
                                 }
                             }
                             isInCycle = false;
                             cycleCommands = new List<string>();
+                            execotionPercent++;
+                            commandIndex++;
                             continue;
                         }
                     }
@@ -664,27 +685,36 @@ public class CodablePlatformSystem : PoweredBox
                     {
                         yield return new WaitForSeconds(int.Parse(arg));
                         execotionPercent++;
+                        commandIndex++;
                         continue;
                     }
                     else if (command == "up")
                     {
                         targetedPosition.y = platform.position.y + baseStep * int.Parse(arg);
                         can_move = CanMove(targetedPosition);
+                        execotionPercent++;
+                        commandIndex++;
                     }
                     else if (command == "down")
                     {
                         targetedPosition.y = platform.position.y - baseStep * int.Parse(arg);
                         can_move = CanMove(targetedPosition);
+                        execotionPercent++;
+                        commandIndex++;
                     }
                     else if (command == "right")
                     {
                         targetedPosition.x = platform.position.x + baseStep * int.Parse(arg);
                         can_move = CanMove(targetedPosition);
+                        execotionPercent++;
+                        commandIndex++;
                     }
                     else if (command == "left")
                     {
                         targetedPosition.x = platform.position.x - baseStep * int.Parse(arg);
                         can_move = CanMove(targetedPosition);
+                        execotionPercent++;
+                        commandIndex++;
                     }
                     else
                     {
@@ -704,8 +734,7 @@ public class CodablePlatformSystem : PoweredBox
                         yield return null;
                         StopCoroutine(Execute());
                     }
-                    execotionPercent++;
-                    commandIndex++;
+                    
                 }
                 else
                 {
@@ -737,7 +766,7 @@ public class CodablePlatformSystem : PoweredBox
                 targetedPosition = platform.position;
             }
             platform.position = targetedPosition;
-            commands = new string[0];
+            //commands = new string[0];
             yield return null;
         }
         if (execotionPercent >= 1)
