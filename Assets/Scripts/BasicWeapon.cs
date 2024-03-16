@@ -68,7 +68,7 @@ public class BasicWeapon : MonoBehaviour
                 //enemy.TakeDamage(target, CanGoThroughShield, damage);
                 //print(i);
                 Bullet currentBullet = Instantiate(bulletPrefab);
-                currentBullet.transform.position = bulletSpawnPos.position + new Vector3(0, i, 0);
+                currentBullet.transform.position = bulletSpawnPos.position + new Vector3(i/2f, 0, 0);
                 currentBullet.damage = damage;
                 currentBullet.canGoThroughShields = CanGoThroughShield;
                 currentBullet.target = target;

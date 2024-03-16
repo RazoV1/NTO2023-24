@@ -467,7 +467,7 @@ public class SpaceshipCoding : MonoBehaviour
                             {
                                 if (c.GetComponent<EnergyCondition>().weapon.value > 6)
                                 {
-                                    mainframe.energy.POWERWeapon(mainframe.allWeapons[c.GetComponent<EnergyCondition>().weapon.value - 1]);
+                                    mainframe.energy.POWERWeapon(mainframe.allWeapons[c.GetComponent<EnergyCondition>().weapon.value - 7]);
                                 }
                                 else
                                 {

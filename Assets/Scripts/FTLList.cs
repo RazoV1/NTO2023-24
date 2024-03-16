@@ -10,6 +10,8 @@ public class FTLList : MonoBehaviour
     [SerializeField] private List<Sprite> avatars;
     [SerializeField] public List<GameObject> list = new List<GameObject>();
     [SerializeField] private List<string> names;
+    [SerializeField] private Sprite playerAva;
+    
     public void Start()
     {
         list = new List<GameObject>();
@@ -28,7 +30,7 @@ public class FTLList : MonoBehaviour
         list[list.Count - 1].name = 0.ToString();
         list[list.Count - 1].GetComponent<FTLListPart>().name = "Вы";
         list[list.Count - 1].GetComponent<FTLListPart>().score = 0;
-        
+        list[list.Count - 1].GetComponent<FTLListPart>().im.sprite = playerAva;
         //list.Sort();
     }
 }

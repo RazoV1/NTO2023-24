@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
             transform.position,
             target.gameObject.transform.position, 
             Time.deltaTime * speed);
-        //transform.localRotation = Quaternion.Euler(0, 0, 180 + MathF.Atan((transform.position.y - target.transform.position.y) / Vector2.Distance(transform.position, target.transform.position)) * (180 / MathF.PI));
+        //transform.localRotation = Quaternion.Euler(0, 0, 90 + MathF.Atan((transform.position.y - target.transform.position.y) / Vector2.Distance(transform.position, target.transform.position)) * (180 / MathF.PI));
 
         if (Vector2.Distance(transform.position, target.transform.position) < 1f)
         {

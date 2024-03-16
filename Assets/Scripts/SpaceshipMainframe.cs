@@ -35,6 +35,10 @@ public class SpaceshipMainframe : MonoBehaviour
     public int EvasionChance;
     public TextMeshProUGUI evasionVis;
 
+    private void Start()
+    {
+        shieldRender.allowOcclusionWhenDynamic = true;
+    }
     #region Coroutines
     private IEnumerator Restore_Shield()
     {
@@ -52,6 +56,7 @@ public class SpaceshipMainframe : MonoBehaviour
     }
     #endregion
     #region SystemsUpdates
+    
     private void UpdateHull()
     {
         Sum = 0;
@@ -206,11 +211,11 @@ public class SpaceshipMainframe : MonoBehaviour
         }
         else
         {
-            a = 255f / Mathf.Abs(ProtLayers - 4);
+            a = 255f / Mathf.Abs(ProtLayers - 5f);
         }
         Debug.Log(a);
         Color color = shieldRender.color;
         color.a = a;
-        shieldRender.material.color = color;
+        shieldRender.color = color;
     }
 }
