@@ -38,7 +38,8 @@ public class InventoryWindow : MonoBehaviour
             icon.transform.localScale = Vector3.one;
             icon.AddComponent<Image>().sprite = item.Icon;
             var textCount = Instantiate(countTextAsset);
-            textCount.transform.parent = countPanel.transform;
+            textCount.color = Color.black;
+            textCount.transform.SetParent(countPanel.transform);
             textCount.transform.localScale = Vector3.one;
             textCount.text = targetInventory.inventoryItemsCount[i].ToString();
             itemsToRedraw.Add(icon);
