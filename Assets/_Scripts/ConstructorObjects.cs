@@ -27,4 +27,41 @@ public class ConstructorObjects : MonoBehaviour
     }
     
     
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            StartPosition.position += Vector3.forward;
+            ConsructorAddObject.Instance.prefab.transform.position += Vector3.forward;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            StartPosition.position += Vector3.right;
+            ConsructorAddObject.Instance.prefab.transform.position += Vector3.right;
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            StartPosition.position -= Vector3.forward;
+            ConsructorAddObject.Instance.prefab.transform.position -= Vector3.forward;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            StartPosition.position -= Vector3.right;
+            ConsructorAddObject.Instance.prefab.transform.position -= Vector3.right;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ConsructorAddObject.Instance.prefab.transform.Rotate(new Vector3(0, 90, 0));
+        }
+        
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ConsructorAddObject.Instance.prefab.transform.Rotate(new Vector3(0, -90, 0));
+        }
+        
+    }
+    
 }
