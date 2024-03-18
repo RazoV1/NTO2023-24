@@ -7,6 +7,8 @@ using TMPro;
 public class SpaceshipMainframe : MonoBehaviour
 {
     [Header("Basa")]
+    public CameraShake cameraShake;
+    public AudioClip hullDamage;
     public int Hull;
     private int Sum;
     public BasicPart[] parts;
@@ -21,6 +23,8 @@ public class SpaceshipMainframe : MonoBehaviour
     public BasicWeapon[] allWeapons;
     public GameObject miss;
     [Header("Shield")]
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip shieldDamage;
     public BasicPart Shields;
     public SpriteRenderer shieldRender;
     public Image ShieldVis;
@@ -109,12 +113,15 @@ public class SpaceshipMainframe : MonoBehaviour
         {
             if (ProtLayers > 0 && !through_shields)
             {
+                source.PlayOneShot(shieldDamage);
                 LayersInCooldown++;
                 ProtLayers--;
                 StartCoroutine(Restore_Shield());
             }
             else
             {
+                cameraShake.Shake();
+                source.PlayOneShot(hullDamage);
                 if (part.gameObject.name == "Shields")
                 {
                     part.HP -= 2;

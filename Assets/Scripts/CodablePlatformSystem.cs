@@ -23,6 +23,7 @@ public class CodablePlatformSystem : PoweredBox
     public TMP_InputField inputField;
     [SerializeField]protected string[] commands;
     [SerializeField] protected Transform platform;
+    [SerializeField] protected AudioClip platformMove;
     [SerializeField] protected float platformSpeed;
     [SerializeField] protected float baseStep;
     [SerializeField] protected string numArray;
@@ -123,6 +124,7 @@ public class CodablePlatformSystem : PoweredBox
     {
         if (targetedPosition != null)
         {
+            platform.GetComponent<AudioSource>().PlayOneShot(platformMove);
             while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
             {
                 platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);
@@ -304,6 +306,7 @@ public class CodablePlatformSystem : PoweredBox
                                     }
                                     if (targetedPosition != null && can_move)
                                     {
+                                        platform.GetComponent<AudioSource>().PlayOneShot(platformMove);
                                         while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
                                         {
                                             platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);
@@ -535,6 +538,7 @@ public class CodablePlatformSystem : PoweredBox
                                                             }
                                                             if (targetedPosition != null && can_move)
                                                             {
+                                                                platform.GetComponent<AudioSource>().PlayOneShot(platformMove);
                                                                 while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
                                                                 {
                                                                     platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);
@@ -652,6 +656,7 @@ public class CodablePlatformSystem : PoweredBox
                                     }
                                     if (targetedPosition != null && can_move)
                                     {
+                                        platform.GetComponent<AudioSource>().PlayOneShot(platformMove);
                                         while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
                                         {
                                             platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);
@@ -670,6 +675,7 @@ public class CodablePlatformSystem : PoweredBox
                             isInCycle = false;
                             cycleCommands = new List<string>();
                             execotionPercent++;
+                            ifSkipAmount = 0;
                             commandIndex++;
                             continue;
                         }
@@ -755,6 +761,7 @@ public class CodablePlatformSystem : PoweredBox
             }
             if (targetedPosition != null && can_move)
             {
+                platform.GetComponent<AudioSource>().PlayOneShot(platformMove);
                 while (Vector3.Distance(platform.position, targetedPosition) > 0.01f)
                 {
                     platform.position = Vector3.Slerp(platform.position, targetedPosition, platformSpeed * Time.deltaTime);

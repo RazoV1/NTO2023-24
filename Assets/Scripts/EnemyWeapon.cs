@@ -39,6 +39,7 @@ public class EnemyWeapon : MonoBehaviour
             if (!isOnCooldown)
             {
                 target = playerSpaceship.parts[Random.Range(0, playerSpaceship.parts.Length)];
+                bulletSpawnPos.GetComponent<AudioSource>().Play();
                 for (int i = 0; i < Rounds; i++)
                 {
                     //enemy.TakeDamage(target, CanGoThroughShield, damage);

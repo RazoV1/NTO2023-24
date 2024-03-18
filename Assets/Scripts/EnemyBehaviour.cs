@@ -10,14 +10,17 @@ public class EnemyBehaviour : MonoBehaviour
     //Возьму за основу скрипт игрока и на его основных функциях напишу скрипт поведения врага
     [Header("Basa")]
     public int Hull;
+    public AudioClip hullSound;
     public Image hullVis;
     private int Sum;
     public BasicPart[] parts;
     public EnergyStorage energy;
     [Header("Weaponary")]
     public BasicPart Weaponary;
-    
+    public AudioSource source;
     [Header("Shield")]
+    public GameObject shieldRendered;
+    public AudioClip shieldSound;
     public BasicPart Shields;
     public int ProtLayers;
     private int LayersInCooldown;
@@ -52,7 +55,14 @@ public class EnemyBehaviour : MonoBehaviour
     
     private void UpdateShields()
     {
-        
+        if (ProtLayers <= 0)
+        {
+            shieldRendered.SetActive(false);
+        }
+        else
+        {
+            shieldRendered.SetActive(true);
+        }
         if (Shields.UsingEnergy % 2 == 0 || Shields.HP<=0)
         {
             ProtLayers = (Shields.UsingEnergy / 2) - LayersInCooldown;
@@ -90,12 +100,14 @@ public class EnemyBehaviour : MonoBehaviour
         {
             if (ProtLayers > 0 && !through_shields)
             {
+                source.PlayOneShot(shieldSound);
                 LayersInCooldown++;
                 ProtLayers--;
                 StartCoroutine(Restore_Shield());
             }
             else
             {
+                source.PlayOneShot(hullSound);
                 if (part.gameObject.name == "Shields")
                 {
                     part.HP -= 2;

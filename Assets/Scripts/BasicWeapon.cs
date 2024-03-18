@@ -17,6 +17,7 @@ public class BasicWeapon : MonoBehaviour
     [SerializeField] private Bullet bulletPrefab; 
     [SerializeField] private Transform bulletSpawnPos;
     private float timeToWait = 0;
+    [SerializeField] private AudioSource bulletSpawnSound;
         
 
     public bool is_selecting;
@@ -63,6 +64,7 @@ public class BasicWeapon : MonoBehaviour
     {
         if (!isOnCooldown && target != null)
         {
+            bulletSpawnSound.Play();
             for (int i = 0; i < Rounds; i++)
             {
                 //enemy.TakeDamage(target, CanGoThroughShield, damage);
