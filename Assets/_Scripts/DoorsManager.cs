@@ -34,6 +34,7 @@ public class DoorsManager : PoweredBox
         canUse = false;
         fuseSpriteRenderer = fuseSpriteRenderer.GetComponent<SpriteRenderer>();
         doorControllerSpriteRenderer = doorControllerSpriteRenderer.GetComponent<SpriteRenderer>();
+        
         inventory = GetComponent<Inventory>();
     }
     
@@ -80,14 +81,14 @@ public class DoorsManager : PoweredBox
         if (!hasFuse) return;
         foreach (var doorController in doorControllers)
         {
-            switch (doorController.isPowered)
+            switch (doorController.GetComponent<PoweredBox>().isPowered)
             {
                 case false:
-                    doorController.PowerOn();
+                    doorController.GetComponent<PoweredBox>().PowerOn();
                     print("f");
                     continue;
                 case true:
-                    doorController.PowerDown();
+                    doorController.GetComponent<PoweredBox>().PowerDown();
                     print("t");
                     continue;
             }
