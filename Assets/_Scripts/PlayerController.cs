@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
+            inventoryWindow.Redraw();
             if(canvasManager.IsInventoryOpen()) canvasManager.CloseInventory();
             else canvasManager.OpenInventory();
         }
