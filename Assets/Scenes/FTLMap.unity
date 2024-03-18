@@ -1011,7 +1011,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &218582137
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1835,6 +1835,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8221534265680506092, guid: eeb7cb5927299e4439e4194b35672ff5, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8221534265680506092, guid: eeb7cb5927299e4439e4194b35672ff5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ef5d446f2442f6549a58e58a53514019, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeb7cb5927299e4439e4194b35672ff5, type: 3}
 --- !u!1 &544068815 stripped
@@ -2452,7 +2460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8050004233625917206, guid: 3dc6d89329d61214ba889c85fcc9647a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8122894814717982346, guid: 3dc6d89329d61214ba889c85fcc9647a, type: 3}
       propertyPath: m_Name
@@ -2487,7 +2495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &934035434
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3037,7 +3045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1137841115
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4584,7 +4592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3650155816172347698, guid: 81f04f64f0c46934eb419e654b15116e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3650155817314808498, guid: 81f04f64f0c46934eb419e654b15116e, type: 3}
       propertyPath: m_Sprite
@@ -4597,7 +4605,7 @@ PrefabInstance:
     - target: {fileID: 3650155817701489334, guid: 81f04f64f0c46934eb419e654b15116e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 5ca652f6ad03fe14bacbc565d1dd2278, type: 3}
+      objectReference: {fileID: 21300000, guid: bb08eeb5f5fb37241808d8137f03568f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81f04f64f0c46934eb419e654b15116e, type: 3}
 --- !u!224 &1996006276 stripped

@@ -31,6 +31,9 @@ public class CodablePlatformSystem : PoweredBox
     [SerializeField] protected TextMeshProUGUI inpText;
     [SerializeField] protected Color ErrorCollor;
     [SerializeField] protected Color NormalColor;
+    [SerializeField] private AudioSource source;
+    [SerializeField] protected AudioClip programmEnd;
+    [SerializeField] private AudioClip startExecution;
 
     [SerializeField]private int commandIndex = 0;
     private int cycleSkipAmount;

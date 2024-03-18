@@ -147,9 +147,17 @@ public class DroneController : MonoBehaviour
         //Debug.DrawRay(mousePos,Color.red,5);
         if (Physics.Raycast(mousePos, out hit))
         {
-            body.LookAt(hit.point);
-            shotSpawnPosition.LookAt(hit.point);
-            //shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
+            if (hit.collider.tag == "Bee")
+            {
+                body.LookAt(hit.collider.transform.position);
+                shotSpawnPosition.LookAt(hit.collider.transform.position);
+            }
+            else
+            {
+                body.LookAt(hit.point);
+                shotSpawnPosition.LookAt(hit.point);
+                //shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
+            }
         }
     }
 }

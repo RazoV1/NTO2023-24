@@ -18,10 +18,12 @@ public class WaterBullet : MonoBehaviour
             b.HP -= damage;
             if (b.HP <= 0)
             {
+
                 b.isDead = true;
+                b.agent.Stop();
                 b.animator.SetBool("isDead",true);
                 b.GetComponent<CapsuleCollider>().enabled = false;
-                b.agent.Stop();
+                
             }
         }
         Destroy(gameObject);

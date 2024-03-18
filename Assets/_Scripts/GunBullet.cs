@@ -15,7 +15,6 @@ public class GunBullet : MonoBehaviour
         gameObject.SetActive(false);
         
         Invoke("DestroySelf", 2f);
-        
     }
     
 
