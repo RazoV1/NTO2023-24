@@ -271,7 +271,6 @@ public class DialogManager : MonoBehaviour
     }
 
     
-    //Корутина для плавного отображения текста по буквам, решили отложить до лучших времен P.S. она рабочая
     private bool used = false;
     public IEnumerator RunText(float pauseBetweenPhrases)
     {
@@ -365,8 +364,16 @@ public class DialogManager : MonoBehaviour
                 }
             }
 
-            used = false;
             if (!used)
+            {
+                textRunning = false;
+                yield return new WaitForSeconds(pauseBetweenPhrases);
+                readedEmotion = false;
+                readedSpeaker = false;
+                AiText.text = "";
+                BearText.text = "";
+            }
+            else
             {
                 textRunning = false;
                 yield return new WaitForSeconds(pauseBetweenPhrases);
