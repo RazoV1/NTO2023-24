@@ -77,7 +77,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
-            if (inventoryItems[i].Name == item.Name)
+            if (inventoryItems[i].Name == item.GetComponent<Item>().Name)
             {
                 if (inventoryItemsCount[i] >= 1)
                 {
@@ -92,7 +92,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < inventoryItems.Count; i++)
         {
-            if (inventoryItems[i].Name == item.GetComponent<Item>().Name)
+            if (inventoryItems[i].Name == item.Name)
             {
                 print("1 HONEy");
                 if (inventoryItemsCount[i] >= 1)
