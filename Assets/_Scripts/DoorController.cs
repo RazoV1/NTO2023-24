@@ -80,7 +80,7 @@ public class DoorController : PoweredBox
             {
                 if (isLoreClose && loreTaskToClose == Camera.main.GetComponent<TaskbarManager>().currentTask)
                 {
-                    Camera.main.GetComponent<TaskbarManager>().NextTask();
+                    //Camera.main.GetComponent<TaskbarManager>().NextTask();
                     UnlockBox();
                 }
                 else
