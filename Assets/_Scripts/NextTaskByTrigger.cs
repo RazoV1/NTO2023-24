@@ -15,7 +15,7 @@ public class NextTaskByTrigger : MonoBehaviour
         {
             if (isLore)
             {
-                if (loreTask <= Camera.main.GetComponent<TaskbarManager>().currentTask)
+                if (loreTask == Camera.main.GetComponent<TaskbarManager>().currentTask)
                 {
                     Camera.main.GetComponent<TaskbarManager>().NextTask();
                 }
