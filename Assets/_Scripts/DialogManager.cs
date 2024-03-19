@@ -365,6 +365,7 @@ public class DialogManager : MonoBehaviour
                 }
             }
 
+            used = false;
             if (!used)
             {
                 textRunning = false;
