@@ -50,8 +50,8 @@ public class PoweredBox : Box
 
     public void PowerOn()
     {
-        print(gameObject.name);
         isPowered = true;
+        print(gameObject.name + ": is powered");
         if(!hasFuse) return;
         powerLedSpriteRenderer.color = Color.yellow;
         fuseSpriteRenderer.sprite = fuseActiveSprite;
