@@ -61,6 +61,10 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Time.timeScale = 5f;
+        }
         if (Input.GetKeyDown(KeyCode.I) && !player.is_coding)
         {
             inventoryWindow.Redraw();
