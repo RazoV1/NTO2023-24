@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Honey
   m_EditorClassIdentifier: 
   Name: Honey
-  Icon: {fileID: 21300000, guid: ae091b2f079adfd46bbd2c91f5344922, type: 3}
+  Icon: {fileID: 21300000, guid: cd3da62d4691200488821201d1608aca, type: 3}
   comp1: {fileID: 0}
   comp2: {fileID: 0}
