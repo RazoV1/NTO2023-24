@@ -38,6 +38,11 @@ public class MainMenuUIManager : MonoBehaviour
         PauseMenu.SetActive(true);
     }
 
+    public void DeleteSaves()
+    {
+        PlayerPrefs.DeleteAll();
+    }
+
     public void Resume(GameObject PauseMenu)
     {
         PauseMenu.SetActive(false);
