@@ -78,7 +78,7 @@ public class DoorController : PoweredBox
         {
             if (isClosed && canUse)
             {
-                if (isLoreClose && loreTaskToClose<=Camera.main.GetComponent<TaskbarManager>().currentTask)
+                if (isLoreClose && loreTaskToClose == Camera.main.GetComponent<TaskbarManager>().currentTask)
                 {
                     Camera.main.GetComponent<TaskbarManager>().NextTask();
                     UnlockBox();

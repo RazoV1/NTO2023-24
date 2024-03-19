@@ -23,7 +23,7 @@ public class HoneyDisplacing : MonoBehaviour
     {
         text.text = _inventory.countItem(honey).ToString();
         
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             if (_inventory.tryToDel(honey, 1))
             {
