@@ -65,15 +65,17 @@ public class Inventory : MonoBehaviour
         {
             Time.timeScale = 5f;
         }
-        if (Input.GetKeyDown(KeyCode.I) && !player.is_coding)
+        if (Input.GetKeyDown(KeyCode.I) && !player.is_coding && !inventoryWindow.gameObject.activeSelf)
         {
             inventoryWindow.Redraw();
             inventoryWindow.gameObject.SetActive(true);
+            return;
         }
         
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.I) && inventoryWindow.gameObject.activeSelf)
         {
             inventoryWindow.gameObject.SetActive(false);
+            return;
         }
     }
 
