@@ -81,7 +81,7 @@ public class CharacterHealth : Health
     }
     public void TakeAdrenaline(float adr)
     {
-        currentAdrenaline += adr;
+        currentAdrenaline -= adr;
         currentAdrenaline = Mathf.Clamp(currentAdrenaline, 0, maxAdrenaline);
     }
 
