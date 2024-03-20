@@ -26,6 +26,15 @@ public class WaterBullet : MonoBehaviour
                 
             }
         }
+        if (other.gameObject.tag == "piatachok")
+        {
+            PiatachokBehaviour p = other.gameObject.GetComponent<PiatachokBehaviour>();
+            p.hp -= damage;
+            if (p.hp <= 0)
+            {
+                Destroy(p.gameObject);
+            }
+        }
         Destroy(gameObject);
     }
 }

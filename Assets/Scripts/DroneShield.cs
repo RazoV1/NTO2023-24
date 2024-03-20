@@ -10,7 +10,7 @@ public class DroneShield : MonoBehaviour
     {
         if (collision.collider.tag == "projectile")
         {
-            droneController.currentLayers--;
+            //droneController.currentLayers--;
             Destroy(collision.gameObject);
         }
     }

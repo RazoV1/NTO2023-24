@@ -35,8 +35,6 @@ public class PiatachokBehaviour : MonoBehaviour
 
         agent.speed = movementSpeed;
     }
-    
-    
     public void OnShot(Vector3 moveVector)
     {
         StartCoroutine(ShotCoroutine(moveVector));
@@ -44,45 +42,48 @@ public class PiatachokBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(transform.position, bearParent.position) > 0.4f) agent.destination = bearParent.position;
-        else
+        if (!isDead)
         {
-            if (xScale > 0)
-            {
-                animator.SetTrigger("rightIdle");
-            }
+            if (Vector3.Distance(transform.position, bearParent.position) > 0.4f) agent.destination = bearParent.position;
             else
             {
-                animator.SetTrigger("leftIdle");
-            }
-        }
-        animator.gameObject.transform.LookAt(animator.transform.position + new Vector3(0, 0, 1));
-        gun.transform.LookAt(gun.transform.position + new Vector3(0, 0, 1));
-        if(onShot) return;
-        else
-        {
-            if (bearParent.position.x > transform.position.x)
-            {
-                xScale = 1;
-                if (!isMovingRight)
+                if (xScale > 0)
                 {
-                    isMovingRight = true;
-                    gunParent.transform.localScale = new Vector3(1, 1, 1);
-                    return;
+                    animator.SetTrigger("rightIdle");
                 }
-                animator.SetTrigger("rightWalking");
-                
+                else
+                {
+                    animator.SetTrigger("leftIdle");
+                }
             }
+            animator.gameObject.transform.LookAt(animator.transform.position + new Vector3(0, 0, 1));
+            gun.transform.LookAt(gun.transform.position + new Vector3(0, 0, 1));
+            if (onShot) return;
             else
             {
-                xScale = -1;
-                if (isMovingRight)
+                if (bearParent.position.x > transform.position.x)
                 {
-                    isMovingRight = false;
-                    gunParent.transform.localScale = new Vector3(-1, 1, 1);
-                    return;
+                    xScale = 1;
+                    if (!isMovingRight)
+                    {
+                        isMovingRight = true;
+                        gunParent.transform.localScale = new Vector3(1, 1, 1);
+                        return;
+                    }
+                    animator.SetTrigger("rightWalking");
+
                 }
-                animator.SetTrigger("leftWalking");
+                else
+                {
+                    xScale = -1;
+                    if (isMovingRight)
+                    {
+                        isMovingRight = false;
+                        gunParent.transform.localScale = new Vector3(-1, 1, 1);
+                        return;
+                    }
+                    animator.SetTrigger("leftWalking");
+                }
             }
         }
     }
@@ -105,7 +106,4 @@ public class PiatachokBehaviour : MonoBehaviour
         agent.speed = movementSpeed;
         onShot = false;
     }
-    
-
-    
 }
