@@ -9,21 +9,24 @@ public class DroneController : MonoBehaviour
 
     [SerializeField] private Transform player;
     [SerializeField] private Transform backpack;
-
+    [SerializeField] private Transform defenceAnchor;
     [SerializeField] private SpriteRenderer sprite;
-
     [SerializeField] private Item item;
     [SerializeField] private Item battleItem;
+
+    public List<Transform> targets;
+
+    public int mode;
 
     public float speed;
     public Vector3 offset;
     public float xScale;
-
     private float horizontalAxis;
     private float verticalAxis;
 
     private bool canShoot = false;
 
+    [SerializeField] private float attackCooldown;
     [SerializeField] private Transform crest;
     [SerializeField] private Transform body;
     [SerializeField] private int bulletsCount;
@@ -35,7 +38,7 @@ public class DroneController : MonoBehaviour
     [SerializeField] private GameObject SlimeBullet;
     [SerializeField] private int SlimeBulletCount;
     
-    private Vector3 mousePosition;
+    //private Vector3 mousePosition;
     public float moveSpeed = 2f;
 
     void Follow()
@@ -57,6 +60,36 @@ public class DroneController : MonoBehaviour
         crest.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles,new Vector3(0, 0, horizontalAxis * -30f), 100 * Time.deltaTime));
         transform.position = Vector3.Lerp(transform.position, newPos, speed * Time.deltaTime);
     }
+
+    void ChooseTarget()
+    {
+        if (mode == 1)
+        {
+            float minDis = 1000;
+            Transform currentTarget = null;
+            foreach (var i in targets)
+            {
+                if (Vector3.Distance(transform.position, i.position) <= minDis)
+                {
+                    currentTarget = i;
+                }
+            }
+            target = currentTarget;
+        }
+        else if (mode == 2)
+        {
+            target = defenceAnchor;
+        }
+        else if (mode == 3)
+        {
+            target = player;
+        }
+        else
+        {
+            target = backpack;
+        }
+    }
+
     void ChangeTarget()
     {
         if (target == backpack)
@@ -72,7 +105,7 @@ public class DroneController : MonoBehaviour
             crest.gameObject.SetActive(true);
             sprite.gameObject.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.F) && (player.gameObject.GetComponent<Inventory>().hasItem(item) || player.gameObject.GetComponent<Inventory>().hasItem(battleItem)))
+        if ((player.gameObject.GetComponent<Inventory>().hasItem(item) || player.gameObject.GetComponent<Inventory>().hasItem(battleItem)))
         {
             if (target == player)
             {
@@ -84,7 +117,7 @@ public class DroneController : MonoBehaviour
                 target = backpack;
                 speed *= 10;
             }
-            else
+            else if (target == backpack)
             {
                 crest.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 body.gameObject.SetActive(true);
@@ -104,12 +137,19 @@ public class DroneController : MonoBehaviour
     }
     public IEnumerator Shot()
     {
-        for (int i = 1; i <= bulletsCount; i++)
+        while (true)
         {
-            GameObject currentBullet = Instantiate(bulletPrefab);
-            currentBullet.transform.position = shotSpawnPosition.position;
-            currentBullet.GetComponent<Rigidbody>().velocity = shotSpawnPosition.transform.forward.normalized * baseBulletSpeed; 
-            yield return new WaitForSeconds(0.1f);
+            if (mode == 1)
+            {
+                for (int i = 1; i <= bulletsCount; i++)
+                {
+                    GameObject currentBullet = Instantiate(bulletPrefab);
+                    currentBullet.transform.position = shotSpawnPosition.position;
+                    currentBullet.GetComponent<Rigidbody>().velocity = shotSpawnPosition.transform.forward.normalized * baseBulletSpeed;
+                    yield return new WaitForSeconds(0.1f);
+                }
+                yield return new WaitForSeconds(attackCooldown);
+            }
         }
     }
     private void FixedUpdate()
@@ -118,20 +158,46 @@ public class DroneController : MonoBehaviour
     }
     private void Update()
     {
+        ChooseTarget();
         LookOnCursor3D();
         ChangeTarget();
         if (player.gameObject.GetComponent<Inventory>().hasItem(battleItem))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1) && canShoot)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                StartCoroutine(Shot());
+                mode = 1;
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2) && canShoot)
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                SlimeShot();
+                mode = 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                mode = 3;
+
+            }
+            else if (Input.GetKeyDown(KeyCode.F))
+            {
+                mode = 4;
             }
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Bee" || other.tag == "Pooh")
+        {
+            targets.Add(other.transform);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Bee" || other.tag == "Pooh")
+        {
+            targets.Remove(other.transform);
+        }
+    }
+
     void LookOnCursor()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -145,19 +211,27 @@ public class DroneController : MonoBehaviour
         //Debug.Log(mousePos);
         RaycastHit hit;
         //Debug.DrawRay(mousePos,Color.red,5);
-        if (Physics.Raycast(mousePos, out hit))
+        if (mode == 3 || mode == 2)
         {
-            if (hit.collider.tag == "Bee")
+            if (Physics.Raycast(mousePos, out hit))
             {
-                body.LookAt(hit.collider.transform.position);
-                shotSpawnPosition.LookAt(hit.collider.transform.position);
+
+                if (hit.collider.tag == "Bee")
+                {
+                    body.LookAt(hit.collider.transform.position);
+                    //shotSpawnPosition.LookAt(hit.collider.transform.position);
+                }
+                else
+                {
+                    //body.LookAt(hit.point);
+                    shotSpawnPosition.LookAt(hit.point);
+                    //shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
+                }
             }
-            else
-            {
-                body.LookAt(hit.point);
-                shotSpawnPosition.LookAt(hit.point);
-                //shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
-            }
+        }
+        else if (mode == 1)
+        {
+            shotSpawnPosition.LookAt(target.position);
         }
     }
 }
