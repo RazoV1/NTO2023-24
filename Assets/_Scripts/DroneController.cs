@@ -51,7 +51,7 @@ public class DroneController : MonoBehaviour
         if (horizontalAxis > 0) xScale = 1;
 
         Vector3 newPos = target.position;
-        if (target == player)
+        if (mode == 1 || mode == 3)
         {
             newPos.z = target.position.z + offset.z;
             newPos.x = target.position.x + offset.x;
@@ -65,16 +65,23 @@ public class DroneController : MonoBehaviour
     {
         if (mode == 1)
         {
-            float minDis = 1000;
-            Transform currentTarget = null;
-            foreach (var i in targets)
+            if (targets.Count != 0)
             {
-                if (Vector3.Distance(transform.position, i.position) <= minDis)
+                float minDis = 1000;
+                Transform currentTarget = null;
+                foreach (var i in targets)
                 {
-                    currentTarget = i;
+                    if (Vector3.Distance(transform.position, i.position) <= minDis)
+                    {
+                        currentTarget = i;
+                    }
                 }
+                target = currentTarget;
             }
-            target = currentTarget;
+            else
+            {
+                target = player;
+            }
         }
         else if (mode == 2)
         {
@@ -183,7 +190,7 @@ public class DroneController : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Bee" || other.tag == "Pooh")
         {
