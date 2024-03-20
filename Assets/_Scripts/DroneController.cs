@@ -72,7 +72,7 @@ public class DroneController : MonoBehaviour
             crest.gameObject.SetActive(true);
             sprite.gameObject.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.F) && player.gameObject.GetComponent<Inventory>().hasItem(item))
+        if (Input.GetKeyDown(KeyCode.F) && (player.gameObject.GetComponent<Inventory>().hasItem(item) || player.gameObject.GetComponent<Inventory>().hasItem(battleItem)))
         {
             if (target == player)
             {
