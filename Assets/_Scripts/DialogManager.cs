@@ -384,5 +384,6 @@ public class DialogManager : MonoBehaviour
             }
         }
         closeButton.SetActive(true);
+        GameObject.FindObjectOfType<PlayerController1>().is_coding = false;
     }
 }
