@@ -18,8 +18,11 @@ public class DroneController : MonoBehaviour
 
     public int mode;
 
-    public float speed;
+    public float speedMode1;
+    public float speedMode2;
+    public float speedCurrent;
     public Vector3 offset;
+    public Vector3 battleOffset;
     public float xScale;
     private float horizontalAxis;
     private float verticalAxis;
@@ -51,14 +54,20 @@ public class DroneController : MonoBehaviour
         if (horizontalAxis > 0) xScale = 1;
 
         Vector3 newPos = target.position;
-        if (mode == 1 || mode == 3)
+        if (mode == 1)
         {
-            newPos.z = target.position.z + offset.z;
-            newPos.x = target.position.x + offset.x;
-            newPos.y = target.position.y + offset.y;
+            newPos = target.position + battleOffset;
+        }
+        else if (mode == 2 || mode == 4) 
+        {
+            newPos = target.position;
+        }
+        else if (mode == 3)
+        {
+            newPos = target.position + offset;
         }
         crest.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles,new Vector3(0, 0, horizontalAxis * -30f), 100 * Time.deltaTime));
-        transform.position = Vector3.Lerp(transform.position, newPos, speed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, newPos, speedCurrent * Time.deltaTime);
     }
 
     void ChooseTarget()
@@ -97,6 +106,11 @@ public class DroneController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(Shot());
+    }
+
     void ChangeTarget()
     {
         if (target == backpack)
@@ -114,7 +128,7 @@ public class DroneController : MonoBehaviour
         }
         if ((player.gameObject.GetComponent<Inventory>().hasItem(item) || player.gameObject.GetComponent<Inventory>().hasItem(battleItem)))
         {
-            if (target == player)
+            if (target == backpack)
             {
                 crest.GetComponent<SpriteRenderer>().sortingOrder = -1;
                 sprite.sortingOrder = -1;
@@ -122,9 +136,9 @@ public class DroneController : MonoBehaviour
                 shotSpawnMask.gameObject.SetActive(false);
                 canShoot = false;
                 target = backpack;
-                speed *= 10;
+                speedCurrent = speedMode2;
             }
-            else if (target == backpack)
+            else if (target == player || mode == 1)
             {
                 crest.GetComponent<SpriteRenderer>().sortingOrder = 1;
                 body.gameObject.SetActive(true);
@@ -132,7 +146,7 @@ public class DroneController : MonoBehaviour
                 sprite.sortingOrder = 3;
                 canShoot = true; 
                 target = player;
-                speed /= 10;
+                speedCurrent = speedMode1;
             }
         }
     }
@@ -146,7 +160,7 @@ public class DroneController : MonoBehaviour
     {
         while (true)
         {
-            if (mode == 1)
+            if (mode == 1 && target != player)
             {
                 for (int i = 1; i <= bulletsCount; i++)
                 {
@@ -157,6 +171,7 @@ public class DroneController : MonoBehaviour
                 }
                 yield return new WaitForSeconds(attackCooldown);
             }
+            yield return null;
         }
     }
     private void FixedUpdate()
@@ -192,12 +207,12 @@ public class DroneController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Bee" || other.tag == "Pooh")
+        if (other.gameObject.tag == "Bee" || other.gameObject.tag == "Pooh")
         {
             targets.Add(other.transform);
         }
     }
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other) 
     {
         if (other.tag == "Bee" || other.tag == "Pooh")
         {
@@ -222,18 +237,7 @@ public class DroneController : MonoBehaviour
         {
             if (Physics.Raycast(mousePos, out hit))
             {
-
-                if (hit.collider.tag == "Bee")
-                {
-                    body.LookAt(hit.collider.transform.position);
-                    //shotSpawnPosition.LookAt(hit.collider.transform.position);
-                }
-                else
-                {
-                    //body.LookAt(hit.point);
-                    shotSpawnPosition.LookAt(hit.point);
-                    //shotSpawnMask.rotation = Quaternion.Euler(0,0,shotSpawnPosition.rotation.z);
-                }
+               shotSpawnPosition.LookAt(hit.point);  
             }
         }
         else if (mode == 1)
