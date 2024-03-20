@@ -10,6 +10,11 @@ public class DroneController : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform backpack;
     [SerializeField] private Transform defenceAnchor;
+    public GameObject shield;
+    public int maxLayers;
+    public int currentLayers;
+    public int shieldCooldown;
+    public bool isShieldActive;
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Item item;
     [SerializeField] private Item battleItem;
@@ -20,6 +25,7 @@ public class DroneController : MonoBehaviour
 
     public float speedMode1;
     public float speedMode2;
+    public float speedMode3;
     public float speedCurrent;
     public Vector3 offset;
     public Vector3 battleOffset;
@@ -36,7 +42,6 @@ public class DroneController : MonoBehaviour
     [SerializeField] private Transform shotSpawnPosition;
     [SerializeField] private Transform shotSpawnMask;
     [SerializeField] private float baseBulletSpeed;
-
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject SlimeBullet;
     [SerializeField] private int SlimeBulletCount;
@@ -46,14 +51,19 @@ public class DroneController : MonoBehaviour
 
     void Follow()
     {
-
         horizontalAxis = Input.GetAxis("Horizontal");
         verticalAxis = Input.GetAxis("Vertical");
-
         if (horizontalAxis < 0) xScale = -1;
         if (horizontalAxis > 0) xScale = 1;
-
-        Vector3 newPos = target.position;
+        Vector3 newPos = Vector3.zero;
+        try
+        {
+            newPos = target.position;
+        }
+        catch
+        {
+            targets = new List<Transform> ();
+        }
         if (mode == 1)
         {
             newPos = target.position + battleOffset;
@@ -70,6 +80,30 @@ public class DroneController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, newPos, speedCurrent * Time.deltaTime);
     }
 
+    void ShieldUpdate()
+    {
+        if (currentLayers <= 0 && isShieldActive)
+        {
+            isShieldActive = false;
+            shield.SetActive(false);
+            StartCoroutine(ShieldRecharge());
+        }
+        if (currentLayers > 0 && mode == 2)
+        {
+            shield.SetActive(true);
+        }
+        else
+        {
+            shield.SetActive(false);
+        }
+    }
+
+    private IEnumerator ShieldRecharge()
+    {
+        yield return new WaitForSeconds(shieldCooldown);
+        isShieldActive = true;
+    }
+
     void ChooseTarget()
     {
         if (mode == 1)
@@ -80,9 +114,10 @@ public class DroneController : MonoBehaviour
                 Transform currentTarget = null;
                 foreach (var i in targets)
                 {
-                    if (Vector3.Distance(transform.position, i.position) <= minDis)
+                    if (Vector3.Distance(player.transform.position, i.position) <= minDis)
                     {
                         currentTarget = i;
+                        minDis = Vector3.Distance(player.transform.position, i.position);
                     }
                 }
                 target = currentTarget;
@@ -95,6 +130,7 @@ public class DroneController : MonoBehaviour
         else if (mode == 2)
         {
             target = defenceAnchor;
+            speedCurrent = speedMode3;
         }
         else if (mode == 3)
         {
@@ -138,9 +174,9 @@ public class DroneController : MonoBehaviour
                 target = backpack;
                 speedCurrent = speedMode2;
             }
-            else if (target == player || mode == 1)
+            else if (target == player || mode == 3)
             {
-                crest.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                crest.GetComponent<SpriteRenderer>().sortingOrder = 3;
                 body.gameObject.SetActive(true);
                 shotSpawnMask.gameObject.SetActive(true);
                 sprite.sortingOrder = 3;
