@@ -25,6 +25,8 @@ public class Commutator : MonoBehaviour
     [SerializeField] private GameObject emergencyLightning;
     [SerializeField] private GameObject normalLightning;
 
+
+    private PlayerController1 _player;
     public int index;
     
     private void Start()
@@ -36,6 +38,7 @@ public class Commutator : MonoBehaviour
     {
         if (other.CompareTag("Player") && !used)
         {
+            _player = other.GetComponent<PlayerController1>();
             if (isLore)
             {
                 if (loreTask <= Camera.main.GetComponent<TaskbarManager>().currentTask)
@@ -82,6 +85,7 @@ public class Commutator : MonoBehaviour
                 UiDialog.SetActive(true);
                 AdviceText.SetActive(false);
                 taskbarManager.NextTask();
+                _player.is_coding = true;
                 if (door != null)
                 {
                     emergencyLightning.SetActive(false);
