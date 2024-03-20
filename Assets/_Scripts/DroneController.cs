@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DroneController : MonoBehaviour
 {
@@ -13,11 +14,13 @@ public class DroneController : MonoBehaviour
     public GameObject shield;
     public float shieldDuration;
     public float currentShieldDuration;
-    public int shieldCooldown;
+    public float shieldCooldown;
     public bool isShieldActive;
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private Item item;
     [SerializeField] private Item battleItem;
+
+    [SerializeField] private Image shieldBar;
 
     public List<Transform> targets;
 
@@ -46,7 +49,6 @@ public class DroneController : MonoBehaviour
     [SerializeField] private GameObject SlimeBullet;
     [SerializeField] private int SlimeBulletCount;
     
-    //private Vector3 mousePosition;
     public float moveSpeed = 2f;
 
     void Follow()
@@ -86,17 +88,19 @@ public class DroneController : MonoBehaviour
         {
             isShieldActive = false;
             shield.SetActive(false);
+            mode = 3;
             StartCoroutine(ShieldRecharge());
         }
         if (currentShieldDuration > 0 && mode == 2 && isShieldActive)
         {
-            currentShieldDuration -= Time.deltaTime * shieldDuration;
+            currentShieldDuration -= Time.deltaTime * 0.5f;
             shield.SetActive(true);
         }
         else
         {
             shield.SetActive(false);
         }
+        shieldBar.fillAmount = currentShieldDuration / 5f;
     }
 
     private IEnumerator ShieldRecharge()
