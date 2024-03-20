@@ -64,11 +64,13 @@ public class Door : MonoBehaviour
         {
             isOpen = false;
             animator.SetTrigger("close");
+            doorController.stateText.text = "Состояние: закрыта";
         }
         else
         {
             isOpen = true;
             animator.SetTrigger("open");
+            doorController.stateText.text = "Состояние: открыта";
         }
         
     }
@@ -80,18 +82,21 @@ public class Door : MonoBehaviour
         if(doorController.isBroken) return;
         isOpen = true;
         animator.SetTrigger("open");
+        doorController.stateText.text = "Состояние: открыта";
     }
     
     public void BackdoorOpenDoor()
     {
         isOpen = true;
         animator.SetTrigger("open");
+        doorController.stateText.text = "Состояние: открыта";
     }
 
     public void BackdoorCloseDoor()
     {
         isOpen = false;
         animator.SetTrigger("close");
+        doorController.stateText.text = "Состояние: закрыта";
     }
     
     public void CloseDoor()
@@ -101,6 +106,7 @@ public class Door : MonoBehaviour
         if(doorController.isBroken) return;
         isOpen = false;
         animator.SetTrigger("close");
+        doorController.stateText.text = "Состояние: закрыта";
     }
     public void ChangeColor(int color)
     {

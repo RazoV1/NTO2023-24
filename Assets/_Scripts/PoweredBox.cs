@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PoweredBox : Box
@@ -13,6 +15,12 @@ public class PoweredBox : Box
     [SerializeField] public SpriteRenderer fuseSpriteRenderer;
     [SerializeField] public Sprite fuseActiveSprite;
     [SerializeField] public Sprite fuseInactiveSprite;
+    public TextMeshProUGUI fuseText;
+    public TextMeshProUGUI powerText;
+    public TextMeshProUGUI stateText;
+    public Transform paramsParent;
+    
+    
     [SerializeField] public bool hasTimer;
     public SecurityState securityState;
 
@@ -26,7 +34,16 @@ public class PoweredBox : Box
     
     [SerializeField] protected bool isLoreFuse;
 
-
+    private void Awake()
+    {
+        if (paramsParent != null)
+        {
+            fuseText = paramsParent.GetChild(0).GetComponent<TextMeshProUGUI>();
+            powerText = paramsParent.GetChild(1).GetComponent<TextMeshProUGUI>();
+            stateText = paramsParent.GetChild(2).GetComponent<TextMeshProUGUI>();
+        }
+    }
+    
 
     public void ChangeSecurityLevel(int level)
     {
@@ -52,6 +69,7 @@ public class PoweredBox : Box
     {
         isPowered = true;
         print(gameObject.name + ": is powered");
+        powerText.text = "Питание: есть";
         if(!hasFuse) return;
         powerLedSpriteRenderer.color = Color.yellow;
         fuseSpriteRenderer.sprite = fuseActiveSprite;
@@ -62,6 +80,7 @@ public class PoweredBox : Box
     {
         isPowered = false;
         powerLedSpriteRenderer.color = Color.black;
+        powerText.text = "Питание: нет";
         if(!hasFuse) return;
         fuseSpriteRenderer.sprite = fuseInactiveSprite;
         fuseSpriteRenderer.color = Color.white;
@@ -73,6 +92,7 @@ public class PoweredBox : Box
         hasFuse = inventory.tryToDel(fuse, 1);
         if (!hasFuse) return;
         if(isLoreFuse && loreTask <= Camera.main.GetComponent<TaskbarManager>().currentTask) Camera.main.GetComponent<TaskbarManager>().NextTask();
+        fuseText.text = "Предохранитель: есть";
         if (isPowered)
         {
             fuseSpriteRenderer.sprite = fuseActiveSprite;
@@ -90,6 +110,7 @@ public class PoweredBox : Box
     {
         if (!hasFuse) return;
         hasFuse = false;
+        fuseText.text = "Предохранитель: нет";
         inventory.AddItem(fuse, 1);
         fuseSpriteRenderer.color = Color.black;
         powerLedSpriteRenderer.color = Color.black;
