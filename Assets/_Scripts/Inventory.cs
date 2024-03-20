@@ -61,9 +61,17 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.BackQuote))
         {
-            Time.timeScale = 5f;
+            print("TILDE");
+            if (Time.timeScale != 5f)
+            {
+                Time.timeScale = 5f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
         }
         if (Input.GetKeyDown(KeyCode.I) && !player.is_coding && !inventoryWindow.gameObject.activeSelf)
         {
