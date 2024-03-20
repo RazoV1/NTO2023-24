@@ -15,6 +15,7 @@ TagManager:
   - Slimable
   - Pooh
   - projectile
+  - piatachok
   layers:
   - Default
   - TransparentFX

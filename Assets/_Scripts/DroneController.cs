@@ -11,8 +11,8 @@ public class DroneController : MonoBehaviour
     [SerializeField] private Transform backpack;
     [SerializeField] private Transform defenceAnchor;
     public GameObject shield;
-    public int maxLayers;
-    public int currentLayers;
+    public float shieldDuration;
+    public float currentShieldDuration;
     public int shieldCooldown;
     public bool isShieldActive;
     [SerializeField] private SpriteRenderer sprite;
@@ -82,14 +82,15 @@ public class DroneController : MonoBehaviour
 
     void ShieldUpdate()
     {
-        if (currentLayers <= 0 && isShieldActive)
+        if (currentShieldDuration <= 0.05 && isShieldActive)
         {
             isShieldActive = false;
             shield.SetActive(false);
             StartCoroutine(ShieldRecharge());
         }
-        if (currentLayers > 0 && mode == 2)
+        if (currentShieldDuration > 0 && mode == 2 && isShieldActive)
         {
+            currentShieldDuration -= Time.deltaTime * shieldDuration;
             shield.SetActive(true);
         }
         else
@@ -100,8 +101,13 @@ public class DroneController : MonoBehaviour
 
     private IEnumerator ShieldRecharge()
     {
-        yield return new WaitForSeconds(shieldCooldown);
+        while (currentShieldDuration < shieldDuration)
+        {
+            currentShieldDuration += Time.deltaTime * shieldCooldown;
+            yield return null;
+        }
         isShieldActive = true;
+        currentShieldDuration = shieldDuration;
     }
 
     void ChooseTarget()
@@ -241,10 +247,9 @@ public class DroneController : MonoBehaviour
             }
         }
     }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Bee" || other.gameObject.tag == "Pooh")
+        if (other.gameObject.tag == "Bee" || other.gameObject.tag == "Pooh" || other.gameObject.tag == "piatachok")
         {
             targets.Add(other.transform);
         }
@@ -264,12 +269,10 @@ public class DroneController : MonoBehaviour
         mousePos.y += body.position.y - Camera.main.transform.position.y;
         body.LookAt(mousePos);
     }
-    private void LookOnCursor3D() //свет смотрит на точку в пространстве за курсором.
+    private void LookOnCursor3D()
     {
         Ray mousePos = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.Log(mousePos);
         RaycastHit hit;
-        //Debug.DrawRay(mousePos,Color.red,5);
         if (mode == 3 || mode == 2)
         {
             if (Physics.Raycast(mousePos, out hit))
