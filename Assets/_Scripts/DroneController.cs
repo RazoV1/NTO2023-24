@@ -216,6 +216,7 @@ public class DroneController : MonoBehaviour
     }
     private void Update()
     {
+        ShieldUpdate();
         ChooseTarget();
         LookOnCursor3D();
         ChangeTarget();
