@@ -11,7 +11,8 @@ public class CraftLogic : MonoBehaviour
     public GameObject menu;
     public bool is_opened;
     public bool can_use;
-    
+
+    [SerializeField] private GameObject adviceText;
 
     public void CraftMenu(bool c)
     {
@@ -52,6 +53,7 @@ public class CraftLogic : MonoBehaviour
         if (other.tag == "Player" && !can_use)
         {
             can_use = true;
+            adviceText.SetActive(true);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -61,6 +63,7 @@ public class CraftLogic : MonoBehaviour
             can_use = false;
             is_opened = false;
             menu.SetActive(is_opened);
+            adviceText.SetActive(false);
         }
     }
     private void Start()

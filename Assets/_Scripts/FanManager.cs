@@ -111,6 +111,7 @@ public class FanManager : PoweredBox
                             room.oxygenForm = room.oxygenVelocity;
                             room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.push;
+                            stateText.text = "Состояние: подача";
                             continue;
                         
                         
@@ -118,6 +119,7 @@ public class FanManager : PoweredBox
                             room.oxygenForm = room.oxygenVelocity;
                             room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.push;
+                            stateText.text = "Состояние: подача";
                             continue;
                         
                                                 
@@ -125,6 +127,7 @@ public class FanManager : PoweredBox
                             room.oxygenForm = -room.oxygenVelocity;
                             room.OxygenChange(room.oxygenForm);
                             currentFanState = fanState.pull;
+                            stateText.text = "Состояние: выкачка";
                             continue;
                     }
                 }
@@ -193,6 +196,7 @@ public class FanManager : PoweredBox
                     room.oxygenForm = 0;
                     room.OxygenChange(room.oxygenForm);
                     currentFanState = fanState.neutral;
+                    stateText.text = "Состояние: нейтрально";
                     continue;
                         
                         
@@ -200,6 +204,7 @@ public class FanManager : PoweredBox
                     room.oxygenForm = -room.oxygenVelocity;
                     room.OxygenChange(room.oxygenForm);
                     currentFanState = fanState.pull;
+                    stateText.text = "Состояние: выкачка";
                     continue;
                         
                                                 
@@ -207,6 +212,7 @@ public class FanManager : PoweredBox
                     room.oxygenForm = room.oxygenVelocity;
                     room.OxygenChange(room.oxygenForm);
                     currentFanState = fanState.push;
+                    stateText.text = "Состояние: подача";
                     continue;
             }
         }

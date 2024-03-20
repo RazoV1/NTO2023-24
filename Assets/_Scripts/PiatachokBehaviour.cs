@@ -22,6 +22,9 @@ public class PiatachokBehaviour : MonoBehaviour
     public bool onShot;
     public bool isMovingRight;
     public bool isActive;
+
+    public int hp;
+    public bool isDead = false;
     
     private void Start()
     {

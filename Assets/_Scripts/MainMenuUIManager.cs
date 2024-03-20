@@ -10,9 +10,19 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private GameObject pause;
     private bool is_pause_opened = false;
 
+    public GameObject continueButton;
+    
     private void Start()
     {
         Time.timeScale = 1;
+        if (PlayerPrefs.HasKey("Player_X"))
+        {
+            continueButton.SetActive(true);
+        }
+        else
+        {
+            continueButton.SetActive(false);
+        }
     }
 
     private void Update()
@@ -26,6 +36,12 @@ public class MainMenuUIManager : MonoBehaviour
         }
     }
 
+    public void NewGame()
+    {
+        PlayerPrefs.DeleteAll();
+        LoadScene(1);
+    }
+    
     public void LoadScene(int index)
     {
         SceneManager.LoadScene(index);
