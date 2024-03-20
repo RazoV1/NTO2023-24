@@ -79,6 +79,7 @@ public class Door : MonoBehaviour
     {
         if (isOpen) return;
         if (!doorController.isPowered) return;
+        if (!doorController.hasFuse) return;
         if(doorController.isBroken) return;
         isOpen = true;
         animator.SetTrigger("open");
@@ -103,6 +104,7 @@ public class Door : MonoBehaviour
     {
         if (!isOpen) return;
         if (!doorController.isPowered) return;
+        if (!doorController.hasFuse) return;
         if(doorController.isBroken) return;
         isOpen = false;
         animator.SetTrigger("close");
