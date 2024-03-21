@@ -29,7 +29,8 @@ public class VinniePoohBehaviour : MonoBehaviour
     public bool isDead = false;
 
     [SerializeField] private AudioSource walkSound;
-
+    [SerializeField] private AudioSource hitSound;
+    
     private void Start()
     {
         currentAttackCD = attackCD;
@@ -115,6 +116,7 @@ public class VinniePoohBehaviour : MonoBehaviour
                 if (Vector3.Distance(transform.position, playerTransform.position) <= 0.4f && currentAttackCD <= 0)
                 {
                     playerTransform.GetComponent<CharacterHealth>().TakeDamage(damage);
+                    hitSound.Play();
                     currentAttackCD = attackCD;
                     onAttack = true;
                     agent.destination = transform.position;
