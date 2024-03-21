@@ -32,7 +32,6 @@ public class CharacterDialog : MonoBehaviour
             }
             yield return new WaitForSeconds(0.5f);
         }
-
         dialogText.text = "";
         dialogPanel.SetActive(false);
     }

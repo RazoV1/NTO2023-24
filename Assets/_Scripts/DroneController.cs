@@ -1,4 +1,4 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +48,8 @@ public class DroneController : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject SlimeBullet;
     [SerializeField] private int SlimeBulletCount;
+
+    private DronePersonalitu personas;
     
     public float moveSpeed = 2f;
 
@@ -155,6 +157,7 @@ public class DroneController : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Shot());
+        personas = GetComponent<DronePersonalitu>();
     }
 
     void ChangeTarget()
@@ -206,8 +209,12 @@ public class DroneController : MonoBehaviour
     {
         while (true)
         {
-            if (mode == 1 && target != player)
+            if (mode == 1 && target != player && target != backpack)
             {
+                if (Random.Range(1, 10) == 5)
+                {
+                    personas.Appear(personas.attackQuotes);
+                }
                 for (int i = 1; i <= bulletsCount; i++)
                 {
                     GameObject currentBullet = Instantiate(bulletPrefab);
@@ -234,19 +241,48 @@ public class DroneController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                if (mode == 4)
+                {
+                    personas.Appear(personas.appearQuotes);
+                }
                 mode = 1;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                mode = 2;
+                if (mode == 4)
+                {
+                    personas.Appear(personas.appearQuotes);
+                }
+                else
+                {
+                    if (isShieldActive)
+                    {
+                        personas.Appear(personas.shieldUpQuotes);
+                    }
+                    else
+                    {
+                        personas.Appear(personas.shieldErrorQuotes);
+                    }
+                }
+                if (isShieldActive)
+                {
+                    mode = 2;
+                }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
+                if (mode == 4)
+                {
+                    personas.Appear(personas.appearQuotes);
+                }
                 mode = 3;
-
             }
             else if (Input.GetKeyDown(KeyCode.F))
             {
+                if (mode != 4)
+                {
+                    personas.Appear(personas.dissapearQuotes);
+                }
                 mode = 4;
             }
         }
@@ -260,12 +296,11 @@ public class DroneController : MonoBehaviour
     }
     private void OnTriggerExit(Collider other) 
     {
-        if (other.tag == "Bee" || other.tag == "Pooh")
+        if (other.tag == "Bee" || other.tag == "Pooh" || other.gameObject.tag == "piatachok")
         {
             targets.Remove(other.transform);
         }
     }
-
     void LookOnCursor()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
