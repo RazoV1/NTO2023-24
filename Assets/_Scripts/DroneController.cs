@@ -88,6 +88,7 @@ public class DroneController : MonoBehaviour
     {
         if (currentShieldDuration <= 0.05 && isShieldActive)
         {
+            personas.Appear(personas.shieldDownQuotes);
             isShieldActive = false;
             shield.SetActive(false);
             mode = 3;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class DronePersonalitu : MonoBehaviour
@@ -13,8 +14,15 @@ public class DronePersonalitu : MonoBehaviour
     public List<string> shieldDownQuotes;
     public List<string> shieldErrorQuotes;
 
+    public List<string> exelentPuzzleQuotes;
+    public List<string> goodPuzzleQuotes;
+    public List<string> badPuzzleQuotes;
+
     public CharacterDialog characterDialog;
 
+    public bool isTicking;
+    public float time;
+    
     public Animator emotions;
     public Animator surprised;
     public Animator angry;
@@ -40,4 +48,41 @@ public class DronePersonalitu : MonoBehaviour
         characterDialog.StartText(q);
     }
 
+    public void StartTick()
+    {
+        if (!isTicking)
+        {
+            isTicking = true;
+            time = 0;
+        }
+        else
+        {
+            isTicking= false;
+            if (time > 5 * 60f)
+            {
+                Appear(badPuzzleQuotes);
+            }
+            else if (time > 3 * 60f)
+            {
+                Appear(goodPuzzleQuotes);
+            }
+            else
+            {
+                Appear(badPuzzleQuotes);
+            }
+        }
+    }
+
+    public void Timer()
+    {
+        if (isTicking)
+        {
+            time += Time.deltaTime;
+        }
+    }
+
+    private void Update()
+    {
+        Timer();
+    }
 }
