@@ -20,6 +20,9 @@ public class DroneController : MonoBehaviour
     [SerializeField] private Item item;
     [SerializeField] private Item battleItem;
 
+    [SerializeField] private GameObject chargedDroneIcons;
+    [SerializeField] private GameObject battleDroneItems;
+
     [SerializeField] private Image shieldBar;
 
     public List<Transform> targets;
@@ -234,6 +237,7 @@ public class DroneController : MonoBehaviour
     }
     private void Update()
     {
+        //œ≈Õ»—
         ShieldUpdate();
         ChooseTarget();
         LookOnCursor3D();
@@ -271,6 +275,25 @@ public class DroneController : MonoBehaviour
                 }
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                if (mode == 4)
+                {
+                    personas.Appear(personas.appearQuotes);
+                }
+                mode = 3;
+            }
+            else if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (mode != 4)
+                {
+                    personas.Appear(personas.dissapearQuotes);
+                }
+                mode = 4;
+            }
+        }
+        else if (player.gameObject.GetComponent<Inventory>().hasItem(item))
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 if (mode == 4)
                 {

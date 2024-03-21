@@ -8,6 +8,7 @@ public class MainMenuUIManager : MonoBehaviour
 {
     [SerializeField] private bool is_pause_manager;
     [SerializeField] private GameObject pause;
+    [SerializeField] private GameObject manual;
     private bool is_pause_opened = false;
 
     public GameObject continueButton;
@@ -52,6 +53,11 @@ public class MainMenuUIManager : MonoBehaviour
         Time.timeScale = 0.000000000000000000000001f;
         is_pause_opened = true;
         PauseMenu.SetActive(true);
+    }
+
+    public void Manual()
+    {
+        manual.SetActive(!manual.active);
     }
 
     public void DeleteSaves()
