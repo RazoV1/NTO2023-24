@@ -384,6 +384,12 @@ public class DialogManager : MonoBehaviour
             }
         }
         closeButton.SetActive(true);
+        closeButton.GetComponent<Button>().onClick.AddListener(delegate { EndDialog();});
+        
+    }
+
+    public void EndDialog()
+    {
         GameObject.FindObjectOfType<PlayerController1>().is_coding = false;
     }
 }
