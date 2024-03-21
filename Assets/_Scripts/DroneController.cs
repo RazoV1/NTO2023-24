@@ -244,7 +244,7 @@ public class DroneController : MonoBehaviour
         ChangeTarget();
         if (player.gameObject.GetComponent<Inventory>().hasItem(battleItem))
         {
-            chargedDroneIcons.SetActive(false);
+            chargedDroneIcons.SetActive(true);
             battleDroneItems.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
