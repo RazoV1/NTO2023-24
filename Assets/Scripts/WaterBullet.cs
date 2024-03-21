@@ -14,17 +14,15 @@ public class WaterBullet : MonoBehaviour
         }
         if (other.gameObject.tag == "Pooh")
         {
-            VinniePoohBehaviour b = other.gameObject.GetComponent<VinniePoohBehaviour>();
+            VinniePoohBehaviour b = other.gameObject.GetComponentInParent<VinniePoohBehaviour>();
             b.HP -= damage;
             if (b.HP <= 0)
             {
-
                 b.isDead = true;
                 b.agent.Stop();
                 b.animator.SetBool("isDead",true);
                 b.GetComponent<CapsuleCollider>().enabled = false;
                 Destroy(b.poohCollider);
-                
             }
         }
         if (other.gameObject.tag == "piatachok")
