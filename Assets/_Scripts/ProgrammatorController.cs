@@ -38,7 +38,7 @@ public class ProgrammatorController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P)) OpenProgrammator();
+        //if(Input.GetKeyDown(KeyCode.P)) OpenProgrammator();
     }
 
 

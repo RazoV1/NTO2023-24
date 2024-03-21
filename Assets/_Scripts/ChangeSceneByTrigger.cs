@@ -31,8 +31,11 @@ public class ChangeSceneByTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            canUse = true;
-            adviceText.SetActive(true);
+            if (Camera.main.GetComponent<TaskbarManager>().currentTask >= loreTask)
+            {
+                canUse = true;
+                adviceText.SetActive(true);
+            }
         }
     }
 
