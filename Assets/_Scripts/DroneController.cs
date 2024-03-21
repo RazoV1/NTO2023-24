@@ -122,6 +122,7 @@ public class DroneController : MonoBehaviour
 
     void ChooseTarget()
     {
+        
         if (mode == 1)
         {
             if (targets.Count != 0)
@@ -134,6 +135,14 @@ public class DroneController : MonoBehaviour
                     {
                         currentTarget = i;
                         minDis = Vector3.Distance(player.transform.position, i.position);
+                    }
+                }
+                if (currentTarget.tag == "Pooh")
+                {
+                    if (currentTarget.GetComponent<VinniePoohBehaviour>().isDead)
+                    {
+                        targets.Remove(currentTarget);
+                        return;
                     }
                 }
                 target = currentTarget;
@@ -238,7 +247,6 @@ public class DroneController : MonoBehaviour
     }
     private void Update()
     {
-        //�����
         ShieldUpdate();
         ChooseTarget();
         LookOnCursor3D();
