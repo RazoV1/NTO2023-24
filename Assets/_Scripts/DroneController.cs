@@ -244,6 +244,8 @@ public class DroneController : MonoBehaviour
         ChangeTarget();
         if (player.gameObject.GetComponent<Inventory>().hasItem(battleItem))
         {
+            chargedDroneIcons.SetActive(false);
+            battleDroneItems.SetActive(true);
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 if (mode == 4)
@@ -293,6 +295,8 @@ public class DroneController : MonoBehaviour
         }
         else if (player.gameObject.GetComponent<Inventory>().hasItem(item))
         {
+            chargedDroneIcons.SetActive(true);
+            battleDroneItems.SetActive(false);
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 if (mode == 4)
