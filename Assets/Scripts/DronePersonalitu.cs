@@ -45,6 +45,7 @@ public class DronePersonalitu : MonoBehaviour
         quote = quote[1..];
         List<string> q = new List<string>();
         q.Add(quote);
+        characterDialog.StopAllCoroutines();
         characterDialog.StartText(q);
     }
 

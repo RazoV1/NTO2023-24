@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 public class VinniePoohBehaviour : MonoBehaviour
 {
+    public GameObject poohCollider;
     [SerializeField] private float movementSpeed;
     [SerializeField] private float attackCD;
     private float currentAttackCD;

@@ -23,6 +23,7 @@ public class WaterBullet : MonoBehaviour
                 b.agent.Stop();
                 b.animator.SetBool("isDead",true);
                 b.GetComponent<CapsuleCollider>().enabled = false;
+                Destroy(b.poohCollider);
                 
             }
         }

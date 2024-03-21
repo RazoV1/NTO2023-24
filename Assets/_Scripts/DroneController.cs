@@ -122,7 +122,6 @@ public class DroneController : MonoBehaviour
 
     void ChooseTarget()
     {
-        
         if (mode == 1)
         {
             if (targets.Count != 0)
@@ -139,7 +138,7 @@ public class DroneController : MonoBehaviour
                 }
                 if (currentTarget.tag == "Pooh")
                 {
-                    if (currentTarget.GetComponent<VinniePoohBehaviour>().isDead)
+                    if (currentTarget.GetComponentInParent<VinniePoohBehaviour>().isDead)
                     {
                         targets.Remove(currentTarget);
                         return;
