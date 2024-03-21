@@ -68,7 +68,7 @@ public class DronePersonalitu : MonoBehaviour
             }
             else
             {
-                Appear(badPuzzleQuotes);
+                Appear(exelentPuzzleQuotes);
             }
         }
     }
