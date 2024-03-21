@@ -222,6 +222,7 @@ public class DroneController : MonoBehaviour
                 for (int i = 1; i <= bulletsCount; i++)
                 {
                     GameObject currentBullet = Instantiate(bulletPrefab);
+                    
                     currentBullet.transform.position = shotSpawnPosition.position;
                     currentBullet.GetComponent<Rigidbody>().velocity = shotSpawnPosition.transform.forward.normalized * baseBulletSpeed;
                     yield return new WaitForSeconds(0.1f);
@@ -237,7 +238,7 @@ public class DroneController : MonoBehaviour
     }
     private void Update()
     {
-        //ÏÅÍÈÑ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½
         ShieldUpdate();
         ChooseTarget();
         LookOnCursor3D();

@@ -28,6 +28,8 @@ public class VinniePoohBehaviour : MonoBehaviour
 
     public bool isDead = false;
 
+    [SerializeField] private AudioSource walkSound;
+
     private void Start()
     {
         currentAttackCD = attackCD;
@@ -40,6 +42,7 @@ public class VinniePoohBehaviour : MonoBehaviour
         if (other.CompareTag("Player") && !isDead)
         {
             agent.SetDestination(playerTransform.position);
+            walkSound.Play();
             onTarget = true;
             isRushing = true;
             Rush();
@@ -57,6 +60,7 @@ public class VinniePoohBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isDead)
         {
+            walkSound.Stop();
             agent.SetDestination(transform.position);
             onTarget = false;
             if (transform.position.x < playerTransform.position.x)
