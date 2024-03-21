@@ -296,7 +296,7 @@ public class DroneController : MonoBehaviour
             {
                 if (mode != 4)
                 {
-                    personas.Appear(personas.dissapearQuotes);
+                    personas.Appear(personas.disappearQuotes);
                 }
                 mode = 4;
             }
@@ -317,7 +317,7 @@ public class DroneController : MonoBehaviour
             {
                 if (mode != 4)
                 {
-                    personas.Appear(personas.dissapearQuotes);
+                    personas.Appear(personas.disappearQuotes);
                 }
                 mode = 4;
             }
