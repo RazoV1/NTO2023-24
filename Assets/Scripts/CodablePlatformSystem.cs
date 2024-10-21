@@ -21,7 +21,7 @@ public class PointList
 public class CodablePlatformSystem : PoweredBox
 {
     public TMP_InputField inputField;
-    [SerializeField]protected string[] commands;
+    [SerializeField] protected string[] commands;
     [SerializeField] protected Transform platform;
     [SerializeField] protected AudioClip platformMove;
     [SerializeField] protected float platformSpeed;
